@@ -1,0 +1,31 @@
+
+<SettingsWindow>:  
+    name: "second"
+    # --------Main--------
+    FloatLayout:
+        canvas.before:
+            Color:
+                rgba: 0.7, 0.7, 0.7, 1  # light gray
+            Rectangle:
+                pos: self.pos
+                size: self.size
+    
+        # --------top button--------
+        FloatLayout:
+            size_hint: 1,0.05
+            pos_hint: {"x":0, "y":0.95}
+
+            Button:
+                text: "<- settings"
+                pos_hint: {"center_x":0.5, "center_y":0.5}
+                canvas.before:
+                    Color:
+                        rgba: 0.7, 0.7, 0.7, 1  # light gray
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+                on_release: 
+                    app.root.current = "main"
+                    root.manager.transition.direction = "right"
+
+ 

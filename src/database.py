@@ -1,0 +1,71 @@
+import sqlite3 as sql
+import habit_mgr as hmgr
+
+
+def connect_to_db():
+    return sql.connect("db_habit.db")
+
+def create_db():
+    conn = connect_to_db()
+    cur = conn.cursor()
+    cur.execute("""
+            CREATE TABLE IF NOT EXISTS habits (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                colour TEXT,
+                question TEXT,
+                reminder BOOLEAN,
+                description TEXT,
+                frequency TEXT
+            )
+    """)
+    conn.commit()
+    conn.close()
+
+def print_table():
+    conn = connect_to_db()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM habits")
+    rows = cur.fetchall()
+    for row in rows:
+        print(row)
+
+def add_habit(habit):
+    """Add a habit into the database safely."""
+    info = hab_info(habit) 
+
+    conn = connect_to_db()
+    cur = conn.cursor()
+
+    cur.execute("""
+        INSERT INTO habits (name, colour, question, reminder, description, frequency)
+        VALUES (?, ?, ?, ?, ?, ?)
+    """, info)
+
+    conn.commit()
+    conn.close()
+
+def delete_habit(name = ''):
+    """delete a habit from the database"""
+    conn = connect_to_db()
+    cur = conn.cursor()
+
+    cur.execute("""DELETE FROM habits
+                WHERE name = ?""", (name,))
+    
+    conn.commit()
+    conn.close()
+
+def hab_info(hab = hmgr.HabitYesNo()):
+    return [hab.name,
+            hab.colour,
+            hab.question,
+            hab.reminder,
+            hab.description,
+            hab.frequency]
+
+if __name__ == "__main__":
+    hab = hmgr.HabitYesNo()
+    hab.name = "eat"
+    delete_habit("Drink")
+    print_table()
