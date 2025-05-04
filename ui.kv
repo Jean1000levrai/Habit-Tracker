@@ -1,0 +1,48 @@
+WindowMgr:
+    MainWindow:
+    SettingsWindow:
+
+<MainWindow>:  
+    name: "main"
+
+    BoxLayout:
+        canvas.before:
+            Color:
+                rgba: 0.7, 0.7, 0.7, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        FloatLayout:
+            size_hint: 1, 0.05
+            pos_hint: {"x": 0, "y": 0}
+
+            canvas.before:
+                Color:
+                    rgba: 0.4, 0.4, 0.4, 1
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            Button:
+                size_hint: 0.15, 1
+                text: "+"
+                pos_hint: {"x": 0, "y": 0}
+                on_release: 
+                    app.root.current = "second"
+                    root.manager.transition.direction = "left"
+            Button:
+                size_hint: 0.15, 1
+                text: "|||"
+                pos_hint: {"x": 0.85, "y": 0}
+
+        
+
+
+<SettingsWindow>:  
+    name: "second"
+
+    Button:
+        text: "Go back"
+        on_release: 
+            app.root.current = "main"
+            root.manager.transition.direction = "right"
