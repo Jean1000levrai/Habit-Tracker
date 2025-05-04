@@ -15,54 +15,54 @@ class HabitYesNo:
     # --------GET---------
     @property
     def name(self):
-        return self.name
+        return self.__name
     
     @property
     def colour(self):
-        return self.colour
+        return self.__colour
     
     @property
     def question(self):
-        return self.question
+        return self.__question
     
     @property
     def reminder(self):
-        return self.reminder
+        return self.__reminder
     
     @property
     def description(self):
-        return self.description
+        return self.__description
     
     @property
     def frequency(self):
-        pass
+        return self.__frequency
 
     # ----------SET-----------
     @name.setter
     def name(self, val):
         if not val.strip():
             raise ValueError("Habit name cannot be empty.")
-        self.name = val
+        self.__name = val
 
     @colour.setter
     def colour(self, val):
         if not isinstance(val, str) or not val.startswith("#") or len(val) not in (7, 9):
             raise ValueError("Colour must be a hex string like '#RRGGBB'.")
-        self.colour = val
+        self.__colour = val
 
     @question.setter
     def question(self, val):
-        self.question = str(val)
+        self.__question = str(val)
 
     @reminder.setter
     def reminder(self, val):
         if not isinstance(val, bool):
             raise ValueError("Reminder must be a boolean.")
-        self.reminder = val
+        self.__reminder = val
 
     @description.setter
     def description(self, val):
-        self.description = str(val)
+        self.__description = str(val)
 
     @frequency.setter
     def frequency(self, val):
@@ -73,9 +73,13 @@ class HabitYesNo:
         allowed = {"daily", "weekly", "monthly", None}
         if val[1] not in allowed:
             raise ValueError(f"Frequency must be one of {allowed}.")
-        self.frequency = val
-                             
+        self.__frequency = val
 
+
+if __name__ == "__main__":
+    hab=HabitYesNo()
+    hab.colour = "#111111"
+    print(hab.colour)
     
 
 

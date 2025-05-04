@@ -22,11 +22,24 @@ def create_db():
     conn.commit()
     conn.close()
 
-def add_habits(hab):
-    """add a habit into the database"""
+def print_table():
     conn = connect_to_db()
     cur = conn.cursor()
-    cur.execute(...)
+    cur.execute("SELECT * FROM habits")
+    rows = cur.fetchall()
+    for row in rows:
+        print(row)
+
+
+def add_habits(hab):
+    """add a habit into the database"""
+    info = hab_info(hab)
+    conn = connect_to_db()
+    cur = conn.cursor()
+    cur.execute(f"""
+        INSERT INTO habits 
+        VALUES ({info[0]}, {info[1]}, {info[2]}, {info[3]}, {info[4]}, {info[5]})
+""")
     conn.commit()
     conn.close()
 
@@ -40,5 +53,15 @@ def load_habits():
 def save_habits():
     pass
 
+def hab_info(hab = hmgr.HabitYesNo()):
+    return [hab.name,
+            hab.colour,
+            hab.question,
+            hab.reminder,
+            hab.description,
+            hab.frequency]
 
-new_hab = hmgr.HabitYesNo()
+if __name__ == "__main__":
+    hab = hmgr.HabitYesNo()
+    add_habits(hab)
+    print_table()
