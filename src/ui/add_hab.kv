@@ -1,0 +1,69 @@
+<AddHabitWindow>:
+    name: "habYesNo"
+
+    # ----------Main-----------
+    FloatLayout:
+        canvas.before:
+            Color:
+                rgba: 0.7, 0.7, 0.7, 1  # light gray
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: 0.9, 0.2   # 90% width, 50% height
+            pos_hint: {"center_x": 0.5, "top": 0.95}  # anchored near the top
+
+            spacing: dp(10)  # space between text inputs
+            padding: dp(10)
+
+            TextInput:
+                id: name
+                hint_text: "Name"
+                multiline: False
+
+            TextInput:
+                id: descr
+                hint_text: "Description"
+                multiline: False
+
+            TextInput:
+                id: qu
+                hint_text: "Question"
+                multiline: False
+
+            TextInput:
+                id: col
+                hint_text: "Color"
+                multiline: False
+        # ------------Save btn--------------
+        AnchorLayout:
+            anchor_x: "center"
+            anchor_y: "bottom"
+
+            Button:
+                text: "Save"
+                size_hint: None, None
+                size: 150, 50
+                on_release:
+                    root.save_btn()
+        
+        # ------------exit btn--------------
+        AnchorLayout:
+            anchor_x: "center"
+            anchor_y: "top"
+
+            Button:
+                text: "<- Habit"
+                size_hint: None, None
+                size: 360, 40
+                canvas.before:
+                    Color:
+                        rgba: 0.7, 0.7, 0.7, 1  # light gray
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+                on_release: 
+                    app.root.current = "main"
+                    root.manager.transition.direction = "right"
+

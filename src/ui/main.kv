@@ -36,11 +36,22 @@
                 Rectangle:
                     pos: self.pos
                     size: self.size
-
             Button:
                 size_hint: 0.15, 1
                 text: "+"
                 pos_hint: {"x": 0, "y": 0}
+                on_release: 
+                    app.popup()
+
+            # Button:
+            #     size_hint: 0.15, 1
+            #     text: "+"
+            #     pos_hint: {"x": 0, "y": 0}
+            #     on_release: 
+            #         app.root.current = "habYesNo"
+            #         root.manager.transition.direction = "left"
+
+
                 
             Button:
                 size_hint: 0.15, 1
