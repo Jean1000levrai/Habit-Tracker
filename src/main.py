@@ -12,7 +12,9 @@ from kivy.uix.popup import Popup
 
 
 class MainWindow(Screen):
-    pass    
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        print("it works")
 
 class SettingsWindow(Screen):
     pass
@@ -48,11 +50,12 @@ class AddHabitWindow(Screen):
             print("not a valid input")
 
 class AddHabitPopup(Popup):
-    pass
+    def __init__(self, obj, **kwargs):
+        super(AddHabitPopup, self).__init__(**kwargs)
+        self.obj = obj
 
 class WindowMgr(ScreenManager):
     pass
-
 
 class MyMainApp(App):
     def build(self):
@@ -69,10 +72,12 @@ class MyMainApp(App):
         return sm
     
     def popup(self):
-        popup = Builder.load_string('AddHabitPopup')()
+        popup = AddHabitPopup(self)
         popup.open()
+        
 
-
+        
 if __name__=="__main__":
     myapp = MyMainApp()
     myapp.run()
+    print(db.show_habit_for_gui("eat"))

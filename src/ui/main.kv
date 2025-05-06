@@ -43,15 +43,6 @@
                 on_release: 
                     app.popup()
 
-            # Button:
-            #     size_hint: 0.15, 1
-            #     text: "+"
-            #     pos_hint: {"x": 0, "y": 0}
-            #     on_release: 
-            #         app.root.current = "habYesNo"
-            #         root.manager.transition.direction = "left"
-
-
                 
             Button:
                 size_hint: 0.15, 1
@@ -60,5 +51,23 @@
                 on_release: 
                     app.root.current = "second"
                     root.manager.transition.direction = "left"
-
-        
+        # ---------------scrollable of habits----------------
+        FloatLayout:
+            size_hint: 1, 0.9
+            pos_hint: { "y": 0.05}
+            canvas.before:
+ 
+            ScrollView:
+                size_hint: 1, 0.93
+                pos_hint: { "y": 0.01}
+                do_scroll_x: False
+                do_scroll_y: True
+                
+                Label:
+                    id: labelled_habits
+                    size_hint_y: None
+                    height: self.texture_size[1]
+                    text_size: self.width, None
+                    padding: 10, 10
+                    text:
+                        'really some amazing text\n' * 100

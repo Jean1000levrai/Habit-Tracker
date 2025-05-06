@@ -1,4 +1,20 @@
-<AddHabitPopup@Popup>:
+<AddHabitPopup>:
+    name: "habPopup"
     title: "Add New Habit"
     size_hint: 0.8, 0.5
     auto_dismiss: False
+    BoxLayout:
+        orientation: 'vertical'
+        rows: 2
+        Button:
+            text: "Yes No Habit"
+            on_release: 
+                app.root.current = "habYesNo"
+                # -------------------FUTURE ME : MAKE A TRANSITION TO THE LEFT THK U!
+                root.dismiss()
+        Button:
+            text: "Counting Habit"
+            on_release: root.dismiss()
+
+        
+        

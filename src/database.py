@@ -64,8 +64,26 @@ def hab_info(hab = hmgr.HabitYesNo()):
             hab.description,
             hab.frequency]
 
+def show_habit_for_gui(stuff):
+
+    conn = connect_to_db()
+    cur = conn.cursor()
+    if stuff == "*":
+        cur.execute("""SELECT * FROM habits""")
+    else:
+        cur.execute("""SELECT * FROM habits
+                    WHERE name = ?""", (stuff,))
+    
+    list_habits = cur.fetchall()
+
+    conn.commit()
+    conn.close()
+
+    return list_habits
+
+
+
 if __name__ == "__main__":
     hab = hmgr.HabitYesNo()
-    hab.name = "eat"
-    delete_habit("Drink")
+
     print_table()
