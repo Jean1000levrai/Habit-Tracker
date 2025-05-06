@@ -5,7 +5,7 @@
     FloatLayout:
         canvas.before:
             Color:
-                rgba: 0.7, 0.7, 0.7, 1  # light gray
+                rgba: 0.051, 0.067, 0.090, 1
             Rectangle:
                 pos: self.pos
                 size: self.size
@@ -17,25 +17,30 @@
             spacing: dp(10)  # space between text inputs
             padding: dp(10)
 
+            TextInput: # FUTURE ME : CREATE A COLOR PICKER INSTEAD OF LETTING PEOPLE GIVE HEX
+                id: col
+                hint_text: "Color"
+                multiline: False
+                background_color:(0.129, 0.149, 0.176)
+
             TextInput:
                 id: name
                 hint_text: "Name"
                 multiline: False
-
-            TextInput:
-                id: descr
-                hint_text: "Description"
-                multiline: False
+                background_color:(0.129, 0.149, 0.176)
 
             TextInput:
                 id: qu
                 hint_text: "Question"
                 multiline: False
+                background_color:(0.129, 0.149, 0.176)
 
-            TextInput: # FUTURE ME : CREATE A COLOR PICKER INSTEAD OF LETTING PEOPLE GIVE HEX
-                id: col
-                hint_text: "Color"
+            TextInput:
+                id: descr
+                hint_text: "Description"
                 multiline: False
+                background_color:(0.129, 0.149, 0.176)
+
         # ------------Save btn--------------
         AnchorLayout:
             anchor_x: "center"

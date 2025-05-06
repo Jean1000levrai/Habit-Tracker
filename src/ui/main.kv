@@ -1,3 +1,12 @@
+# colours : 
+# bg rgba: 0.051, 0.067, 0.090, 1
+# panels rgba: 0.086, 0.106, 0.133, 1   
+# outline rgba: 0.129, 0.149, 0.176, 1   (size+2)
+# text1 rgba: 0.788, 0.820, 0.851, 1   
+# text2 rgba: 0.545, 0.580, 0.620, 1   
+# buttons: 	0.176, 0.643, 0.306, 1
+# hover: 0.129, 0.149, 0.176, 1
+
 <MainWindow>:  
     name: "main" 
 
@@ -5,7 +14,7 @@
     FloatLayout:
         canvas.before:
             Color:
-                rgba: 0.7, 0.7, 0.7, 1  # light gray
+                rgba: 0.051, 0.067, 0.090, 1
             Rectangle:
                 pos: self.pos
                 size: self.size
@@ -16,13 +25,19 @@
             pos_hint: {"x":0, "y":0.9}
             canvas.before:
                 Color:
-                    rgba: 0.4, 0.4, 0.4, 1  # darker gray
+                    rgba: 0.129, 0.149, 0.176, 1  
                 Rectangle:
                     pos: self.pos
                     size: self.size
+                # the outline becuz it looks better, some rando guy told me hehe
+                Color:
+                    rgba: 0, 0, 0, 1 
+                Rectangle:
+                    pos: self.x, self.y+2
+                    size: self.size
             Label:
                 text: "Habit Tracker 101"
-                color: "black"
+                color: "white"
                 pos_hint: {"center_x":0.5, "center_y":0.5}
 
         # --------bottom bar--------
@@ -32,7 +47,7 @@
 
             canvas.before:
                 Color:
-                    rgba: 0.4, 0.4, 0.4, 1  # darker gray
+                    rgba: 0.086, 0.106, 0.133, 1
                 Rectangle:
                     pos: self.pos
                     size: self.size
@@ -69,5 +84,4 @@
                     height: self.texture_size[1]
                     text_size: self.width, None
                     padding: 10, 10
-                    text:
-                        'really some amazing text\n' * 100
+                    text: ""

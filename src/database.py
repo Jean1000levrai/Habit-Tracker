@@ -45,12 +45,15 @@ def add_habit(habit):
     conn.commit()
     conn.close()
 
-def delete_habit(name = ''):
+def delete_habit(name = '*'):
     """delete a habit from the database"""
     conn = connect_to_db()
     cur = conn.cursor()
-
-    cur.execute("""DELETE FROM habits
+    if name == '*':
+        cur.execute("""DELETE FROM habits
+                WHERE id < 999999999999999""")
+    else:
+        cur.execute("""DELETE FROM habits
                 WHERE name = ?""", (name,))
     
     conn.commit()
@@ -81,9 +84,11 @@ def show_habit_for_gui(stuff):
 
     return list_habits
 
-
+def get_info_hab(hab, thing):
+    return hab.thing
 
 if __name__ == "__main__":
     hab = hmgr.HabitYesNo()
-
+    # delete_habit()
     print_table()
+    # print(get_info_hab())

@@ -14,7 +14,11 @@ from kivy.uix.popup import Popup
 class MainWindow(Screen):
     def __init__(self, **kw):
         super().__init__(**kw)
-        print("it works")
+        info = ''
+        for row in db.show_habit_for_gui('*'):
+            info = f"{row[1]}"
+            self.ids.labelled_habits.text = self.ids.labelled_habits.text + f"{info} \n"
+
 
 class SettingsWindow(Screen):
     pass
@@ -41,10 +45,11 @@ class AddHabitWindow(Screen):
 
         return hab
 
-    def save_btn(self):
+    def save_btn(self):   
         try:
             info = self.get_info()
             db.add_habit(info)
+            self.manager.get_screen("main").ids.labelled_habits.text = self.manager.get_screen("main").ids.labelled_habits.text + f"{info.name} \n"
             db.print_table()
         except:
             print("not a valid input")
@@ -74,10 +79,8 @@ class MyMainApp(App):
     def popup(self):
         popup = AddHabitPopup(self)
         popup.open()
-        
 
         
 if __name__=="__main__":
     myapp = MyMainApp()
     myapp.run()
-    print(db.show_habit_for_gui("eat"))
