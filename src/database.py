@@ -89,6 +89,6 @@ def get_info_hab(hab, thing):
 
 if __name__ == "__main__":
     hab = hmgr.HabitYesNo()
-    # delete_habit()
+    delete_habit()
     print_table()
     # print(get_info_hab())

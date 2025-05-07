@@ -17,11 +17,6 @@
             spacing: dp(10)  # space between text inputs
             padding: dp(10)
 
-            TextInput: # FUTURE ME : CREATE A COLOR PICKER INSTEAD OF LETTING PEOPLE GIVE HEX
-                id: col
-                hint_text: "Color"
-                multiline: False
-                background_color:(0.129, 0.149, 0.176)
 
             TextInput:
                 id: name
@@ -41,6 +36,11 @@
                 multiline: False
                 background_color:(0.129, 0.149, 0.176)
 
+            ColorWheel:
+                id: col
+                on_color: root.color_selected(self.color)
+                size: 100, 50
+
         # ------------Save btn--------------
         AnchorLayout:
             anchor_x: "center"
@@ -50,6 +50,13 @@
                 text: "Save"
                 size_hint: None, None
                 size: 150, 50
+                background_color: 0.086, 0.106, 0.133, 1 
+                canvas.before:
+                    Color:
+                        rgba: 0.129, 0.149, 0.176, 1  
+                    Line:
+                        width: 1
+                        rectangle: (self.x, self.y, self.width, self.height)
                 on_release:
                     root.save_btn()
         
@@ -62,12 +69,13 @@
                 text: "<- Habit"
                 size_hint: None, None
                 size: 360, 40
+                background_color: 0.086, 0.106, 0.133, 1 
                 canvas.before:
                     Color:
-                        rgba: 0.7, 0.7, 0.7, 1  # light gray
-                    Rectangle:
-                        pos: self.pos
-                        size: self.size
+                        rgba: 0.129, 0.149, 0.176, 1  
+                    Line:
+                        width: 1
+                        rectangle: (self.x, self.y, self.width, self.height)
                 on_release: 
                     app.root.current = "main"
                     root.manager.transition.direction = "right"

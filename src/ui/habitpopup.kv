@@ -6,13 +6,22 @@
     BoxLayout:
         orientation: 'vertical'
         rows: 2
+        canvas.before:
+            Color:
+                rgba: 0.086, 0.106, 0.133, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
         Button:
             text: "Yes No Habit"
+            background_color: 0.086, 0.106, 0.133, 1 
             on_release: 
                 app.root.current = "habYesNo"
+                app.root.get_screen("main").manager.transition.direction = "left"
                 # -------------------FUTURE ME : MAKE A TRANSITION TO THE LEFT THK U!
                 root.dismiss()
         Button:
+            background_color: 0.086, 0.106, 0.133, 1 
             text: "Counting Habit"
             on_release: root.dismiss()
 

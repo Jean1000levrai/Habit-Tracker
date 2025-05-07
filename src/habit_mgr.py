@@ -1,7 +1,7 @@
 
 
 class HabitYesNo:
-    def __init__(self, name="", colour = "#0000FF", qu="", reminder=False, descr=""):
+    def __init__(self, name="", colour = "[1, 1, 1, 1]", qu="", reminder=False, descr=""):
         self.__name = name            # str
         self.__colour = colour        # #RRGGBB hex
         self.__question = qu          # str
@@ -46,8 +46,6 @@ class HabitYesNo:
 
     @colour.setter
     def colour(self, val):
-        if not isinstance(val, str) or not val.startswith("#") or len(val) not in (7, 9):
-            raise ValueError("Colour must be a hex string like '#RRGGBB'.")
         self.__colour = val
 
     @question.setter
@@ -81,8 +79,7 @@ class HabitYesNo:
 
 if __name__ == "__main__":
     hab=HabitYesNo()
-    hab.colour = "#111111"
-    print(hab.colour)
+
     
 
 

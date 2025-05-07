@@ -1,6 +1,5 @@
-
-<SettingsWindow>:  
-    name: "second"
+<HabitInfoWindow>
+    name: "info"
     # --------Main--------
     FloatLayout:
         canvas.before:
@@ -16,7 +15,7 @@
             pos_hint: {"x":0, "y":0.95}
 
             Button:
-                text: "<- settings"
+                text: "<- name of the habit"    # FUTURE ME, PUT THE NAME OF THE HABIT
                 pos_hint: {"center_x":0.5, "center_y":0.5}
                 background_color: 0.086, 0.106, 0.133, 1 
                 border: (10,10,10,10)
@@ -29,5 +28,3 @@
                 on_release: 
                     app.root.current = "main"
                     root.manager.transition.direction = "right"
-
- 
