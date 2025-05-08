@@ -11,7 +11,6 @@ class HabitYesNo:
         self.completed = False
         self.is_active = True
 
-
     # --------GET---------
     @property
     def name(self):

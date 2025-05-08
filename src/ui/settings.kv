@@ -5,7 +5,7 @@
     FloatLayout:
         canvas.before:
             Color:
-                rgba: 0.051, 0.067, 0.090, 1
+                rgba: app.bg_color
             Rectangle:
                 pos: self.pos
                 size: self.size
@@ -17,17 +17,96 @@
 
             Button:
                 text: "<- settings"
+                
+                color: app.text_color
+                background_color: app.button_color
+
                 pos_hint: {"center_x":0.5, "center_y":0.5}
-                background_color: 0.086, 0.106, 0.133, 1 
                 border: (10,10,10,10)
                 canvas.before:
                     Color:
-                        rgba: 0.129, 0.149, 0.176, 1  
+                        rgba: app.button_color  
                     Line:
                         width: 1
                         rectangle: (self.x, self.y, self.width, self.height)
                 on_release: 
                     app.root.current = "main"
                     root.manager.transition.direction = "right"
+        FloatLayout:
+            size_hint: 0.9, 0.8
+            pos_hint: {"x": 0.05, "y": 0.1}
+            
+            canvas.before:
+                # outline
+                Color:
+                    rgba: app.outline_color
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                # panel
+                Color:
+                    rgba: app.panel_color
+                RoundedRectangle:
+                    pos: self.x + 2, self.y + 2
+                    size: self.width - 4, self.height - 4
 
+            ScrollView:
+                size_hint: 1, 0.98
+                pos_hint: { "y": 0.01}
+                do_scroll_x: False
+                do_scroll_y: True
+                
+                StackLayout:
+                    id: labelled_settings
+                    size_hint_y: None
+                    padding: 30, 10
+                    
+                    # themes button
+                    Button:
+                        id: settings_theme
+                        color: app.text_color
+                        background_color: app.button_color
+                        text: "Theme: Dark"
+                        on_release:
+                            root.theme()
+                            app.theme()
+                        canvas.before:
+                            Color:
+                                rgba: app.button_color  
+                            Line:
+                                width: 1
+                                rectangle: (self.x, self.y, self.width, self.height)
+
+                    # promo buttons
+                    Button:
+                        color: app.text_color
+                        background_color: app.button_color
+                        canvas.before:
+                            Color:
+                                rgba: app.button_color  
+                            Line:
+                                width: 1
+                                rectangle: (self.x, self.y, self.width, self.height)
+                    Button:
+                        color: app.text_color
+                        background_color: app.button_color
+                        text: "About"
+                        canvas.before:
+                            Color:
+                                rgba: app.button_color  
+                            Line:
+                                width: 1
+                                rectangle: (self.x, self.y, self.width, self.height)
+                    Button:
+                        color: app.text_color
+                        background_color: app.button_color
+                        text: "Github"
+                        canvas.before:
+                            Color:
+                                rgba: app.button_color  
+                            Line:
+                                width: 1
+                                rectangle: (self.x, self.y, self.width, self.height)
+                        
+                        
  

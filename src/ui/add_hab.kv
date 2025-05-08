@@ -5,7 +5,7 @@
     FloatLayout:
         canvas.before:
             Color:
-                rgba: 0.051, 0.067, 0.090, 1
+                rgba: app.bg_color
             Rectangle:
                 pos: self.pos
                 size: self.size
@@ -22,19 +22,19 @@
                 id: name
                 hint_text: "Name"
                 multiline: False
-                background_color:(0.129, 0.149, 0.176)
+                background_color:app.outline_color 
 
             TextInput:
                 id: qu
                 hint_text: "Question"
                 multiline: False
-                background_color:(0.129, 0.149, 0.176)
+                background_color:app.outline_color 
 
             TextInput:
                 id: descr
                 hint_text: "Description"
                 multiline: False
-                background_color:(0.129, 0.149, 0.176)
+                background_color:app.outline_color 
 
             ColorWheel:
                 id: col
@@ -50,10 +50,11 @@
                 text: "Save"
                 size_hint: None, None
                 size: 150, 50
-                background_color: 0.086, 0.106, 0.133, 1 
+                color: app.text_color
+                background_color: app.button_color 
                 canvas.before:
                     Color:
-                        rgba: 0.129, 0.149, 0.176, 1  
+                        rgba: app.outline_color   
                     Line:
                         width: 1
                         rectangle: (self.x, self.y, self.width, self.height)
@@ -69,10 +70,11 @@
                 text: "<- Habit"
                 size_hint: None, None
                 size: 360, 40
-                background_color: 0.086, 0.106, 0.133, 1 
+                color: app.text_color
+                background_color: app.button_color  
                 canvas.before:
                     Color:
-                        rgba: 0.129, 0.149, 0.176, 1  
+                        rgba: app.outline_color   
                     Line:
                         width: 1
                         rectangle: (self.x, self.y, self.width, self.height)

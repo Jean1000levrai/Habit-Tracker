@@ -3,8 +3,6 @@ from kivy.app import App
 from kivy.uix.popup import Popup
 from kivy.uix.colorpicker import ColorPicker
 
-
-
 class ColorPickerWidget(ColorPicker):
     pass
 
