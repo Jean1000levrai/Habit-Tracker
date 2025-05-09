@@ -1,6 +1,10 @@
 import habit_mgr as hmgr
 import database as db
 import color_picker as col
+import webbrowser as web
+
+from addHabitUi import *
+from settingsUi import *
 
 from kivy.config import Config
 Config.set('graphics', 'width', '360') #1080//3
@@ -30,101 +34,17 @@ class MainWindow(Screen):
                 background_color=(0, 0, 0, 0), 
                 color=app.text_color,
                 on_release=(lambda instance: (setattr(self.manager.transition, 'direction', 
-                            'left'), setattr(self.manager, 'current', 'info')))
+                            'left'), setattr(self.manager, 'current', 'info'))),
+                halign="left",
+                valign="middle",
+                text_size=(self.width, None),
+                padding=(0, 0)
                 )
             
             # binds to the main app the buttons for changing their colors for the themes
             app.bind(text_color=lambda instance, value, b=btn: setattr(b, 'color', value))
 
             self.ids.labelled_habits.add_widget(btn)
-
-class SettingsWindow(Screen):
-    """the settings window"""
-    def __init__(self, **kw):
-        super().__init__(**kw)
-        self.theme_dark = True
-
-    def theme(self):
-        """Toggles the application theme between light and dark modes."""
-        """method that changes the button's 
-        name according to the themes"""
-        if self.theme_dark:
-            self.ids.settings_theme.text = "Theme: Light"
-            self.theme_dark = False
-        else:
-            self.ids.settings_theme.text = "Theme: Dark"
-            self.theme_dark = True
-
-class AddHabitWindow(Screen):
-    """the window where you add a habit"""
-    def __init__(self, **kw):
-        super().__init__(**kw)
-        self.app = App.get_running_app()
-        self.info = {}
-        self.hab = hmgr.HabitYesNo()
-
-    def get_info(self):
-        """method that gets the informations from 
-        the textinput that the player has filled.
-        returns a HabitYesNo containing these infos"""
-        # gets the infos into a dic
-        self.info["name"] = self.ids.name.text
-        self.info["descr"] = self.ids.descr.text
-        self.info["qu"] = self.ids.qu.text
-
-        # resets the text inputs
-        self.ids.name.text = ""
-        self.ids.descr.text = ""
-        self.ids.qu.text = ""
-
-        # creates a HabitYesNo with the dic 
-        self.hab.name = self.info["name"]
-        self.hab.description = self.info["descr"]
-        self.hab.question = self.info["qu"]
-
-        return self.hab
-
-    def save_btn(self):
-        """method that handles the 'save' button 
-        at the bottom of the screen. It updates the
-        database with the HabitYesNo and displays it
-        on the main screen. prints an error if the input
-        isnt correct.""" 
-        # try:
-        info = self.get_info()
-        db.add_habit(info)
-        btn = Button(
-            text=f'{self.info["name"]}', 
-            background_color=(0, 0, 0, 0),
-            color= self.app.text_color,
-            on_release=(lambda instance: (setattr(self.manager.transition, 'direction', 
-                            'left'), setattr(self.manager, 'current', 'info')))
-            )
-        
-        # binds the buttons for changing their colors for the themes
-        self.app.bind(text_color=lambda instance, value, b=btn: setattr(b, 'color', value))
-
-        # adds the button the display
-        self.manager.get_screen("main").ids.labelled_habits.add_widget(btn)
-        db.print_table()
-        # except:
-        #     print("not a valid input")
-
-    def color_selected(self, color):
-        self.info["col"] = (str(color))
-        self.hab.colour = self.info["col"]
-
-class HabitInfoWindow(Screen):
-    """window where the informations of the habit will be displayed"""
-    pass
-
-class AddHabitPopup(Popup):
-    """popup where the user will be able to
-    chose between a yes or no habit or one
-    that measures something e g. 'num of pages read'"""
-    def __init__(self, obj, **kwargs):
-        super(AddHabitPopup, self).__init__(**kwargs)
-        self.obj = obj
 
 class WindowMgr(ScreenManager):
     """handles all the different windows"""
@@ -156,6 +76,8 @@ class MyMainApp(App):
         Builder.load_file("ui/add_hab.kv")
         Builder.load_file("ui/habitpopup.kv")
         Builder.load_file("ui/habitInfoWindow.kv")
+        Builder.load_file("ui/aboutWindow.kv")
+        Builder.load_file("ui/reminderWindow.kv")
         
         # adds them to the window manager
         sm = WindowMgr()
@@ -163,12 +85,24 @@ class MyMainApp(App):
         sm.add_widget(SettingsWindow(name="second"))
         sm.add_widget(AddHabitWindow(name="habYesNo"))
         sm.add_widget(HabitInfoWindow(name="info"))
+        sm.add_widget(AboutWindow(name="about"))
+        sm.add_widget(ReminderWindow(name="reminder"))
+        sm.add_widget(ReminderWindow(name="firstStep"))
+        sm.add_widget(ReminderWindow(name="secondStep"))
 
         return sm
     
     def popup(self):
         """method that opens the popup"""
         popup = AddHabitPopup(self)
+        popup.open()
+
+    def popup_time(self):
+        popup = DatePopup(self)
+        popup.open()
+
+    def popup_date(self):
+        popup = TimePopup(self)
         popup.open()
 
     def theme(self):

@@ -29,3 +29,61 @@
                 on_release: 
                     app.root.current = "main"
                     root.manager.transition.direction = "right"
+        GridLayout:
+            cols: 2
+            size_hint: 0.9, 0.9  # Adjust size to fit below the button
+            pos_hint: {"x": 0.05, "y": 0.05}  # Position it below the button
+        
+            Label:
+                text: "Question: "
+                size_hint_y: None
+                height: 30
+            
+            TextInput:
+                id: qu
+                hint_text: "Question"
+                multiline: False
+                background_color:app.outline_color 
+                size_hint_y: None
+                height: 30
+
+            Label:
+                text: "Description:"
+                size_hint_y: None
+                height: 100
+
+            TextInput:
+                id: descr
+                hint_text: "Description"
+                multiline: True
+                background_color:app.outline_color 
+                size_hint_y: None
+                height: 100
+
+            Label:
+                text: "Reminder: "
+                size_hint_y: None
+                height: 30
+            
+            TextInput:
+                id: qu
+                hint_text: "Queqfsqfqfqsfqsfstion"
+                multiline: False
+                background_color:app.outline_color 
+                size_hint_y: None
+                height: 30
+            Label:
+                text: "frequency: "
+                size_hint_y: None
+                height: 30
+            
+            TextInput:
+                id: qu
+                hint_text: "azqfqzfeqesf"
+                multiline: False
+                background_color:app.outline_color 
+                size_hint_y: None
+                height: 30
+
+
+

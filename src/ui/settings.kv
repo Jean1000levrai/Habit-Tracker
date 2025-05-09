@@ -17,7 +17,7 @@
 
             Button:
                 text: "<- settings"
-                
+
                 color: app.text_color
                 background_color: app.button_color
 
@@ -32,6 +32,8 @@
                 on_release: 
                     app.root.current = "main"
                     root.manager.transition.direction = "right"
+
+        # ----------panel---------------
         FloatLayout:
             size_hint: 0.9, 0.8
             pos_hint: {"x": 0.05, "y": 0.1}
@@ -49,7 +51,7 @@
                 RoundedRectangle:
                     pos: self.x + 2, self.y + 2
                     size: self.width - 4, self.height - 4
-
+            # ------scrollable------
             ScrollView:
                 size_hint: 1, 0.98
                 pos_hint: { "y": 0.01}
@@ -93,11 +95,15 @@
                         text: "About"
                         canvas.before:
                             Color:
-                                rgba: app.button_color  
+                                rgba: app.button_color
                             Line:
                                 width: 1
                                 rectangle: (self.x, self.y, self.width, self.height)
+                        on_release:
+                            app.root.current = "about"
+                            root.manager.transition.direction = "left"
                     Button:
+                        id: github
                         color: app.text_color
                         background_color: app.button_color
                         text: "Github"
@@ -107,6 +113,8 @@
                             Line:
                                 width: 1
                                 rectangle: (self.x, self.y, self.width, self.height)
+                        on_release:
+                            root.link_github()
                         
                         
  
