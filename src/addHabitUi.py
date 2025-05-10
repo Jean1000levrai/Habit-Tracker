@@ -51,14 +51,14 @@ class AddHabitWindow(Screen):
         db.add_habit(info)
         btn = Button(
             text=f'{self.info["name"]}', 
-            background_color=(0, 0, 0, 0),
-            color= self.app.text_color,
+            background_color=(0, 0, 0, 0), 
+            color=self.app.text_color,
             on_release=(lambda instance: (setattr(self.manager.transition, 'direction', 
-                            'left'), setattr(self.manager, 'current', 'info'))),
+                        'left'), setattr(self.manager, 'current', 'info'))),
             halign="left",
             valign="middle",
             text_size=(self.width, None),
-            padding=(0, 0)
+            padding=(132, 0)
             )
         
         # binds the buttons for changing their colors for the themes
@@ -90,7 +90,11 @@ class ReminderWindow(Screen):
     pass
 
 class DatePopup(Popup):
-    pass
+    def __init__(self, obj, **kwargs):
+        super(DatePopup, self).__init__(**kwargs)
+        self.obj = obj
 
 class TimePopup(Popup):
-    pass
+    def __init__(self, obj, **kwargs):
+        super(TimePopup, self).__init__(**kwargs)
+        self.obj = obj

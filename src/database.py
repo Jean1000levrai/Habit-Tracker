@@ -3,7 +3,7 @@ import habit_mgr as hmgr
 
 
 def connect_to_db():
-    return sql.connect("db_habit.db")
+    return sql.connect("data/db_habit.db")
 
 def create_db():
     conn = connect_to_db()
@@ -11,12 +11,12 @@ def create_db():
     cur.execute("""
             CREATE TABLE IF NOT EXISTS habits (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT NOT NULL,
+                name TEXT NOT NULL UNIQUE,
                 colour TEXT,
                 question TEXT,
                 reminder BOOLEAN,
                 description TEXT,
-                frequency TEXT
+                frequency TEXT,
             )
     """)
     conn.commit()
@@ -60,6 +60,8 @@ def delete_habit(name = '*'):
     conn.close()
 
 def hab_info(hab = hmgr.HabitYesNo()):
+    """function taht takes a habityesno is param,
+    returns every attributes of it. used for sql"""
     return [hab.name,
             hab.colour,
             hab.question,
@@ -67,28 +69,54 @@ def hab_info(hab = hmgr.HabitYesNo()):
             hab.description,
             hab.frequency]
 
-def show_habit_for_gui(stuff):
-
+def show_habit_for_gui(name):
+    """function that takes the name or a star of a habit
+    in parameter,returns every attribute' values of the
+    habit or of every habits if a star"""
+    # connect to the db
     conn = connect_to_db()
     cur = conn.cursor()
-    if stuff == "*":
+
+    # select everything if a *
+    if name == "*":
         cur.execute("""SELECT * FROM habits""")
+    # or just from one habit
     else:
         cur.execute("""SELECT * FROM habits
-                    WHERE name = ?""", (stuff,))
+                    WHERE name = ?""", (name,))
     
+    # recovers the values
     list_habits = cur.fetchall()
 
-    conn.commit()
     conn.close()
 
     return list_habits
 
-def get_info_hab(hab, thing):
-    return hab.thing
+def get_info_hab(hab_name, attr):
+    """function that takes the name and an attribute
+    of a habit, returns the value of the attribute"""
+    # connect to the db
+    conn = connect_to_db()
+    cur = conn.cursor()
+    
+    # check if attr is valid, prevent sql injection
+    allowed_attr = ["question", "reminder", "description", "frequency", "created_at"]
+    if attr not in allowed_attr:
+        raise ValueError("invalid attribute, please try something else")
+
+    # select the info
+    exe = f"SELECT {attr} FROM habit WHERE name = ?"
+    cur.execute(exe,(hab_name, ))
+    rep = cur.fetchone()
+
+    conn.close()
+    if rep:
+        return rep[0]
+    return None
 
 if __name__ == "__main__":
     hab = hmgr.HabitYesNo()
+    create_db()
     delete_habit()
     print_table()
     # print(get_info_hab())

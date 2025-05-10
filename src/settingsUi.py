@@ -14,17 +14,6 @@ class SettingsWindow(Screen):
         super().__init__(**kw)
         self.theme_dark = True
 
-    def theme(self):
-        """Toggles the application theme between light and dark modes."""
-        """method that changes the button's 
-        name according to the themes"""
-        if self.theme_dark:
-            self.ids.settings_theme.text = "Theme: Light"
-            self.theme_dark = False
-        else:
-            self.ids.settings_theme.text = "Theme: Dark"
-            self.theme_dark = True
-
     def link_github(self):
         link = 'https://github.com/Jean1000levrai/Habit-Tracker'
         web.open(link)
