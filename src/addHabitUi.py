@@ -76,7 +76,10 @@ class AddHabitWindow(Screen):
 
 class HabitInfoWindow(Screen):
     """window where the informations of the habit will be displayed"""
-    pass
+    def delete_habit(self):
+        name = None
+        db.delete_habit(name)
+
 
 class AddHabitPopup(Popup):
     """popup where the user will be able to

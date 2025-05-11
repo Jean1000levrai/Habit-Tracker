@@ -80,7 +80,7 @@ class MyMainApp(App):
         Builder.load_file("ui/main.kv")
         Builder.load_file("ui/settings.kv")
         Builder.load_file("ui/add_hab.kv")
-        Builder.load_file("ui/habitpopup.kv")
+        Builder.load_file("popup/habitpopup.kv")
         Builder.load_file("ui/habitInfoWindow.kv")
         Builder.load_file("ui/aboutWindow.kv")
         Builder.load_file("ui/reminderWindow.kv")

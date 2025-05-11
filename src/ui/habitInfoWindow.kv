@@ -34,6 +34,7 @@
             pos_hint: {"x": 0.05, "y": 0.05}  # Position it below the button
 
             Button:
+                id: delete_habit
                 text:"x"
                 size_hint: None, None
                 pos_hint: {"x": 0.1}
@@ -53,6 +54,7 @@
             TextInput:
                 id: qu
                 hint_text: "Question"
+                foreground_color: app.text_color
                 multiline: False
                 background_color:app.outline_color 
                 size_hint_y: None
@@ -72,6 +74,7 @@
                 id: descr
                 hint_text: "Description"
                 multiline: True
+                foreground_color: app.text_color
                 background_color:app.outline_color 
                 size_hint_y: None
                 height: 100
@@ -89,6 +92,7 @@
                 id: qu
                 hint_text: "Queqfsqfqfqsfqsfstion"
                 multiline: False
+                foreground_color: app.text_color
                 background_color:app.outline_color 
                 size_hint_y: None
                 height: 30
@@ -105,6 +109,7 @@
                 id: qu
                 hint_text: "azqfqzfeqesf"
                 multiline: False
+                foreground_color: app.text_color
                 background_color:app.outline_color 
                 size_hint_y: None
                 height: 30

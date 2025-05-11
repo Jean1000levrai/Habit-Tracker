@@ -16,7 +16,7 @@ def create_db():
                 question TEXT,
                 reminder BOOLEAN,
                 description TEXT,
-                frequency TEXT,
+                frequency TEXT
             )
     """)
     conn.commit()
