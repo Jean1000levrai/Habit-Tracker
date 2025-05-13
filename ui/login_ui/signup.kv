@@ -1,0 +1,107 @@
+<SignupPage>
+    name: "signup"
+    FloatLayout:
+        size_hint: None, None
+        size: root.width, root.height
+        canvas.before:
+            Color:
+                rgba: app.bg_color
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        
+        Button:
+            id: dismiss
+            text: "Dismiss"
+            size_hint: None, None
+            size: 53, 22
+            pos_hint: {"center_x":0.1, "center_y":0.98}
+
+            color: app.text_color
+            background_color: app.button_color 
+
+            canvas.before:
+                Color:
+                    rgba: app.outline_color   
+                Line:
+                    width: 1
+                    rectangle: (self.x, self.y, self.width, self.height)
+            on_release:
+                app.root.current = "main"
+
+        Label:
+            id: title_app
+            text: "Habit Tracker 101"
+            color: app.text_color
+            font_size: 32
+            size_hint: None, None
+            size: 300, 50
+            pos_hint: {"center_x":0.5, "center_y":0.8}
+
+        TextInput:
+            id: username
+            hint_text: "Username"
+            multiline: False
+            foreground_color: app.text_color
+            background_color: app.outline_color
+            size_hint: None, None
+            size: 300, 40
+            pos_hint: {"center_x":0.5, "center_y":0.7}
+
+        TextInput:
+            id: email
+            hint_text: "Email"
+            multiline: False
+            foreground_color: app.text_color
+            background_color: app.outline_color
+            size_hint: None, None
+            size: 300, 40
+            pos_hint: {"center_x":0.5, "center_y":0.62}
+
+        TextInput:
+            id: password
+            hint_text: "Password"
+            multiline: False
+            foreground_color: app.text_color
+            background_color: app.outline_color
+            size_hint: None, None
+            size: 300, 40
+            pos_hint: {"center_x":0.5, "center_y":0.54}
+        
+        Button:
+            text: "Sign in!"
+            size_hint: None, None
+            size: 150, 50
+            pos_hint: {"center_x":0.5, "center_y":0.45}
+
+            color: app.text_color
+            background_color: app.button_color 
+
+            canvas.before:
+                Color:
+                    rgba: app.outline_color   
+                Line:
+                    width: 1
+                    rectangle: (self.x, self.y, self.width, self.height)
+    AnchorLayout:
+        anchor_x: "right"
+        anchor_y: "bottom"
+        Button:
+            id: signup_btn
+            text: "Login"
+
+            background_color: 0, 0, 0, 0
+            color: 0.2, 0.4, 1, 1
+            underline: True
+            background_down: ''
+            background_normal: ''
+
+            padding: 10, 2
+            size_hint: None, None
+            size: self.texture_size
+            font_size: 16
+            pos_hint: {"center_x": 0.5}
+
+            on_release: 
+                app.root.current = "login"
+                root.manager.transition.direction = "right"
