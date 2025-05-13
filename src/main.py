@@ -1,16 +1,23 @@
-import habit_mgr as hmgr
-import database as db
+# basic libraries
 import color_picker as col
 import webbrowser as web
 import json
+from functions import *
 
+# scripts
+import habit_mgr as hmgr
+import database as db
 from addHabitUi import *
 from settingsUi import *
+from login.login_ui_script import *
+from login.login_script import *
 
+# file size
 from kivy.config import Config
 Config.set('graphics', 'width', '360') #1080//3
 Config.set('graphics', 'height', '800')#2400//3
 
+# ui utilities
 from kivy.uix.button import Button
 from kivy.app import App
 from kivy.lang import Builder
@@ -26,6 +33,7 @@ class MainWindow(Screen):
         super().__init__(**kw)
         info = ''
         app = App.get_running_app()
+        self.hab_name = ''
 
         # displays all the habits from the db
         # by loop on all the db and displays it with a button
@@ -35,8 +43,6 @@ class MainWindow(Screen):
                 text=f'{info}', 
                 background_color=(0, 0, 0, 0), 
                 color=app.text_color,
-                on_release=(lambda instance: (setattr(self.manager.transition, 'direction', 
-                            'left'), setattr(self.manager, 'current', 'info'))),
                 halign="left",
                 valign="middle",
                 text_size=(self.width, None),
@@ -48,10 +54,50 @@ class MainWindow(Screen):
 
             self.ids.labelled_habits.add_widget(btn)
 
+            btn.bind(on_release=self.on_btn_release)
+
+    def on_btn_release(self, instance):
+        # recovers the name of the clicked btn
+        self.hab_name = instance.text
+        print(self.hab_name)
+
+        self.add_the_info()
+
+        # handles the window change
+        self.manager.transition.direction = "left"
+        self.manager.current = "info"
+
+    def add_the_info(self):
+        self.manager.get_screen("info").ids.name_of_the_hab.text = f"<- {self.hab_name}"
+        question = db.get_info_hab(self.hab_name, "question")
+        self.manager.get_screen("info").ids.qu_for_hab.text = question
+
+        descr = db.get_info_hab(self.hab_name, "description")
+        self.manager.get_screen("info").ids.descr_for_hab.text = str(descr)
+
+        reminder = db.get_info_hab(self.hab_name, "reminder")
+        self.manager.get_screen("info").ids.rem_for_hab.text = str(reminder)
+
+        frequency = db.get_info_hab(self.hab_name, "frequency")
+        self.manager.get_screen("info").ids.freq_for_hab.text = str(frequency)
+
 class WelcomePopup(Popup):
     def __init__(self, obj, **kwargs):
         super(WelcomePopup, self).__init__(**kwargs)
         self.obj = obj
+    
+    def set_name(self):
+        name = self.ids.set_name.text
+
+        # open the config file
+        with open(resource_path2("data/config.json")) as f:
+            config = json.load(f)
+
+        config["name"] = name
+
+        # update the data
+        with open(resource_path("data/config.json"), 'w') as f:
+            json.dump(config, f, indent=1)
 
 class WindowMgr(ScreenManager):
     """handles all the different windows"""
@@ -77,22 +123,26 @@ class MyMainApp(App):
     def build(self):
         
         # loads the files for all the windows
-        Builder.load_file("ui/main.kv")
-        Builder.load_file("ui/settings.kv")
-        Builder.load_file("ui/add_hab.kv")
-        Builder.load_file("popup/habitpopup.kv")
-        Builder.load_file("ui/habitInfoWindow.kv")
-        Builder.load_file("ui/aboutWindow.kv")
-        Builder.load_file("ui/reminderWindow.kv")
+        Builder.load_file(resource_path("ui/main/main.kv"))
+        Builder.load_file(resource_path("ui/settings/settings.kv"))
+        Builder.load_file(resource_path("ui/main/add_hab.kv"))
+        Builder.load_file(resource_path("ui/popup/habitpopup.kv"))
+        Builder.load_file(resource_path("ui/main/habitInfoWindow.kv"))
+        Builder.load_file(resource_path("ui/settings/aboutWindow.kv"))
+        Builder.load_file(resource_path("ui/main/reminderWindow.kv"))
+        Builder.load_file(resource_path("ui/login_ui/login_page.kv"))
+        Builder.load_file(resource_path("ui/login_ui/signup.kv"))
         
         # adds them to the window manager
         sm = WindowMgr()
+        sm.add_widget(LoginPage(name="login"))
         sm.add_widget(MainWindow(name="main"))
         sm.add_widget(SettingsWindow(name="second"))
         sm.add_widget(AddHabitWindow(name="habYesNo"))
         sm.add_widget(HabitInfoWindow(name="info"))
         sm.add_widget(AboutWindow(name="about"))
         sm.add_widget(ReminderWindow(name="reminder"))
+        sm.add_widget(SignupPage(name="signup"))
 
         Clock.schedule_once(self.show_welcome_popup, 0.1)
 
@@ -103,7 +153,7 @@ class MyMainApp(App):
         the app is launched, if it is the first time
         greet him"""
         # open the config file
-        with open("data/config.json") as f:
+        with open(resource_path2("data/config.json")) as f:
             config = json.load(f)
         
         # sets the current theme
@@ -123,7 +173,7 @@ class MyMainApp(App):
 
             # sets it so that next time it wont show the popup
             config["first_timer"] = False
-            with open("data/config.json", 'w') as f:
+            with open(resource_path2("data/config.json"), 'w') as f:
                 json.dump(config, f, indent=1)
  
     def popup(self):
@@ -168,7 +218,7 @@ class MyMainApp(App):
         Toggles the application's theme between dark mode and light mode.
         """
         # open the config file
-        with open("data/config.json") as f:
+        with open(resource_path2("data/config.json")) as f:
             config = json.load(f)
 
         # light mode
@@ -184,9 +234,8 @@ class MyMainApp(App):
             self.dark_theme()
 
         # updates the config file
-        with open("data/config.json", 'w') as f:
+        with open(resource_path2("data/config.json"), 'w') as f:
             json.dump(config, f, indent=1)
-
 
 if __name__=="__main__":
     myapp = MyMainApp()

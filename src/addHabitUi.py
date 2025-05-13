@@ -18,6 +18,7 @@ class AddHabitWindow(Screen):
         self.app = App.get_running_app()
         self.info = {}
         self.hab = hmgr.HabitYesNo()
+        self.hab_name = ''
 
     def get_info(self):
         """method that gets the informations from 
@@ -64,11 +65,41 @@ class AddHabitWindow(Screen):
         # binds the buttons for changing their colors for the themes
         self.app.bind(text_color=lambda instance, value, b=btn: setattr(b, 'color', value))
 
+        btn.bind(on_release = self.on_btn_release)
+
         # adds the button the display
         self.manager.get_screen("main").ids.labelled_habits.add_widget(btn)
         db.print_table()
         # except:
         #     print("not a valid input")
+
+    def on_btn_release(self, instance):
+        # recovers the name of the clicked btn
+        self.hab_name = instance.text
+        print(self.hab_name)
+
+        self.add_the_info()
+
+        # handles the window change
+        self.manager.transition.direction = "left"
+        self.manager.current = "info"
+
+    def add_the_info(self):
+        self.manager.get_screen("info").ids.name_of_the_hab.text = f"<- {self.hab_name}"
+        question = db.get_info_hab(self.hab_name, "question")
+        self.manager.get_screen("info").ids.qu_for_hab.text = question
+
+        descr = db.get_info_hab(self.hab_name, "description")
+        self.manager.get_screen("info").ids.descr_for_hab.text = str(descr)
+
+        reminder = db.get_info_hab(self.hab_name, "reminder")
+        self.manager.get_screen("info").ids.rem_for_hab.text = str(reminder)
+
+        frequency = db.get_info_hab(self.hab_name, "frequency")
+        self.manager.get_screen("info").ids.freq_for_hab.text = str(frequency)
+
+    def delete_habit(self):
+        db.delete_habit(self.hab_name)
 
     def color_selected(self, color):
         self.info["col"] = (str(color))
@@ -77,8 +108,8 @@ class AddHabitWindow(Screen):
 class HabitInfoWindow(Screen):
     """window where the informations of the habit will be displayed"""
     def delete_habit(self):
-        name = None
-        db.delete_habit(name)
+        hab_name = self.ids.name_of_the_hab.text[3:]
+        db.delete_habit(hab_name)
 
 
 class AddHabitPopup(Popup):

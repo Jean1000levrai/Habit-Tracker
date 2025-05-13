@@ -1,0 +1,107 @@
+
+<ReminderWindow>:  
+    name: "reminder"
+    # --------Main--------
+    FloatLayout:
+        canvas.before:
+            Color:
+                rgba: app.bg_color
+            Rectangle:
+                pos: self.pos
+                size: self.size
+    
+        # --------top button--------
+        FloatLayout:
+            size_hint: 1,0.05
+            pos_hint: {"x":0, "y":0.95}
+
+            Button:
+                text: "<- Discard & Back"
+
+                color: app.text_color
+                background_color: app.button_color
+
+                halign: "left"
+                valign: "middle"
+                text_size: self.width, None
+                padding: 10, 0
+
+                pos_hint: {"center_x":0.5, "center_y":0.5}
+                border: (10,10,10,10)
+                canvas.before:
+                    Color:
+                        rgba: app.button_color  
+                    Line:
+                        width: 1
+                        rectangle: (self.x, self.y, self.width, self.height)
+                on_release: 
+                    app.root.current = "habYesNo"
+                    root.manager.transition.direction = "right"
+
+        FloatLayout:
+
+            size_hint: 1, 0.95
+            pos_hint: {"x": 0, "y": 0}
+
+            # --------Label--------
+            Button:
+                pos_hint: {"x": 0.1, "y": 0.93}
+                size: 120, 30
+                size_hint: None, None
+
+                color: app.text_color
+                background_color: app.button_color
+
+                canvas.before:
+                    Color:
+                        rgba: app.outline_color  
+                    Line:
+                        width: 1
+                        rectangle: (self.x, self.y, self.width, self.height)
+
+                text:""
+
+                on_release:
+                    app.popup_date()
+
+            Label:
+                pos_hint: {"x": 0.5, "y": 0.45}
+                text: "Times: "
+
+                color: app.text_color
+                background_color: app.button_color
+
+                halign: 'left'
+                valign: "middle"
+                padding: 30, 0
+                text_size: self.size
+            TextInput:
+                size_hint: None, None
+                pos_hint: {"x": 0.8, "y": 0.93}
+                size: 30, 30
+
+                multiline: False
+                foreground_color: app.text_color
+                background_color:app.outline_color
+            Button:
+                pos_hint: {"x": 0.57, "y": 0.85}
+                size: 120, 30
+                size_hint: None, None
+
+                canvas.before:
+                    Color:
+                        rgba: app.outline_color  
+                    Line:
+                        width: 1
+                        rectangle: (self.x, self.y, self.width, self.height)
+
+                color: app.text_color
+                background_color: app.button_color
+
+                text:"Next"
+
+                on_release:
+                    app.popup_time()
+            
+
+           

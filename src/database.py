@@ -1,9 +1,10 @@
 import sqlite3 as sql
 import habit_mgr as hmgr
+from functions import *
 
 
 def connect_to_db():
-    return sql.connect("data/db_habit.db")
+    return sql.connect(resource_path2("data/db_habit.db"))
 
 def create_db():
     conn = connect_to_db()
@@ -105,7 +106,7 @@ def get_info_hab(hab_name, attr):
         raise ValueError("invalid attribute, please try something else")
 
     # select the info
-    exe = f"SELECT {attr} FROM habit WHERE name = ?"
+    exe = f"SELECT {attr} FROM habits WHERE name = ?"
     cur.execute(exe,(hab_name, ))
     rep = cur.fetchone()
 
@@ -117,6 +118,6 @@ def get_info_hab(hab_name, attr):
 if __name__ == "__main__":
     hab = hmgr.HabitYesNo()
     create_db()
-    delete_habit()
+    # delete_habit()
     print_table()
     # print(get_info_hab())
