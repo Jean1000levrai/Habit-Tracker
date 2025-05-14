@@ -6,11 +6,11 @@ from functions import *
 def connect_to_db():
     return sql.connect(resource_path2("data/db_habit.db"))
 
-def create_db():
+def create_db(user=''):
     conn = connect_to_db()
     cur = conn.cursor()
-    cur.execute("""
-            CREATE TABLE IF NOT EXISTS habits (
+    cur.execute(f"""
+            CREATE TABLE IF NOT EXISTS habits_{user} (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL UNIQUE,
                 colour TEXT,
@@ -23,35 +23,35 @@ def create_db():
     conn.commit()
     conn.close()
 
-def print_table():
+def print_table(user=''):
     conn = connect_to_db()
     cur = conn.cursor()
-    cur.execute("SELECT * FROM habits")
+    cur.execute(f"SELECT * FROM habits_{user}")
     rows = cur.fetchall()
     for row in rows:
         print(row)
 
-def add_habit(habit):
+def add_habit(habit, user=''):
     """Add a habit into the database safely."""
     info = hab_info(habit) 
 
     conn = connect_to_db()
     cur = conn.cursor()
 
-    cur.execute("""
-        INSERT INTO habits (name, colour, question, reminder, description, frequency)
+    cur.execute(f"""
+        INSERT INTO habits_{user} (name, colour, question, reminder, description, frequency)
         VALUES (?, ?, ?, ?, ?, ?)
     """, info)
 
     conn.commit()
     conn.close()
 
-def delete_habit(name = '*'):
+def delete_habit(name = '*', user=''):
     """delete a habit from the database"""
     conn = connect_to_db()
     cur = conn.cursor()
     if name == '*':
-        cur.execute("""DELETE FROM habits
+        cur.execute(f"""DELETE FROM habits_{user}
                 WHERE id < 999999999999999""")
     else:
         cur.execute("""DELETE FROM habits
@@ -70,7 +70,7 @@ def hab_info(hab = hmgr.HabitYesNo()):
             hab.description,
             hab.frequency]
 
-def show_habit_for_gui(name):
+def show_habit_for_gui(name, user=''):
     """function that takes the name or a star of a habit
     in parameter,returns every attribute' values of the
     habit or of every habits if a star"""
@@ -80,10 +80,10 @@ def show_habit_for_gui(name):
 
     # select everything if a *
     if name == "*":
-        cur.execute("""SELECT * FROM habits""")
+        cur.execute(f"""SELECT * FROM habits_{user}""")
     # or just from one habit
     else:
-        cur.execute("""SELECT * FROM habits
+        cur.execute(f"""SELECT * FROM habits_{user}
                     WHERE name = ?""", (name,))
     
     # recovers the values
@@ -93,7 +93,7 @@ def show_habit_for_gui(name):
 
     return list_habits
 
-def get_info_hab(hab_name, attr):
+def get_info_hab(hab_name, attr, user=''):
     """function that takes the name and an attribute
     of a habit, returns the value of the attribute"""
     # connect to the db
@@ -106,7 +106,7 @@ def get_info_hab(hab_name, attr):
         raise ValueError("invalid attribute, please try something else")
 
     # select the info
-    exe = f"SELECT {attr} FROM habits WHERE name = ?"
+    exe = f"SELECT {attr} FROM habits_{user} WHERE name = ?"
     cur.execute(exe,(hab_name, ))
     rep = cur.fetchone()
 
@@ -116,8 +116,12 @@ def get_info_hab(hab_name, attr):
     return None
 
 if __name__ == "__main__":
-    hab = hmgr.HabitYesNo()
-    create_db()
+    hab = hmgr.HabitYesNo("runnnn")
+    create_db("easydoor")
+    create_db("jen")
     # delete_habit()
-    print_table()
+    add_habit(hab, "jen")
+    print_table("jen")
+    print("--------------------")
+    print_table("jen")
     # print(get_info_hab())

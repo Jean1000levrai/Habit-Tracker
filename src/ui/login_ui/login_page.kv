@@ -51,11 +51,28 @@
             id: password
             hint_text: "Password"
             multiline: False
+            password: True
+
             foreground_color: app.text_color
             background_color: app.outline_color
+
             size_hint: None, None
             size: 300, 40
             pos_hint: {"center_x":0.5, "center_y":0.62}
+        
+        Button:
+            id: pwd_show
+            text: ""
+            font_name: "FontAwesome"
+            font_size: '24sp'
+            background_color: 0, 0, 0, 0
+
+            size_hint: None, None
+            size: 20,20
+            pos_hint: {"center_x":0.87, "center_y":0.62}
+
+            on_release:
+                root.password_show()
 
         
         Button:

@@ -3,6 +3,9 @@ import database as db
 import color_picker as col
 import webbrowser as web
 
+from functions import *
+import json
+
 from kivy.uix.button import Button
 from kivy.app import App
 from kivy.lang import Builder
@@ -19,6 +22,10 @@ class AddHabitWindow(Screen):
         self.info = {}
         self.hab = hmgr.HabitYesNo()
         self.hab_name = ''
+        # open the config file
+        with open(resource_path2("data/config.json")) as f:
+            config = json.load(f)
+        self.user = config["name"]
 
     def get_info(self):
         """method that gets the informations from 
@@ -49,7 +56,7 @@ class AddHabitWindow(Screen):
         isnt correct.""" 
         # try:
         info = self.get_info()
-        db.add_habit(info)
+        db.add_habit(info, self.user)
         btn = Button(
             text=f'{self.info["name"]}', 
             background_color=(0, 0, 0, 0), 
@@ -69,7 +76,7 @@ class AddHabitWindow(Screen):
 
         # adds the button the display
         self.manager.get_screen("main").ids.labelled_habits.add_widget(btn)
-        db.print_table()
+        db.print_table(self.user)
         # except:
         #     print("not a valid input")
 
@@ -86,20 +93,20 @@ class AddHabitWindow(Screen):
 
     def add_the_info(self):
         self.manager.get_screen("info").ids.name_of_the_hab.text = f"<- {self.hab_name}"
-        question = db.get_info_hab(self.hab_name, "question")
+        question = db.get_info_hab(self.hab_name, "question", self.user)
         self.manager.get_screen("info").ids.qu_for_hab.text = question
 
-        descr = db.get_info_hab(self.hab_name, "description")
+        descr = db.get_info_hab(self.hab_name, "description", self.user)
         self.manager.get_screen("info").ids.descr_for_hab.text = str(descr)
 
-        reminder = db.get_info_hab(self.hab_name, "reminder")
+        reminder = db.get_info_hab(self.hab_name, "reminder", self.user)
         self.manager.get_screen("info").ids.rem_for_hab.text = str(reminder)
 
-        frequency = db.get_info_hab(self.hab_name, "frequency")
+        frequency = db.get_info_hab(self.hab_name, "frequency", self.user)
         self.manager.get_screen("info").ids.freq_for_hab.text = str(frequency)
 
     def delete_habit(self):
-        db.delete_habit(self.hab_name)
+        db.delete_habit(self.hab_name, self.user)
 
     def color_selected(self, color):
         self.info["col"] = (str(color))
@@ -107,9 +114,16 @@ class AddHabitWindow(Screen):
 
 class HabitInfoWindow(Screen):
     """window where the informations of the habit will be displayed"""
+    def __init__(self, **kw):
+        super().__init__(**kw)
+        # open the config file
+        with open(resource_path2("data/config.json")) as f:
+            config = json.load(f)
+        self.user = config["name"]
+
     def delete_habit(self):
         hab_name = self.ids.name_of_the_hab.text[3:]
-        db.delete_habit(hab_name)
+        db.delete_habit(hab_name, "easydoor")
 
 
 class AddHabitPopup(Popup):

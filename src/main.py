@@ -2,11 +2,11 @@
 import color_picker as col
 import webbrowser as web
 import json
-from functions import *
 
 # scripts
 import habit_mgr as hmgr
 import database as db
+from functions import *
 from addHabitUi import *
 from settingsUi import *
 from login.login_ui_script import *
@@ -25,24 +25,35 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.popup import Popup
 from kivy.properties import ListProperty
 from kivy.clock import Clock
+from kivy.core.text import LabelBase
 
+
+LabelBase.register(
+    name="FontAwesome",
+    fn_regular="assets/fonts/fa-solid.otf"
+)
 
 class MainWindow(Screen):
     """the main screen window"""
     def __init__(self, **kw):
         super().__init__(**kw)
-        info = ''
-        app = App.get_running_app()
+        self.app = App.get_running_app()
         self.hab_name = ''
+        
 
+    def load_all(self):
+        # open the config file
+        with open(resource_path2("data/config.json")) as f:
+            config = json.load(f)
+        self.user = config["name"]
         # displays all the habits from the db
         # by loop on all the db and displays it with a button
-        for row in db.show_habit_for_gui('*'):
+        for row in db.show_habit_for_gui('*',self.user):
             info = f"{row[1]}"
             btn = Button(
                 text=f'{info}', 
                 background_color=(0, 0, 0, 0), 
-                color=app.text_color,
+                color=self.app.text_color,
                 halign="left",
                 valign="middle",
                 text_size=(self.width, None),
@@ -50,7 +61,7 @@ class MainWindow(Screen):
                 )
             
             # binds to the main app the buttons for changing their colors for the themes
-            app.bind(text_color=lambda instance, value, b=btn: setattr(b, 'color', value))
+            self.app.bind(text_color=lambda instance, value, b=btn: setattr(b, 'color', value))
 
             self.ids.labelled_habits.add_widget(btn)
 
@@ -68,17 +79,18 @@ class MainWindow(Screen):
         self.manager.current = "info"
 
     def add_the_info(self):
+
         self.manager.get_screen("info").ids.name_of_the_hab.text = f"<- {self.hab_name}"
-        question = db.get_info_hab(self.hab_name, "question")
+        question = db.get_info_hab(self.hab_name, "question", self.user)
         self.manager.get_screen("info").ids.qu_for_hab.text = question
 
-        descr = db.get_info_hab(self.hab_name, "description")
+        descr = db.get_info_hab(self.hab_name, "description", self.user)
         self.manager.get_screen("info").ids.descr_for_hab.text = str(descr)
 
-        reminder = db.get_info_hab(self.hab_name, "reminder")
+        reminder = db.get_info_hab(self.hab_name, "reminder", self.user)
         self.manager.get_screen("info").ids.rem_for_hab.text = str(reminder)
 
-        frequency = db.get_info_hab(self.hab_name, "frequency")
+        frequency = db.get_info_hab(self.hab_name, "frequency", self.user)
         self.manager.get_screen("info").ids.freq_for_hab.text = str(frequency)
 
 class WelcomePopup(Popup):
