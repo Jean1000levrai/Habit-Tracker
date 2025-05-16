@@ -85,10 +85,10 @@ def test_log(username, pwd):
 
     username = username.strip()
     pwd = pwd.strip()
-    hashed_pwd = get_from_username(username)
     if get_from_username(username) is None:
         # raise ValueError("username not registered")
-        pass
+        return
+    hashed_pwd = get_from_username(username)
     if hashed_pwd == hash.sha256(pwd.encode('UTF-8')).hexdigest():
         print("logged in!")
         return True

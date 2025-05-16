@@ -9,6 +9,9 @@ from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.popup import Popup
 from kivy.properties import ListProperty
+from kivy.uix.popup import Popup
+from kivy.uix.label import Label
+from kivy.clock import Clock
 
 class LoginPage(Screen):
     def login(self):
@@ -37,4 +40,35 @@ class LoginPage(Screen):
 
 
 class SignupPage(Screen):
-    pass
+
+    def temp_popup(self):
+        popup = Popup( 
+            title = '',
+            separator_height = 0,
+            content=Label(text= "successfully signed in!"),
+            size_hint=(None, None),
+            size=(300, 200),
+            auto_dismiss = False
+        )
+
+        popup.open()
+
+        Clock.schedule_once(lambda dt: popup.dismiss(), 0.7)
+
+
+
+    def signup(self):
+        username = self.ids.username.text
+        email = self.ids.email.text
+        pwd = self.ids.password.text
+
+        self.manager.current = "login"
+
+        db.create_db(username)
+        
+        li.set_info(username, email, pwd)
+
+        self.temp_popup()
+
+
+

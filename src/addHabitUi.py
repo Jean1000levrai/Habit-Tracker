@@ -58,15 +58,16 @@ class AddHabitWindow(Screen):
         info = self.get_info()
         db.add_habit(info, self.user)
         btn = Button(
-            text=f'{self.info["name"]}', 
-            background_color=(0, 0, 0, 0), 
-            color=self.app.text_color,
-            on_release=(lambda instance: (setattr(self.manager.transition, 'direction', 
-                        'left'), setattr(self.manager, 'current', 'info'))),
-            halign="left",
-            valign="middle",
-            text_size=(self.width, None),
-            padding=(132, 0)
+                text=f'{info}', 
+                size_hint_x=1,         # makes the btn expand correctly, according to smart people
+                size_hint_y=None,
+                height=60,
+                background_color=(0, 0, 0, 0), 
+                color=self.app.text_color,
+                halign="left",
+                valign="middle",
+                text_size=(0, None),   # 0 to take all the width
+                padding=(10, 10)
             )
         
         # binds the buttons for changing their colors for the themes

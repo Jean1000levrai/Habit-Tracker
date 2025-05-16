@@ -59,21 +59,21 @@ class MainWindow(Screen):
             info = f"{row[1]}"
             btn = Button(
                 text=f'{info}', 
+                size_hint_x=1,         # makes the btn expand correctly, according to smart people
+                size_hint_y=None,
+                height=60,
                 background_color=(0, 0, 0, 0), 
                 color=self.app.text_color,
                 halign="left",
                 valign="middle",
-                text_size=(self.width, None),
-                padding=(0, 0)
-                )
+                text_size=(0, None),   # 0 to take all the width
+                padding=(10, 10)
+            )
+            btn.bind(width=lambda instance, value: setattr(instance, 'text_size', (value, None)))
             
             self.lst_btn.append(btn)
-            
-            # binds to the main app the buttons for changing their colors for the themes
             self.app.bind(text_color=lambda instance, value, b=btn: setattr(b, 'color', value))
-
             self.ids.labelled_habits.add_widget(btn)
-
             btn.bind(on_release=self.on_btn_release)
 
     def on_btn_release(self, instance):
