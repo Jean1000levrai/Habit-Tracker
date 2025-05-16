@@ -39,7 +39,14 @@ class MainWindow(Screen):
         super().__init__(**kw)
         self.app = App.get_running_app()
         self.hab_name = ''
-        
+        self.lst_btn = []
+
+    def empty_hab(self):
+        layout = self.ids.labelled_habits
+        for btn in self.lst_btn:
+            if btn.parent:
+                layout.remove_widget(btn)
+        self.lst_btn.clear()
 
     def load_all(self):
         # open the config file
@@ -59,6 +66,8 @@ class MainWindow(Screen):
                 text_size=(self.width, None),
                 padding=(0, 0)
                 )
+            
+            self.lst_btn.append(btn)
             
             # binds to the main app the buttons for changing their colors for the themes
             self.app.bind(text_color=lambda instance, value, b=btn: setattr(b, 'color', value))

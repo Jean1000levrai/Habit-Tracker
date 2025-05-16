@@ -122,8 +122,17 @@ class HabitInfoWindow(Screen):
         self.user = config["name"]
 
     def delete_habit(self):
+        # open the config file
+        with open(resource_path2("data/config.json")) as f:
+            config = json.load(f)
+
         hab_name = self.ids.name_of_the_hab.text[3:]
-        db.delete_habit(hab_name, "easydoor")
+        db.delete_habit(hab_name, config["name"])
+
+        # sets it so that next time it wont show the popup
+        config["first_timer"] = False
+        with open(resource_path2("data/config.json"), 'w') as f:
+            json.dump(config, f, indent=1)
 
 
 class AddHabitPopup(Popup):

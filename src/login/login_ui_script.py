@@ -22,6 +22,7 @@ class LoginPage(Screen):
             config["name"] = self.ids.username.text
             with open(fct.resource_path2("data/config.json"), 'w') as f:
                 json.dump(config, f, indent=1)
+            self.manager.get_screen("main").empty_hab()
             self.manager.get_screen("main").load_all()
         else:
             self.manager.current = "signup"

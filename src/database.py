@@ -54,7 +54,7 @@ def delete_habit(name = '*', user=''):
         cur.execute(f"""DELETE FROM habits_{user}
                 WHERE id < 999999999999999""")
     else:
-        cur.execute("""DELETE FROM habits
+        cur.execute(f"""DELETE FROM habits_{user}
                 WHERE name = ?""", (name,))
     
     conn.commit()
@@ -119,9 +119,9 @@ if __name__ == "__main__":
     hab = hmgr.HabitYesNo("runnnn")
     create_db("easydoor")
     create_db("jen")
+    create_db('')
     # delete_habit()
-    add_habit(hab, "jen")
     print_table("jen")
     print("--------------------")
-    print_table("jen")
+    print_table("")
     # print(get_info_hab())
