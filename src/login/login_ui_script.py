@@ -29,6 +29,8 @@ class LoginPage(Screen):
             self.manager.get_screen("main").load_all()
         else:
             self.manager.current = "signup"
+        self.ids.username.text = ''
+        self.ids.password.text = ''
     
     def password_show(self):
         if self.ids.pwd_show.text == '':
@@ -64,9 +66,12 @@ class SignupPage(Screen):
 
         self.manager.current = "login"
 
-        db.create_db(username)
-        
+        db.create_db(username)    
         li.set_info(username, email, pwd)
+
+        self.ids.username.text = ''
+        self.ids.email.text = ''
+        self.ids.password.text = ''
 
         self.temp_popup()
 

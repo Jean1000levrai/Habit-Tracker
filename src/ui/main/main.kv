@@ -61,9 +61,11 @@
             Button:
                 size_hint: 0.15, 1
                 text: "+"
+                font_name: "FontAwesome"
+                font_size: '24sp'
 
                 color: app.text_color
-                background_color: app.button_color
+                background_color: app.sbutton_color
 
                 pos_hint: {"x": 0, "y": 0}
 
@@ -78,10 +80,12 @@
                 
             Button:
                 size_hint: 0.15, 1
-                text: "|||"
+                text: ""
+                font_name: "FontAwesome"
+                font_size: '24sp'
 
                 color: app.text_color
-                background_color: app.button_color
+                background_color: app.sbutton_color
 
                 pos_hint: {"x": 0.85, "y": 0}
 
@@ -93,6 +97,26 @@
                         rectangle: (self.x, self.y, self.width, self.height)
                 on_release: 
                     app.root.current = "second"
+                    root.manager.transition.direction = "left"
+            Button:
+                size_hint: 0.25, 1
+                text: ""
+                font_name: "FontAwesome"
+                font_size: '24sp'
+
+                color: app.text_color
+                background_color: app.sbutton_color
+
+                pos_hint: {"x": 0.375, "y": 0}
+
+                canvas.before:
+                    Color:
+                        rgba: app.outline_color  
+                    Line:
+                        width: 1
+                        rectangle: (self.x, self.y, self.width, self.height)
+                on_release: 
+                    app.root.current = "calendar"
                     root.manager.transition.direction = "left"
         # ---------------scrollable of habits----------------
         FloatLayout:

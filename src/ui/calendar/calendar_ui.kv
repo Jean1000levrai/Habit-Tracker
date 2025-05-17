@@ -1,0 +1,117 @@
+<CalendarScreen>
+    name: "calendar"
+
+    # ----------Main-----------
+    FloatLayout:
+        canvas.before:
+            Color:
+                rgba: app.bg_color
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        # ----------top panel-----------
+        FloatLayout:
+            id: top_panel_cal
+            size_hint: 1,0.2
+            pos_hint: {"x":0, "y":0.75}
+            canvas.before:
+                Color:
+                    rgba: app.outline_color  
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+                # the outline becuz it looks better, some rando guy told me hehe
+                Color:
+                    rgba: app.panel_color
+                Rectangle:
+                    pos: self.x, self.y+2
+                    size: self.size
+
+            Label:
+                text: "DD/MM/YYYY"
+                pos_hint: {"top": 1}
+
+            Button:
+                text: "<"
+                pos_hint: {"right": 0.15,"top": 0.9}
+                size_hint: None, None
+                size: 40, 40
+                color: app.text_color
+                background_color: app.button_color
+                canvas.before:
+                    Color:
+                        rgba: app.outline_color  
+                    Line:
+                        width: 1
+                        rectangle: (self.x, self.y, self.width, self.height)
+
+            Button:
+                text:">"
+                pos_hint: {"right": 0.95, "top": 0.9}
+                size_hint: None, None
+                size: 40, 40
+                color: app.text_color
+                background_color: app.button_color
+                canvas.before:
+                    Color:
+                        rgba: app.outline_color  
+                    Line:
+                        width: 1
+                        rectangle: (self.x, self.y, self.width, self.height)
+        
+        # ----------Calendar-----------
+        GridLayout:
+            
+
+        # ------------exit btn--------------
+        AnchorLayout:
+            anchor_x: "center"
+            anchor_y: "top"
+
+            Button:
+                text: "<- Discard & Back"
+
+                size_hint: None, 0.05
+                size: 360, 40
+
+                halign: "left"
+                valign: "middle"
+                text_size: self.width, None
+                padding: 10, 0
+
+                color: app.text_color
+                background_color: app.button_color  
+                canvas.before:
+                    Color:
+                        rgba: app.outline_color   
+                    Line:
+                        width: 1
+                        rectangle: (self.x, self.y, self.width, self.height)
+                on_release: 
+                    app.root.current = "main"
+                    root.manager.transition.direction = "right"
+
+        # ------------Save btn--------------
+        AnchorLayout:
+            anchor_x: "center"
+            anchor_y: "bottom"
+
+            Button:
+                text: "Save"
+                size_hint: None, 0.05
+                size: 150, 50
+
+                color: app.text_color
+                background_color: app.sbutton_color 
+
+                canvas.before:
+                    Color:
+                        rgba: app.outline_color   
+                    Line:
+                        width: 1
+                        rectangle: (self.x, self.y, self.width, self.height)
+                on_release:
+                    
+        
+
