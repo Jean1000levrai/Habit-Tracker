@@ -29,7 +29,9 @@
                     size: self.size
 
             Label:
+                id: date
                 text: "DD/MM/YYYY"
+                font_size: '24sp'
                 pos_hint: {"top": 1}
 
             Button:
@@ -62,6 +64,27 @@
         
         # ----------Calendar-----------
         GridLayout:
+
+            size_hint: 1, 0.7
+            pos_hint:{"x":0, "y":0.05}
+            canvas.before:
+                Color:
+                    rgba: app.outline_color  
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+                # the outline becuz it looks better, some rando guy told me hehe
+                Color:
+                    rgba: app.bg_color
+                Rectangle:
+                    pos: self.x, self.y+2
+                    size: self.size
+                # line separator
+                Color:
+                    rgba: app.outline_color  
+                Rectangle:
+                    pos: 100, self.y
+                    size: 2, self.height
             
 
         # ------------exit btn--------------

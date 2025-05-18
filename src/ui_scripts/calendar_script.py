@@ -17,7 +17,8 @@ class CalendarScreen(Screen):
     def __init__(self, **kw):
         super().__init__(**kw)
         days = ['M', 'T', 'W', 'Th', 'F', 'S', 'Su']
-        self.days_btn = []
+        id_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+        self.days_btn = {}
         self.app = App.get_running_app()
 
         for i in range(7):
@@ -32,14 +33,19 @@ class CalendarScreen(Screen):
                 color=self.app.text_color,
             )
 
-            self.days_btn.append(btn)
+            self.days_btn[id_days[i]] = btn
+            print(btn.text)
             # self.app.bind(text_color=lambda instance, value, b=btn: setattr(b, 'color', value))
             self.ids.top_panel_cal.add_widget(btn)
-            btn.bind(on_release=self.on_btn_release)
+            btn.bind(on_release=lambda instance, b=btn: self.on_btn_release(b))
+            self.sets_days()
+            
     def sets_days(self):
         today_date = datetime.today().strftime("%d-%m-%Y")
         today_day = datetime.today().strftime("%A")
+        self.ids.date.text = today_date
 
 
-    def on_btn_release(self, event):
-        print("clicked lol")
+    def on_btn_release(self, btn):
+        print(btn.text, "zzzz")
+        

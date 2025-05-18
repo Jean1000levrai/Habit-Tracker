@@ -1,5 +1,4 @@
 # basic libraries
-import ui_scripts.color_picker as col
 import webbrowser as web
 import json
 
@@ -7,8 +6,11 @@ import json
 import habit_mgr as hmgr
 import database as db
 from functions import *
+
 from login.login_script import *
 from login.login_ui_script import *
+
+import ui_scripts.color_picker as col
 from ui_scripts.addHabitUi import *
 from ui_scripts.settingsUi import *
 from ui_scripts.addHabitUi import *
