@@ -154,7 +154,7 @@ class MyMainApp(MDApp):
         self.theme_dark = True
         
     def build(self):
-        
+    
         # loads the files for all the windows
         Builder.load_file(resource_path("ui/main/main.kv"))
         Builder.load_file(resource_path("ui/main/add_hab.kv"))
@@ -180,6 +180,8 @@ class MyMainApp(MDApp):
         sm.add_widget(HabitInfoWindow(name="info"))
         sm.add_widget(AboutWindow(name="about"))
         sm.add_widget(SignupPage(name="signup"))
+
+        self.theme_cls.theme_style = "Dark"
 
         Clock.schedule_once(self.show_welcome_popup, 0.1)
 
@@ -219,6 +221,8 @@ class MyMainApp(MDApp):
         popup.open()
 
     def dark_theme(self):
+        self.theme_cls.theme_style = "Dark"
+
         self.bg_color = (0.051, 0.067, 0.090, 1)
         self.panel_color = (0.086, 0.106, 0.133, 1)
         self.outline_color = (0.129, 0.149, 0.176, 1)
@@ -232,6 +236,8 @@ class MyMainApp(MDApp):
         settings_screen.ids.settings_theme.text = theme_text
 
     def light_theme(self):
+        self.theme_cls.theme_style = "Light"
+
         self.bg_color = (0.97, 0.97, 0.97, 1)
         self.panel_color = (0.93, 0.93, 0.93, 1)
         self.outline_color = (0.8, 0.8, 0.8, 1)

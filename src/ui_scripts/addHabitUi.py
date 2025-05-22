@@ -136,18 +136,6 @@ class ReminderWindow(Screen):
         popup = TimePopup(self)
         popup.open()
 
-    def next(self):
-        times = self.ids.times.text         # gets the nb of times
-        container = self.ids.time_select
-        container.clear_widgets()   # clears to not stack if opened more than once
-
-        # add the btns
-        for i in range(int(times)):
-            btn = Button(text="00:00",
-                         size_hint_y = None,
-                         height = 40) 
-            container.add_widget(btn)
-    
 class TimePickerPopup(Popup):
     def __init__(self, parent_screen, **kwargs):
         super().__init__(**kwargs)
@@ -162,8 +150,38 @@ class TimePopup(Popup):
     def __init__(self, parent_screen, **kwargs):
         super(TimePopup, self).__init__(**kwargs)
         self.parent_screen = parent_screen
+        self.next()
+
+    def get_time(self, instance, time):
+        self.time = str(time)
+        print(time)
+        # Change the text of the button that was clicked
+        if hasattr(self, 'current_btn') and self.current_btn:
+            self.current_btn.text = str(time)
+
+    def next1(self, instance):
+        self.current_btn = instance  # Store the button that was clicked
+        popup = MDTimePicker()
+        popup.bind(time=self.get_time)
+        popup.open() 
 
     def next(self):
-        popup = MDTimePicker()
-        popup.open()  
+        self.btn = {}
+        times = self.parent_screen.ids.times.text         # gets the nb of times
+
+        container = self.ids.time_select
+        container.clear_widgets()   # clears to not stack if opened more than once
+
+        try:
+            n = int(times)
+        except (ValueError, TypeError):
+            n = 0
+        # add the btns
+        for i in range(n):
+            self.btn[str(i)] = Button(text="00:00",
+                         size_hint_y = None,
+                         height = 40,
+                         on_release = self.next1) 
+            container.add_widget(self.btn[str(i)])
+     
     
