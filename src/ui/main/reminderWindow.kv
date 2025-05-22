@@ -45,6 +45,7 @@
 
             # --------Label--------
             Button:
+                id: date_popup
                 pos_hint: {"x": 0.1, "y": 0.93}
                 size: 120, 30
                 size_hint: None, None
@@ -59,10 +60,10 @@
                         width: 1
                         rectangle: (self.x, self.y, self.width, self.height)
 
-                text:""
+                text: "Daily"
 
                 on_release:
-                    app.popup_date()
+                    root.date_popup()
 
             Label:
                 pos_hint: {"x": 0.5, "y": 0.45}
@@ -76,6 +77,9 @@
                 padding: 30, 0
                 text_size: self.size
             TextInput:
+                id: times
+                text: '1'
+
                 size_hint: None, None
                 pos_hint: {"x": 0.8, "y": 0.93}
                 size: 30, 30
@@ -101,7 +105,8 @@
                 text:"Next"
 
                 on_release:
-                    app.popup_time()
+                    root.time_popup()
+                    root.next()
             
 
            

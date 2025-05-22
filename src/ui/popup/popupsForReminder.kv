@@ -1,56 +1,51 @@
-<DatePopup>
-    name: "firstStep"
-    # --------Main--------
-    FloatLayout:
-        canvas.before:
-            Color:
-                rgba: app.bg_color
-            Rectangle:
-                pos: self.pos
-                size: self.size
+<DatePopup>:
+    title: ''
+    title_size: 0
+    separator_height: 0
+    size_hint: None, None
+    size: 300, 250
+    auto_dismiss: False
     
-        # --------top button--------
-        FloatLayout:
-            size_hint: 1,0.05
-            pos_hint: {"x":0, "y":0.95}
 
-            Button:
-                text: "<- Discard & Back"
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: 10
+        padding: 10
 
-                color: app.text_color
-                background_color: app.button_color
+        Button:
+            text: "Daily"
+            size_hint_y: None
+            height: 50
+            on_release:
+                root.parent_screen.ids.date_popup.text = "Daily"
+                root.dismiss()
+        
+        Button:
+            text: "Weekly"
+            size_hint_y: None
+            height: 50
+            on_release:
+                root.parent_screen.ids.date_popup.text = "Weekly"
+                root.dismiss()
 
-                halign: "left"
-                valign: "middle"
-                text_size: self.width, None
-                padding: 10, 0
-
-                pos_hint: {"center_x":0.5, "center_y":0.5}
-                border: (10,10,10,10)
-                canvas.before:
-                    Color:
-                        rgba: app.button_color  
-                    Line:
-                        width: 1
-                        rectangle: (self.x, self.y, self.width, self.height)
-                on_release: 
-                    app.root.current = "habYesNo"
-                    root.manager.transition.direction = "right"    
-
-
-
-
+        Button:
+            text: "Monthly"
+            size_hint_y: None
+            height: 50
+            on_release:
+                root.parent_screen.ids.date_popup.text = "Monthly"
+                root.dismiss()
 <TimePopup>
-    name: "secondStep"
-    # --------Main--------
-    FloatLayout:
-        canvas.before:
-            Color:
-                rgba: app.bg_color
-            Rectangle:
-                pos: self.pos
-                size: self.size
-    
+    title: ''
+    title_size: 0
+    separator_height: 0
+    size_hint: None, None
+    size: 350, 600
+    auto_dismiss: False
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: 10
+        padding: 10
         # --------top button--------
         FloatLayout:
             size_hint: 1,0.05
@@ -67,8 +62,10 @@
                 text_size: self.width, None
                 padding: 10, 0
 
-                pos_hint: {"center_x":0.5, "center_y":0.5}
-                border: (10,10,10,10)
+                pos_hint: {"center_x":0.5, "center_y":1}
+                size_hint: 1, None
+                height: 40
+                # border: (10,10,10,10)
                 canvas.before:
                     Color:
                         rgba: app.button_color  
@@ -76,5 +73,43 @@
                         width: 1
                         rectangle: (self.x, self.y, self.width, self.height)
                 on_release: 
-                    app.root.current = "habYesNo"
-                    root.manager.transition.direction = "right"
+                    root.dismiss()
+        GridLayout:
+            id: time_select
+            cols: 1
+            rows: 2
+            size_hint_y: None
+            height: self.minimum_height
+            row_default_height: 40
+            row_force_default: True
+            Button:
+                on_release:
+                    root.next()
+
+        GridLayout:
+            id: days_select
+            cols: 2
+            size_hint_y: None
+            height: self.minimum_height
+            row_default_height: 40
+            row_force_default: True
+            
+        AnchorLayout:
+            anchor_x: "center"
+            anchor_y: "bottom"
+
+            Button:
+                text: "Save"
+                size_hint: None, None
+                size: 150, 50
+
+                color: app.text_color
+                background_color: app.sbutton_color 
+
+                canvas.before:
+                    Color:
+                        rgba: app.outline_color   
+                    Line:
+                        width: 1
+                        rectangle: (self.x, self.y, self.width, self.height)
+                on_release:

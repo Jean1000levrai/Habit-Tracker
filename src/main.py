@@ -1,6 +1,12 @@
 # basic libraries
 import webbrowser as web
 import json
+from plyer import notification
+
+# file size
+from kivy.config import Config
+Config.set('graphics', 'width', '360') #1080//3
+Config.set('graphics', 'height', '800')#2400//3
 
 # scripts
 import habit_mgr as hmgr
@@ -16,11 +22,6 @@ from ui_scripts.settingsUi import *
 from ui_scripts.addHabitUi import *
 from ui_scripts.calendar_script import *
 
-# file size
-from kivy.config import Config
-Config.set('graphics', 'width', '360') #1080//3
-Config.set('graphics', 'height', '800')#2400//3
-
 # ui utilities
 from kivy.uix.button import Button
 from kivy.app import App
@@ -30,6 +31,12 @@ from kivy.uix.popup import Popup
 from kivy.properties import ListProperty
 from kivy.clock import Clock
 from kivy.core.text import LabelBase
+
+from kivymd.app import MDApp
+
+from kivy.core.window import Window
+print("Window size:", Window.size)
+
 
 
 LabelBase.register(
@@ -128,7 +135,7 @@ class WindowMgr(ScreenManager):
     """handles all the different windows"""
     pass
 
-class MyMainApp(App):
+class MyMainApp(MDApp):
     """MyMainApp is the main application class for the Habit Tracker application. 
     It manages the application's theme, loads the user interface files, and 
     initializes the window manager with different screens."""
@@ -156,20 +163,22 @@ class MyMainApp(App):
         Builder.load_file(resource_path("ui/settings/settings.kv"))
         Builder.load_file(resource_path("ui/settings/aboutWindow.kv"))
         Builder.load_file(resource_path("ui/popup/habitpopup.kv"))
+        Builder.load_file(resource_path("ui/popup/popupsForReminder.kv"))
+        Builder.load_file(resource_path("ui/popup/timePicker.kv"))
         Builder.load_file(resource_path("ui/login_ui/login_page.kv"))
         Builder.load_file(resource_path("ui/login_ui/signup.kv"))
         Builder.load_file(resource_path("ui/calendar/calendar_ui.kv"))
         
         # adds them to the window manager
         sm = WindowMgr()
-        sm.add_widget(CalendarScreen(name="calendar"))
+        sm.add_widget(ReminderWindow(name="reminder"))
         sm.add_widget(MainWindow(name="main"))
+        sm.add_widget(CalendarScreen(name="calendar"))
         sm.add_widget(LoginPage(name="login"))
         sm.add_widget(SettingsWindow(name="second"))
         sm.add_widget(AddHabitWindow(name="habYesNo"))
         sm.add_widget(HabitInfoWindow(name="info"))
         sm.add_widget(AboutWindow(name="about"))
-        sm.add_widget(ReminderWindow(name="reminder"))
         sm.add_widget(SignupPage(name="signup"))
 
         Clock.schedule_once(self.show_welcome_popup, 0.1)
@@ -207,14 +216,6 @@ class MyMainApp(App):
     def popup(self):
         """method that opens the popup"""
         popup = AddHabitPopup(self)
-        popup.open()
-        
-    def popup_time(self):
-        popup = DatePopup(self)
-        popup.open()
-
-    def popup_date(self):
-        popup = TimePopup(self)
         popup.open()
 
     def dark_theme(self):
@@ -266,6 +267,10 @@ class MyMainApp(App):
         # updates the config file
         with open(resource_path2("data/config.json"), 'w') as f:
             json.dump(config, f, indent=1)
+
+    def push_notif(self, hab, question):
+        notification.notify(title=str(hab), message=question, timeout=10)
+
 
 if __name__=="__main__":
     myapp = MyMainApp()

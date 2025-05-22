@@ -12,6 +12,7 @@ from kivy.lang import Builder
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.popup import Popup
 from kivy.properties import ListProperty
+from kivymd.uix.pickers import MDTimePicker
 
 
 class AddHabitWindow(Screen):
@@ -118,7 +119,6 @@ class HabitInfoWindow(Screen):
         with open(resource_path2("data/config.json"), 'w') as f:
             json.dump(config, f, indent=1)
 
-
 class AddHabitPopup(Popup):
     """popup where the user will be able to
     chose between a yes or no habit or one
@@ -128,14 +128,42 @@ class AddHabitPopup(Popup):
         self.obj = obj
 
 class ReminderWindow(Screen):
-    pass
+    def date_popup(self):
+        popup = DatePopup(self)
+        popup.open()
+    
+    def time_popup(self):
+        popup = TimePopup(self)
+        popup.open()
+
+    def next(self):
+        times = self.ids.times.text         # gets the nb of times
+        container = self.ids.time_select
+        container.clear_widgets()   # clears to not stack if opened more than once
+
+        # add the btns
+        for i in range(int(times)):
+            btn = Button(text="00:00",
+                         size_hint_y = None,
+                         height = 40) 
+            container.add_widget(btn)
+    
+class TimePickerPopup(Popup):
+    def __init__(self, parent_screen, **kwargs):
+        super().__init__(**kwargs)
+        self.parent_screen = parent_screen
 
 class DatePopup(Popup):
-    def __init__(self, obj, **kwargs):
-        super(DatePopup, self).__init__(**kwargs)
-        self.obj = obj
+    def __init__(self, parent_screen, **kwargs):
+        super().__init__(**kwargs)
+        self.parent_screen = parent_screen
 
 class TimePopup(Popup):
-    def __init__(self, obj, **kwargs):
+    def __init__(self, parent_screen, **kwargs):
         super(TimePopup, self).__init__(**kwargs)
-        self.obj = obj
+        self.parent_screen = parent_screen
+
+    def next(self):
+        popup = MDTimePicker()
+        popup.open()  
+    

@@ -40,6 +40,25 @@ class CalendarScreen(Screen):
             btn.bind(on_release=lambda instance, b=btn: self.on_btn_release(b))
             self.sets_days()
             
+        for j in range(24):
+            btn1 = Button(
+                text = f"{j} : 00",
+
+                background_color=(0,0,0,0),
+                color=self.app.text_color,
+                size_hint_x = None,
+                width = 90,
+            )
+            btn2 = Button(
+                text = "",
+
+                background_color=self.app.button_color,
+                color=self.app.text_color,
+            )
+            self.ids.calendar_square.add_widget(btn1)
+            self.ids.calendar_square.add_widget(btn2)
+
+
     def sets_days(self):
         today_date = datetime.today().strftime("%d-%m-%Y")
         today_day = datetime.today().strftime("%A")

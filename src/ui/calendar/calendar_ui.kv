@@ -10,6 +10,12 @@
                 pos: self.pos
                 size: self.size
 
+            Color:
+                rgba: app.outline_color
+            Rectangle:
+                pos: self.x + 100, self.y + self.height * 0.05
+                size: 2, self.height * 0.7
+
         # ----------top panel-----------
         FloatLayout:
             id: top_panel_cal
@@ -63,10 +69,14 @@
                         rectangle: (self.x, self.y, self.width, self.height)
         
         # ----------Calendar-----------
-        GridLayout:
-
+        
+        ScrollView:
+            
             size_hint: 1, 0.7
             pos_hint:{"x":0, "y":0.05}
+            do_scroll_x: False
+            do_scroll_y: True
+
             canvas.before:
                 Color:
                     rgba: app.outline_color  
@@ -85,7 +95,17 @@
                 Rectangle:
                     pos: 100, self.y
                     size: 2, self.height
-            
+            GridLayout:
+                id: calendar_square
+
+                cols: 2
+                size_hint_y: None
+                height: self.minimum_height
+                row_default_height: 40
+                row_force_default: True
+                spacing: 5
+                padding: 5
+
 
         # ------------exit btn--------------
         AnchorLayout:
