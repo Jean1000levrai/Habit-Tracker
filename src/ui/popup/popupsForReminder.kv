@@ -97,6 +97,7 @@
             anchor_y: "bottom"
 
             Button:
+                id: save_btn
                 text: "Save"
                 size_hint: None, None
                 size: 150, 50
@@ -111,3 +112,4 @@
                         width: 1
                         rectangle: (self.x, self.y, self.width, self.height)
                 on_release:
+                    root.save()

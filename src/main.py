@@ -17,6 +17,7 @@ from login.login_script import *
 from login.login_ui_script import *
 
 import ui_scripts.color_picker as col
+from ui_scripts.reminder import *
 from ui_scripts.addHabitUi import *
 from ui_scripts.settingsUi import *
 from ui_scripts.addHabitUi import *
@@ -173,8 +174,8 @@ class MyMainApp(MDApp):
         sm = WindowMgr()
         sm.add_widget(ReminderWindow(name="reminder"))
         sm.add_widget(MainWindow(name="main"))
-        sm.add_widget(CalendarScreen(name="calendar"))
         sm.add_widget(LoginPage(name="login"))
+        sm.add_widget(CalendarScreen(name="calendar"))
         sm.add_widget(SettingsWindow(name="second"))
         sm.add_widget(AddHabitWindow(name="habYesNo"))
         sm.add_widget(HabitInfoWindow(name="info"))

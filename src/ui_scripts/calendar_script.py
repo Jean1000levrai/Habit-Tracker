@@ -66,5 +66,5 @@ class CalendarScreen(Screen):
 
 
     def on_btn_release(self, btn):
-        print(btn.text, "zzzz")
+        print(btn.text)
         

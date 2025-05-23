@@ -38,6 +38,31 @@
                     app.root.current = "habYesNo"
                     root.manager.transition.direction = "right"
 
+        # ---------BOTTOM SAVE BTN---------
+        AnchorLayout:
+            anchor_x: "center"
+            anchor_y: "bottom"
+
+            Button:
+                id: save_btn
+                text: "Save"
+                size_hint: None, None
+                size: 150, 50
+
+                color: app.text_color
+                background_color: app.sbutton_color 
+
+                canvas.before:
+                    Color:
+                        rgba: app.outline_color   
+                    Line:
+                        width: 1
+                        rectangle: (self.x, self.y, self.width, self.height)
+                on_release:
+                    root.save()
+                    app.root.current = "habYesNo"
+                    root.manager.transition.direction = "right"
+
         FloatLayout:
 
             size_hint: 1, 0.95
