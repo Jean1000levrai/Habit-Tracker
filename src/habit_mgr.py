@@ -63,13 +63,13 @@ class HabitYesNo:
 
     @frequency.setter
     def frequency(self, val):
-        if not isinstance(val, list):
-            raise ValueError("Reminder must be a tuple (int, str).")
-        if not isinstance(val[0], int):
-            raise ValueError("First value should be an integer.")
-        allowed = {"daily", "weekly", "monthly", None}
-        if val[1] not in allowed:
-            raise ValueError(f"Frequency must be one of {allowed}.")
+        # if not isinstance(val, list):
+        #     raise ValueError("Reminder must be a tuple (int, str).")
+        # if not isinstance(val[0], int):
+        #     raise ValueError("First value should be an integer.")
+        # allowed = {"daily", "weekly", "monthly", None}
+        # if val[1] not in allowed:
+        #     raise ValueError(f"Frequency must be one of {allowed}.")
         
         self.__frequency = val
 
@@ -139,13 +139,13 @@ class HabitMeasurable:
 
     @frequency.setter
     def frequency(self, val):
-        if not isinstance(val, tuple):
-            raise ValueError("Reminder must be a tuple (int, str).")
-        if not isinstance(val[0], int):
-            raise ValueError("First value should be an integer.")
-        allowed = {"daily", "weekly", "monthly", None}
-        if val[1] not in allowed:
-            raise ValueError(f"Frequency must be one of {allowed}.")
+        # if not isinstance(val, tuple):
+        #     raise ValueError("Reminder must be a tuple (int, str).")
+        # if not isinstance(val[0], int):
+        #     raise ValueError("First value should be an integer.")
+        # allowed = {"daily", "weekly", "monthly", None}
+        # if val[1] not in allowed:
+        #     raise ValueError(f"Frequency must be one of {allowed}.")
         self.__frequency = val
 
 if __name__ == "__main__":

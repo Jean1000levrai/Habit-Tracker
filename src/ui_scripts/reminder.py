@@ -44,10 +44,13 @@ class TimePopup(Popup):
         super(TimePopup, self).__init__(**kwargs)
         self.parent_screen = parent_screen
         self.next()
+        self.time = "00:00:00"
+        self.time_tab = []
 
     def get_time(self, instance, time):
         global reminder_var
         self.time = str(time)
+        self.time_tab.append(str(time))
         print(time)
 
         # Change the text of the button that was clicked
@@ -57,8 +60,8 @@ class TimePopup(Popup):
     def next1(self, instance):
         self.current_btn = instance  # Store the button that was clicked
         popup = MDTimePicker()
-        popup.bind(time=self.get_time)
-        popup.open() 
+        popup.bind(on_save=self.get_time)
+        popup.open()
     
     def day_next(self, instance):
         if not self.btn_days[instance.text[:-2]][1]:
@@ -72,6 +75,8 @@ class TimePopup(Popup):
         print(self.btn_days[instance.text[:-2]][1])
 
     def next(self):
+        global reminder_var
+        reminder_var[2] = []
         self.btn = {}
         self.btn_days = {}
 
@@ -113,9 +118,29 @@ class TimePopup(Popup):
         global reminder_var
 
         # update the var holding the value
-        # time
-        reminder_var[2] = []
-        reminder_var[2].append(self.time)
+        # time  
+        reminder_var[2].extend(self.time_tab)
+        while len(reminder_var[2]) != int(self.parent_screen.ids.times.text):
+            reminder_var[2].append("00:00:00")
+
+        # times
+        reminder_var[0] = self.parent_screen.ids.times.text
+
+        # frequency
+        reminder_var[1] = self.parent_screen.ids.date_popup.text
+
+        # days
+        i = 0
+        for day in self.btn_days:
+            reminder_var[3][i] = self.btn_days[day][1]
+            i = i + 1
+
         print(reminder_var)
 
-reminder_var = [0, "Daily", []]
+        
+    def dismiss_1(self):
+        global reminder_var
+        reminder_var[2] = []
+
+
+reminder_var = [0, "Daily", [], [False, False, False, False, False, False, False]]

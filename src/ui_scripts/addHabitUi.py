@@ -1,10 +1,11 @@
 import habit_mgr as hmgr
 import database as db
 import ui_scripts.color_picker as col
-import webbrowser as web
+from ui_scripts.reminder import reminder_var
 
-from functions import *
+import webbrowser as web
 import json
+from functions import *
 
 from kivy.uix.button import Button
 from kivy.app import App
@@ -38,6 +39,7 @@ class AddHabitWindow(Screen):
         self.info["name"] = self.ids.name.text
         self.info["descr"] = self.ids.descr.text
         self.info["qu"] = self.ids.qu.text
+        self.info["frequency"] = reminder_var
 
         # resets the text inputs
         self.ids.name.text = ""
@@ -48,6 +50,8 @@ class AddHabitWindow(Screen):
         self.hab.name = self.info["name"]
         self.hab.description = self.info["descr"]
         self.hab.question = self.info["qu"]
+        self.hab.frequency = self.info["frequency"]
+
 
         return self.hab
 

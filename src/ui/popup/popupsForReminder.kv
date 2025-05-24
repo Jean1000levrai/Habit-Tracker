@@ -74,6 +74,7 @@
                         rectangle: (self.x, self.y, self.width, self.height)
                 on_release: 
                     root.dismiss()
+                    root.dismiss_1()
         GridLayout:
             id: time_select
             cols: 1
@@ -113,3 +114,4 @@
                         rectangle: (self.x, self.y, self.width, self.height)
                 on_release:
                     root.save()
+                    root.dismiss()
