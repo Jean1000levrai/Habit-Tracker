@@ -9,6 +9,7 @@ def connect_to_db():
 def create_db(user=''):
     conn = connect_to_db()
     cur = conn.cursor()
+    # main table
     cur.execute(f"""
             CREATE TABLE IF NOT EXISTS habits_{user} (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -20,8 +21,35 @@ def create_db(user=''):
                 frequency TEXT
             )
     """)
+    # days table
+    cur.execute(f"""
+        CREATE TABLE IF NOT EXISTS habit_days_{user} (
+            habit_id INTEGER PRIMARY KEY,
+            monday BOOLEAN DEFAULT 0,
+            tuesday BOOLEAN DEFAULT 0,
+            wednesday BOOLEAN DEFAULT 0,
+            thursday BOOLEAN DEFAULT 0,
+            friday BOOLEAN DEFAULT 0,
+            saturday BOOLEAN DEFAULT 0,
+            sunday BOOLEAN DEFAULT 0,
+            FOREIGN KEY(habit_id) REFERENCES habits_{user}(id) ON DELETE CASCADE
+            )
+    """)
+
     conn.commit()
     conn.close()
+
+def get_habits_with_days(user=''):
+    conn = connect_to_db()
+    cur = conn.cursor()
+    cur.execute(f"""
+        SELECT h.*, d.monday, d.tuesday, d.wednesday, d.thursday, d.friday, d.saturday, d.sunday
+        FROM habits_{user} h
+        LEFT JOIN habit_days_{user} d ON h.id = d.habit_id
+    """)
+    results = cur.fetchall()
+    conn.close()
+    return results
 
 def print_table(user=''):
     conn = connect_to_db()
@@ -34,15 +62,22 @@ def print_table(user=''):
 def add_habit(habit, user=''):
     """Add a habit into the database safely."""
     info = hab_info(habit) 
+    print(info)
+    print(len(info))
 
     conn = connect_to_db()
     cur = conn.cursor()
 
     cur.execute(f"""
-        INSERT INTO habits_{user} (name, colour, question, reminder, description, frequency)
-        VALUES (?, ?, ?, ?, ?, ?)
-    """, info)
+        INSERT INTO habits_{user} (name, colour, question, reminder, description)
+        VALUES (?, ?, ?, ?, ?)
+    """, info[:5])
 
+    cur.execute(f"""
+        INSERT INTO habit_days_{user} (monday, tuesday, wednesday, thursday, friday, saturday, sunday)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    """, info[5][3])
+    
     conn.commit()
     conn.close()
 
@@ -115,13 +150,25 @@ def get_info_hab(hab_name, attr, user=''):
         return rep[0]
     return None
 
+def drop_all_tables(user=''):
+    """Drops all tables related to the user in the database."""
+    conn = connect_to_db()
+    cur = conn.cursor()
+    # Drop the main habits table
+    cur.execute(f"DROP TABLE IF EXISTS habits_{user}")
+    # Drop the days table
+    cur.execute(f"DROP TABLE IF EXISTS habit_days_{user}")
+    conn.commit()
+    conn.close()
+
+
 if __name__ == "__main__":
     hab = hmgr.HabitYesNo("runnnn")
-    create_db("easydoor")
+    # create_db("easydoor")
     create_db("jen")
     create_db('')
-    # delete_habit()
-    print_table("jen")
+    # delete_habit("*", "easydoor")
+    print(get_habits_with_days("jen"))
     print("--------------------")
-    print_table("")
+    print(get_habits_with_days(""))
     # print(get_info_hab())

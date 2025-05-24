@@ -1,12 +1,12 @@
-# basic libraries
-import webbrowser as web
-import json
-from plyer import notification
-
 # file size
 from kivy.config import Config
 Config.set('graphics', 'width', '360') #1080//3
 Config.set('graphics', 'height', '800')#2400//3
+
+# basic libraries
+import webbrowser as web
+import json
+from plyer import notification
 
 # scripts
 import habit_mgr as hmgr
@@ -37,8 +37,6 @@ from kivymd.app import MDApp
 
 from kivy.core.window import Window
 print("Window size:", Window.size)
-
-
 
 LabelBase.register(
     name="FontAwesome",
@@ -123,13 +121,13 @@ class WelcomePopup(Popup):
         name = self.ids.set_name.text
 
         # open the config file
-        with open(resource_path2("data/config.json")) as f:
+        with open("data/config.json") as f:
             config = json.load(f)
 
         config["name"] = name
 
         # update the data
-        with open(resource_path("data/config.json"), 'w') as f:
+        with open("data/config.json", 'w') as f:
             json.dump(config, f, indent=1)
 
 class WindowMgr(ScreenManager):
@@ -172,15 +170,29 @@ class MyMainApp(MDApp):
         
         # adds them to the window manager
         sm = WindowMgr()
-        sm.add_widget(ReminderWindow(name="reminder"))
-        sm.add_widget(MainWindow(name="main"))
-        sm.add_widget(LoginPage(name="login"))
-        sm.add_widget(CalendarScreen(name="calendar"))
-        sm.add_widget(SettingsWindow(name="second"))
-        sm.add_widget(AddHabitWindow(name="habYesNo"))
-        sm.add_widget(HabitInfoWindow(name="info"))
-        sm.add_widget(AboutWindow(name="about"))
-        sm.add_widget(SignupPage(name="signup"))
+        # open the config file
+        with open(resource_path2("data/config.json")) as f:
+            config = json.load(f)
+        if config["first_timer"] == True:
+            sm.add_widget(LoginPage(name="login"))
+            sm.add_widget(ReminderWindow(name="reminder"))
+            sm.add_widget(MainWindow(name="main"))
+            sm.add_widget(CalendarScreen(name="calendar"))
+            sm.add_widget(SettingsWindow(name="second"))
+            sm.add_widget(AddHabitWindow(name="habYesNo"))
+            sm.add_widget(HabitInfoWindow(name="info"))
+            sm.add_widget(AboutWindow(name="about"))
+            sm.add_widget(SignupPage(name="signup"))
+        else:
+            sm.add_widget(MainWindow(name="main"))
+            sm.add_widget(ReminderWindow(name="reminder"))
+            sm.add_widget(LoginPage(name="login"))
+            sm.add_widget(CalendarScreen(name="calendar"))
+            sm.add_widget(SettingsWindow(name="second"))
+            sm.add_widget(AddHabitWindow(name="habYesNo"))
+            sm.add_widget(HabitInfoWindow(name="info"))
+            sm.add_widget(AboutWindow(name="about"))
+            sm.add_widget(SignupPage(name="signup"))
 
         self.theme_cls.theme_style = "Dark"
 

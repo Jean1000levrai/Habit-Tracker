@@ -97,9 +97,11 @@ def test_log(username, pwd):
         return False
 
 
+
+
 if __name__ == "__main__":
     create_db()
     # delete_user()
-    set_info("easydoor", "easy@gmia.com", "1234")
+    # set_info("easydoor", "easy@gmia.com", "1234")
     print_table()
     # test_log("jen", "1234")
