@@ -1,8 +1,8 @@
 ## English
 # 📱 Habit Tracker
 
-    This project is made by Jean, currently a high school student in France.
-    The goal of this app is to not forget to do your daily tasks. This app will push notifications when you should do something. You first define what you need to do and how often (daily, weekly, or monthly).
+This project is made by Jean, currently a high school student in France.
+The goal of this app is to not forget to do your daily tasks. This app will push notifications when you should do something. You first define what you need to do and how often (daily, weekly, or monthly).
 
 ## ✅ Features
 
@@ -39,7 +39,7 @@ python src/main.py
 ```bash
 buildozer -v android debug
 ```
-    Requires Linux or WSL with Buildozer installed
+Requires Linux or WSL with Buildozer installed
 
 ## 📄 License
 
@@ -87,7 +87,7 @@ python src/main.py
 ```bash
 buildozer -v android debug
 ```
-    Nécessite un environnement Linux (ou WSL sous Windows) avec Buildozer installé.
+Nécessite un environnement Linux (ou WSL sous Windows) avec Buildozer installé.
 
 ## 📄 Licence
 
