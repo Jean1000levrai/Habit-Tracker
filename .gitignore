@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.buildozer/
+bin/
+*.apk
+.DS_Store
+site/
+build/
+.venv311/
+.vscode/
+dist/
+checkList.txt
+setup_buildozer.sh
+test.py
