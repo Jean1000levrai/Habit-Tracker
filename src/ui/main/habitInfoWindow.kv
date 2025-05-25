@@ -30,6 +30,28 @@
                 on_release: 
                     app.root.current = "main"
                     root.manager.transition.direction = "right"
+        # ------------Save btn--------------
+        AnchorLayout:
+            anchor_x: "center"
+            anchor_y: "bottom"
+
+            Button:
+                text: "Save"
+                size_hint: None, None
+                size: 150, 50
+
+                color: app.text_color
+                background_color: app.sbutton_color 
+
+                canvas.before:
+                    Color:
+                        rgba: app.outline_color   
+                    Line:
+                        width: 1
+                        rectangle: (self.x, self.y, self.width, self.height)
+                on_release:
+                    root.save_btn()
+        
         StackLayout:
             size_hint: 0.9, 0.9  # Adjust size to fit below the button
             pos_hint: {"x": 0.05, "y": 0.05}  # Position it below the button

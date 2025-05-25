@@ -61,6 +61,11 @@ class AddHabitWindow(Screen):
         database with the HabitYesNo and displays it
         on the main screen. prints an error if the input
         isnt correct.""" 
+        # open the config file
+        with open(resource_path2("data/config.json")) as f:
+            config = json.load(f)
+        self.user = config["name"]
+
         # try:
         info = self.get_info()
         db.add_habit(info, self.user)
@@ -72,6 +77,11 @@ class AddHabitWindow(Screen):
         #     print("not a valid input")
 
     def on_btn_release(self, instance):
+        # open the config file
+        with open(resource_path2("data/config.json")) as f:
+            config = json.load(f)
+        self.user = config["name"]
+
         # recovers the name of the clicked btn
         self.hab_name = instance.text
         print(self.hab_name)
@@ -83,6 +93,11 @@ class AddHabitWindow(Screen):
         self.manager.current = "info"
 
     def add_the_info(self):
+        # open the config file
+        with open(resource_path2("data/config.json")) as f:
+            config = json.load(f)
+        self.user = config["name"]
+
         self.manager.get_screen("info").ids.name_of_the_hab.text = f"<- {self.hab_name}"
         question = db.get_info_hab(self.hab_name, "question", self.user)
         self.manager.get_screen("info").ids.qu_for_hab.text = question
@@ -97,7 +112,13 @@ class AddHabitWindow(Screen):
         self.manager.get_screen("info").ids.freq_for_hab.text = str(frequency)
 
     def delete_habit(self):
+        # open the config file
+        with open(resource_path2("data/config.json")) as f:
+            config = json.load(f)
+        self.user = config["name"]
+
         db.delete_habit(self.hab_name, self.user)
+        # --------------TO BE CONTINUED
 
     def color_selected(self, color):
         self.info["col"] = (str(color))
@@ -130,6 +151,9 @@ class HabitInfoWindow(Screen):
         config["first_timer"] = False
         with open(resource_path2("data/config.json"), 'w') as f:
             json.dump(config, f, indent=1)
+        
+        self.manager.get_screen("main").empty_hab()
+        self.manager.get_screen("main").load_all()
 
 class AddHabitPopup(Popup):
     """popup where the user will be able to
