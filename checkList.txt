@@ -1,0 +1,51 @@
+😝 finished
+😆 updates needed
+😥 in dev
+
+habit valid when done  5h
+    habit streak
+    
+colour picker 😆 0.5h
+panel for habit scrollview 😥 5h
+    habit GREAT SUCESS !! 😥
+    habit clickable 😝
+        timeline
+        info 😆
+        edit habit
+        delete habit 😥
+
+habit reminder 😥 7h+
+    ui 😥
+    backend 😥
+    api
+
+habit measurables 7h
+    graph
+    info
+    edit habit
+    delete habit
+
+styling  1h
+    fonts
+    colour palette 😆
+
+settings 😥
+    themes 😝
+    import/save habit file
+    about 😆
+    github link 😝
+
+calendar 😆  2h
+    add task
+    delete task
+
+put it online 😥
+    login 😝
+    sign up 😝
+    see your friend's progress
+
+
+
+
+to build it for linux
+pyinstaller src/main.py --onefile --noconfirm

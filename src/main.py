@@ -6,6 +6,7 @@ Config.set('graphics', 'height', '800')#2400//3
 # basic libraries
 import webbrowser as web
 import json
+from plyer import notification
 # from plyer import notification
 
 # scripts
@@ -44,11 +45,11 @@ LabelBase.register(
     fn_regular="assets/fonts/fa-solid.otf"
 )
 
-# notification.notify(
-#     title='Habit Reminder',
-#     message='Time to log your habit!',
-#     timeout=5
-# )
+notification.notify(
+    title='Habit Reminder',
+    message='Time to log your habit!',
+    timeout=5
+)
 
 class MyMainApp(MDApp):
     """MyMainApp is the main application class for the Habit Tracker application. 
@@ -203,8 +204,8 @@ class MyMainApp(MDApp):
         with open(resource_path2("data/config.json"), 'w') as f:
             json.dump(config, f, indent=1)
 
-    # def push_notif(self, hab, question):
-    #     notification.notify(title=str(hab), message=question, timeout=10)
+    def push_notif(self, hab, question):
+        notification.notify(title=str(hab), message=question, timeout=10)
 
 
 if __name__=="__main__":
