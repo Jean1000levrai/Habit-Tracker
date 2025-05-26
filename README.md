@@ -15,7 +15,7 @@ The goal of this app is to not forget to do your daily tasks. This app will push
 
 ## 🖼️ Screenshots
 
-
+[screenshot!][assets/screenshots/screenshot3.png]
 
 ## 🛠️ Installation
 
