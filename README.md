@@ -15,7 +15,17 @@ The goal of this app is to not forget to do your daily tasks. This app will push
 
 ## 🖼️ Screenshots
 
-[screenshot!][assets/screenshots/screenshot3.png]
+### Main Interface
+
+![Main Interface](assets/screenshots/screenshot3.png)
+
+### Editing
+
+![Editing](assets/screenshots/screenshot4.png)
+
+### Light Mode
+
+![Light Mode](assets/screenshots/screenshot5.png)
 
 ## 🛠️ Installation
 
