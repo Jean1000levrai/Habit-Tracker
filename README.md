@@ -13,19 +13,6 @@ The goal of this app is to not forget to do your daily tasks. This app will push
  - Saves data locally
  - Log in to your account and add friends to view their progress.
 
-## 🖼️ Screenshots
-
-### Main Interface
-
-![Main Interface](assets/screenshots/screenshot3.png)
-
-### Editing
-
-![Editing](assets/screenshots/screenshot4.png)
-
-### Light Mode
-
-![Light Mode](assets/screenshots/screenshot5.png)
 
 ## 🛠️ Installation
 
@@ -70,9 +57,6 @@ Le but de cette application est de ne pas oublier d’accomplir vos tâches quot
  - Sauvegarde des données en local
  - Connexion en ligne et ajout d’amis pour voir leur progression
 
-## 🖼️ Captures d’écran
-
-_Ajoutez une capture d’écran ici si disponible._
 
 ## 🛠️ Installation
 
@@ -102,3 +86,18 @@ Nécessite un environnement Linux (ou WSL sous Windows) avec Buildozer installé
 ## 📄 Licence
 
 Ce projet est sous licence MIT — voir le fichier LICENSE pour plus d’informations.
+
+
+# 🖼️ Screenshots
+
+### Main Interface
+
+![Main Interface](assets/screenshots/screenshot3.png)
+
+### Editing
+
+![Editing](assets/screenshots/screenshot4.png)
+
+### Light Mode
+
+![Light Mode](assets/screenshots/screenshot5.png)
