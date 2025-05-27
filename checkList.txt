@@ -39,6 +39,9 @@ calendar 😆  2h
     add task
     delete task
 
+develop mode
+    use sql injection 
+
 put it online 😥
     login 😝
     sign up 😝
