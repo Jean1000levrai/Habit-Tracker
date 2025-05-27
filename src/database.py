@@ -1,6 +1,7 @@
 import sqlite3 as sql
 import habit_mgr as hmgr
 from functions import *
+from calendar_db import *
 
 
 def connect_to_db():
@@ -165,10 +166,9 @@ def drop_all_tables(user=''):
 if __name__ == "__main__":
     hab = hmgr.HabitYesNo("runnnn")
     # create_db("easydoor")
-    create_db("jen")
     create_db('')
     # delete_habit("*", "easydoor")
-    print(get_habits_with_days("jen"))
+    # print(get_habits_with_days("jen"))
     print("--------------------")
     print(get_habits_with_days(""))
     # print(get_info_hab())

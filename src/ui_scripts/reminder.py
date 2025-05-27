@@ -45,13 +45,15 @@ class TimePopup(Popup):
         self.parent_screen = parent_screen
         self.next()
         self.time = "00:00:00"
-        self.time_tab = []
+        self.time_tab = {}
 
-    def get_time(self, instance, time):
+    def get_time(self, instance, time, button):
         global reminder_var
         self.time = str(time)
-        self.time_tab.append(str(time))
+        self.time_tab[button] = str(time)
+
         print(time)
+        print(self.time_tab)
 
         # Change the text of the button that was clicked
         if hasattr(self, 'current_btn') and self.current_btn:
@@ -60,7 +62,7 @@ class TimePopup(Popup):
     def next1(self, instance):
         self.current_btn = instance  # Store the button that was clicked
         popup = MDTimePicker()
-        popup.bind(on_save=self.get_time)
+        popup.bind(on_save=lambda timepick, time: self.get_time(instance=timepick, time=time, button=instance))
         popup.open()
     
     def day_next(self, instance):
@@ -119,8 +121,9 @@ class TimePopup(Popup):
 
         # update the var holding the value
         # time  
-        reminder_var[2].extend(self.time_tab)
-        while len(reminder_var[2]) != int(self.parent_screen.ids.times.text):
+        for v in self.time_tab.values():
+            reminder_var[2].append(v)
+        while len(reminder_var[2]) < int(self.parent_screen.ids.times.text):
             reminder_var[2].append("00:00:00")
 
         # times
