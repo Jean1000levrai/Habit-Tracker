@@ -16,6 +16,12 @@ The goal of this app is to not forget to do your daily tasks. This app will push
 
 ## 🛠️ Installation
 
+### Releases
+
+go to the linked website and install from there
+
+### Experimental (from the source code)
+
 ### Prerequisites
 
  - Python 3.x
@@ -37,6 +43,13 @@ python src/main.py
 buildozer -v android debug
 ```
 Requires Linux or WSL with Buildozer installed
+
+### Linux Build
+
+```bash
+pyinstaller src/main.py --onefile --noconfirm
+```
+Requires Linux or WSL
 
 ## 📄 License
 
