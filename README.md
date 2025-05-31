@@ -24,7 +24,8 @@ go to the linked website and install from there
 
 ### Prerequisites
 
- - Python 3.x
+ - Python 3.10.x
+ - openjdk 8 or 11
  - pip
  - Kivy
  - Buildozer (for android)
