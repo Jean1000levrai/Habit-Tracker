@@ -7,7 +7,6 @@ Config.set('graphics', 'height', '800')#2400//3
 import webbrowser as web
 import json
 from plyer import notification
-# from plyer import notification
 
 # scripts
 import habit_mgr as hmgr
@@ -27,18 +26,18 @@ from ui_scripts.calendar_script import *
 
 # ui utilities
 from kivy.uix.button import Button
-from kivy.app import App
-from kivy.lang import Builder
-from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.uix.popup import Popup
-from kivy.properties import ListProperty
-from kivy.clock import Clock
 from kivy.core.text import LabelBase
+from kivy.uix.popup import Popup
+from kivy.uix.screenmanager import ScreenManager, Screen
 
+from kivy.properties import ListProperty
+from kivy.lang import Builder
+from kivy.clock import Clock
+
+from kivy.app import App
 from kivymd.app import MDApp
 
-from kivy.core.window import Window
-print("Window size:", Window.size)
+
 
 LabelBase.register(
     name="FontAwesome",

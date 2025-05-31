@@ -19,10 +19,16 @@ class MainWindow(Screen):
 
     def empty_hab(self):
         layout = self.ids.labelled_habits
+        # clears habits
         for btn in self.lst_btn:
             if btn.parent:
                 layout.remove_widget(btn)
         self.lst_btn.clear()
+        # clears check boxes
+        for cb in self.lst_btn_check:
+            if cb.parent:
+                layout.remove_widget(cb)
+        self.lst_btn_check.clear()
 
     def load_all(self):
         # open the config file

@@ -16,7 +16,7 @@ def create_table(user = ''):
                     time TEXT,
                     date TEXT,
                     is_done BOOLEAN DEFAULT 0,
-                    measure INTEGER
+                    measure INTEGER,
                     FOREIGN KEY (id) REFERENCES habit_days_{user}(habit_id) ON DELETE CASCADE)""")
 
     conn.commit()
