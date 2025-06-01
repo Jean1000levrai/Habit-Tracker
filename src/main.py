@@ -23,6 +23,7 @@ from ui_scripts.addHabitUi import *
 from ui_scripts.settingsUi import *
 from ui_scripts.addHabitUi import *
 from ui_scripts.calendar_script import *
+from ui_scripts.addHabMUi import *
 
 # ui utilities
 from kivy.uix.button import Button
@@ -59,10 +60,11 @@ class MyMainApp(MDApp):
     bg_color = ListProperty([0.051, 0.067, 0.090, 1])
     panel_color = ListProperty([0.086, 0.106, 0.133, 1])
     outline_color = ListProperty([0.129, 0.149, 0.176, 1])
+    back_btn_color = ListProperty([0, 0, 0, 1])
     button_color = ListProperty([0.129, 0.149, 0.176, 1])
     sbutton_color = ListProperty([0.1176, 0.5333, 0.898, 1.0])
     text_color = ListProperty([0.788, 0.820, 0.851, 1])
-    big_panel = ListProperty([0, 0, 0, 1 ])  
+    big_panel = ListProperty([0, 0, 0, 1])  
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -79,10 +81,10 @@ class MyMainApp(MDApp):
         Builder.load_file(resource_path("ui/settings/aboutWindow.kv"))
         Builder.load_file(resource_path("ui/popup/habitpopup.kv"))
         Builder.load_file(resource_path("ui/popup/popupsForReminder.kv"))
-        Builder.load_file(resource_path("ui/popup/timePicker.kv"))
         Builder.load_file(resource_path("ui/login_ui/login_page.kv"))
         Builder.load_file(resource_path("ui/login_ui/signup.kv"))
         Builder.load_file(resource_path("ui/calendar/calendar_ui.kv"))
+        Builder.load_file(resource_path("ui/main/add_hab_m.kv"))
         
         # adds them to the window manager
         sm = WindowMgr()
@@ -99,6 +101,7 @@ class MyMainApp(MDApp):
             sm.add_widget(HabitInfoWindow(name="info"))
             sm.add_widget(AboutWindow(name="about"))
             sm.add_widget(SignupPage(name="signup"))
+            sm.add_widget(AddHabitMeasScreen(name="habMeasurable"))
         else:
             sm.add_widget(MainWindow(name="main"))
             sm.add_widget(ReminderWindow(name="reminder"))
@@ -109,6 +112,7 @@ class MyMainApp(MDApp):
             sm.add_widget(HabitInfoWindow(name="info"))
             sm.add_widget(AboutWindow(name="about"))
             sm.add_widget(SignupPage(name="signup"))
+            sm.add_widget(AddHabitMeasScreen(name="habMeasurable"))
 
         self.theme_cls.theme_style = "Dark"
 
@@ -155,9 +159,10 @@ class MyMainApp(MDApp):
         self.bg_color = (0.051, 0.067, 0.090, 1)
         self.panel_color = (0.086, 0.106, 0.133, 1)
         self.outline_color = (0.129, 0.149, 0.176, 1)
+        self.button_color  = (0.1, 0.1, 0.1, 1)
         self.text_color = (0.788, 0.820, 0.851, 1)
-        self.button_color = (0.129, 0.149, 0.176, 1)
-        self.sbutton_color = (0, 0.5333, 1, 1.0)
+        self.sbutton_color = (0.27, 0.37, 0.70, 1)
+        self.back_btn_color = (0, 0, 0, 1)
         self.big_panel = (0, 0, 0, 1)
 
         theme_text = "Theme: Dark"
@@ -167,13 +172,14 @@ class MyMainApp(MDApp):
     def light_theme(self):
         self.theme_cls.theme_style = "Light"
 
-        self.bg_color = (0.97, 0.97, 0.97, 1)
-        self.panel_color = (0.93, 0.93, 0.93, 1)
-        self.outline_color = (0.8, 0.8, 0.8, 1)
+        self.bg_color = (0.95, 0.96, 0.98, 1)
+        self.panel_color = (0.93, 0.94, 0.96, 1)
+        self.outline_color = (0.78, 0.80, 0.85, 1)
+        self.button_color = (0.78, 0.80, 0.85, 1)
+        self.sbutton_color = (0.0, 0.478, 0.757, 1.0)
         self.text_color = (0.1, 0.1, 0.1, 1)
-        self.button_color = (1, 1, 1, 0.5)
-        self.sbutton_color = (0, 0.5333, 1, 0.6)
-        self.big_panel = (0.8, 0.8, 0.8, 1)
+        self.back_btn_color = (0.9, 0.9, 0.9,)
+        self.big_panel = (1, 1, 1, 1)
 
         theme_text = "Theme: Light"
         settings_screen = self.root.get_screen('second')

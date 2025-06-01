@@ -19,7 +19,8 @@
                 text: "<- Discard & Back"
 
                 color: app.text_color
-                background_color: app.button_color
+                background_color: app.back_btn_color
+                background_normal: ''
 
                 halign: "left"
                 valign: "middle"
@@ -32,7 +33,7 @@
                     Color:
                         rgba: app.button_color  
                     Line:
-                        width: 1
+                        width: 2
                         rectangle: (self.x, self.y, self.width, self.height)
                 on_release: 
                     app.root.current = "habYesNo"
@@ -51,6 +52,7 @@
 
                 color: app.text_color
                 background_color: app.sbutton_color 
+                background_normal: ''
 
                 canvas.before:
                     Color:
@@ -77,6 +79,7 @@
 
                 color: app.text_color
                 background_color: app.button_color
+                background_normal: ''
 
                 canvas.before:
                     Color:
@@ -116,6 +119,7 @@
                 pos_hint: {"x": 0.57, "y": 0.85}
                 size: 120, 30
                 size_hint: None, None
+                background_normal: ''
 
                 canvas.before:
                     Color:

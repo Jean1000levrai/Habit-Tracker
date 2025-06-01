@@ -6,16 +6,34 @@
     size: 300, 250
     auto_dismiss: False
     
+    canvas.before:
+        Color:
+            rgba: app.bg_color
+        Rectangle:
+            pos: self.pos
+            size: self.size
 
     BoxLayout:
         orientation: 'vertical'
         spacing: 10
         padding: 10
+        
 
         Button:
             text: "Daily"
             size_hint_y: None
             height: 50
+            color: app.text_color
+            background_color: app.button_color
+            background_normal: ''
+            padding: 5, 0
+
+            canvas.before:
+                Color:
+                    rgba: app.outline_color  
+                Line:
+                    width: 1
+                    rectangle: (self.x, self.y, self.width, self.height)
             on_release:
                 root.parent_screen.ids.date_popup.text = "Daily"
                 root.dismiss()
@@ -24,6 +42,17 @@
             text: "Weekly"
             size_hint_y: None
             height: 50
+            color: app.text_color
+            background_color: app.button_color
+            background_normal: ''
+            padding: 5, 0
+
+            canvas.before:
+                Color:
+                    rgba: app.outline_color  
+                Line:
+                    width: 1
+                    rectangle: (self.x, self.y, self.width, self.height)
             on_release:
                 root.parent_screen.ids.date_popup.text = "Weekly"
                 root.dismiss()
@@ -32,6 +61,17 @@
             text: "Monthly"
             size_hint_y: None
             height: 50
+            color: app.text_color
+            background_color: app.button_color
+            background_normal: ''
+            padding: 5, 0
+
+            canvas.before:
+                Color:
+                    rgba: app.outline_color  
+                Line:
+                    width: 1
+                    rectangle: (self.x, self.y, self.width, self.height)
             on_release:
                 root.parent_screen.ids.date_popup.text = "Monthly"
                 root.dismiss()
@@ -55,7 +95,8 @@
                 text: "<- Discard & Back"
 
                 color: app.text_color
-                background_color: app.button_color
+                background_color: app.back_btn_color
+                background_normal: ''
 
                 halign: "left"
                 valign: "middle"
@@ -70,7 +111,7 @@
                     Color:
                         rgba: app.button_color  
                     Line:
-                        width: 1
+                        width: 2
                         rectangle: (self.x, self.y, self.width, self.height)
                 on_release: 
                     root.dismiss()
@@ -105,6 +146,7 @@
 
                 color: app.text_color
                 background_color: app.sbutton_color 
+                background_normal: ''
 
                 canvas.before:
                     Color:

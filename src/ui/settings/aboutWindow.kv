@@ -18,13 +18,14 @@
                 text: "<- about"
                 pos_hint: {"center_x":0.5, "center_y":0.5}
                 color: app.text_color
-                background_color: app.button_color 
+                background_color: app.back_btn_color 
+                background_normal: ''
                 border: (10,10,10,10)
                 canvas.before:
                     Color:
                         rgba: app.outline_color   
                     Line:
-                        width: 1
+                        width: 2
                         rectangle: (self.x, self.y, self.width, self.height)
                 on_release: 
                     app.root.current = "second"

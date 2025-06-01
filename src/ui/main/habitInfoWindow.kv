@@ -19,13 +19,14 @@
                 text: "<- name of the habit"    # FUTURE ME, PUT THE NAME OF THE HABIT
                 pos_hint: {"center_x":0.5, "center_y":0.5}
                 color: app.text_color
-                background_color: app.button_color 
+                background_color: app.back_btn_color 
+                background_normal: ''
                 border: (10,10,10,10)
                 canvas.before:
                     Color:
                         rgba: app.outline_color   
                     Line:
-                        width: 1
+                        width: 2
                         rectangle: (self.x, self.y, self.width, self.height)
                 on_release: 
                     app.root.current = "main"
@@ -42,6 +43,7 @@
 
                 color: app.text_color
                 background_color: app.sbutton_color 
+                background_normal: ''
 
                 canvas.before:
                     Color:
@@ -62,6 +64,7 @@
                 size_hint: None, None
                 pos_hint: {"x": 0.1}
                 background_color: (1, 0, 0, 0.6)
+                background_normal: ''
                 size: 60, 60
                 on_release:
                     root.delete_habit()

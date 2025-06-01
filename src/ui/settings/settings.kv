@@ -19,7 +19,8 @@
                 text: "<- settings"
 
                 color: app.text_color
-                background_color: app.button_color
+                background_color: app.back_btn_color
+                background_normal: ''
 
                 pos_hint: {"center_x":0.5, "center_y":0.5}
                 border: (10,10,10,10)
@@ -27,7 +28,7 @@
                     Color:
                         rgba: app.button_color  
                     Line:
-                        width: 1
+                        width: 2
                         rectangle: (self.x, self.y, self.width, self.height)
                 on_release: 
                     app.root.current = "main"
@@ -68,6 +69,7 @@
                         id: settings_theme
                         color: app.text_color
                         background_color: app.button_color
+                        background_normal: ''
                         text: "Theme: Dark"
                         on_release:
                             app.theme()
@@ -82,6 +84,7 @@
                     Button:
                         color: app.text_color
                         background_color: app.button_color
+                        background_normal: ''
                         text: "sign out"
                         canvas.before:
                             Color:
@@ -95,6 +98,7 @@
                     Button:
                         color: app.text_color
                         background_color: app.button_color
+                        background_normal: ''
                         text: "About"
                         canvas.before:
                             Color:
@@ -109,6 +113,7 @@
                         id: github
                         color: app.text_color
                         background_color: app.button_color
+                        background_normal: ''
                         text: "Github"
                         canvas.before:
                             Color:
