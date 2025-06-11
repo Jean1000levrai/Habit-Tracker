@@ -45,13 +45,13 @@ LabelBase.register(
     fn_regular="assets/fonts/fa-solid.otf"
 )
 
-notification.notify(
-    title='Habit Reminder',
-    message='Time to log your habit!',
-    timeout=5
-)
+# notification.notify(
+#     title='Habit Reminder',
+#     message='Time to log your habit!',
+#     timeout=5
+# )
 
-class MyMainApp(MDApp):
+class App(MDApp):
     """MyMainApp is the main application class for the Habit Tracker application. 
     It manages the application's theme, loads the user interface files, and 
     initializes the window manager with different screens."""
@@ -103,9 +103,9 @@ class MyMainApp(MDApp):
             sm.add_widget(SignupPage(name="signup"))
             sm.add_widget(AddHabitMeasScreen(name="habMeasurable"))
         else:
+            sm.add_widget(LoginPage(name="login"))
             sm.add_widget(MainWindow(name="main"))
             sm.add_widget(ReminderWindow(name="reminder"))
-            sm.add_widget(LoginPage(name="login"))
             sm.add_widget(CalendarScreen(name="calendar"))
             sm.add_widget(SettingsWindow(name="second"))
             sm.add_widget(AddHabitWindow(name="habYesNo"))
@@ -214,5 +214,5 @@ class MyMainApp(MDApp):
 
 
 if __name__=="__main__":
-    myapp = MyMainApp()
+    myapp = App()
     myapp.run()

@@ -15,6 +15,7 @@ class MainWindow(Screen):
         self.hab_name = ''
         self.lst_btn = []
         self.lst_btn_check = {}
+        self.lst_btn_details = []
         self.load_all()
 
     def empty_hab(self):
@@ -45,7 +46,7 @@ class MainWindow(Screen):
             info = f"{row[1]}"
             btn = Button(
                 text=f'{info}', 
-                size_hint_x=0.8,         # makes the btn expand correctly, according to smart people
+                size_hint_x=0.7,         # makes the btn expand correctly, according to smart people
                 size_hint_y=None,
                 height=60,
                 background_color=(0, 0, 0, 0),
@@ -69,18 +70,34 @@ class MainWindow(Screen):
                 text_size=(0, None),
             ),
             False]
+            btn_detail = Button(
+                text="...", 
+                size_hint_x=0.1,
+                size_hint_y=None,
+                height=60,
+                background_color=(0, 0, 0, 0),
+                color=self.app.text_color,
+                valign="middle",
+                halign="center",
+                text_size=(0, None),
+                padding=(10, 10)
+            )
             
             btn.bind(width=lambda instance, value: setattr(instance, 'text_size', (value, None)))
+            btn.bind(width=lambda instance, value: setattr(instance, 'text_size', (value, None)))     
             btn_check[0].bind(size=lambda instance, value: setattr(instance, 'text_size', value))
             
             self.lst_btn.append(btn)
             self.lst_btn_check[btn_check[0]] = btn_check[1]
+            self.lst_btn_details.append(btn_detail)
 
             self.app.bind(text_color=lambda instance, value, b=btn: setattr(b, 'color', value))
             self.ids.labelled_habits.add_widget(btn)
             self.ids.labelled_habits.add_widget(btn_check[0])
+            #self.ids.labelled_habits.add_widget(btn_detail)
+            
             btn.bind(on_release=self.on_btn_release)
-
+            
     def check(self, instance):
         if self.lst_btn_check[instance]:
             instance.text = "  "
