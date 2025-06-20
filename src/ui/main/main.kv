@@ -49,75 +49,77 @@
             canvas.before:
                 Color:
                     rgba: app.outline_color  
-                Rectangle:
-                    pos: self.pos
-                    size: self.size
+                RoundedRectangle:
+                    pos: self.x + 3, self.y + 5
+                    size: self.width - 5, self.height * 1.5 - 5
                     
                 Color:
-                    rgba: app.panel_color 
-                Rectangle:
-                    pos: self.pos
-                    size: self.width, self.height - 2
+                    rgba: app.big_panel
+                RoundedRectangle:
+                    pos: self.x + 5, self.y + 7
+                    size: self.width - 9, self.height * 1.5 - 9
             Button:
-                size_hint: 0.15, 1
+                size_hint: 0.3, 1
                 text: "+"
                 font_name: "FontAwesome"
                 font_size: '24sp'
 
                 color: app.text_color
-                background_color: app.sbutton_color
+                background_color: 0, 0, 0, 0
                 background_normal: ''
 
-                pos_hint: {"x": 0, "y": 0}
+                pos_hint: {"x": 0.03, "y": 0.3}
+
+                on_release: 
+                    app.popup()
 
                 canvas.before:
                     Color:
-                        rgba: app.outline_color  
-                    Line:
-                        width: 1
-                        rectangle: (self.x, self.y, self.width, self.height)
-                on_release: 
-                    app.popup()
+                        rgba: app.sbutton_color
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
                 
             Button:
-                size_hint: 0.15, 1
+                size_hint: 0.3, 1
                 text: ""
                 font_name: "FontAwesome"
                 font_size: '24sp'
 
                 color: app.text_color
-                background_color: app.sbutton_color
+                background_color: 0, 0, 0, 0
                 background_normal: ''
 
-                pos_hint: {"x": 0.85, "y": 0}
+                pos_hint: {"x": 0.67, "y": 0.3}
 
                 canvas.before:
                     Color:
-                        rgba: app.outline_color  
-                    Line:
-                        width: 1
-                        rectangle: (self.x, self.y, self.width, self.height)
+                        rgba: app.sbutton_color
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+                
                 on_release: 
                     app.root.current = "second"
                     root.manager.transition.direction = "left"
             Button:
-                size_hint: 0.25, 1
+                size_hint: 0.3, 1
                 text: ""
                 font_name: "FontAwesome"
                 font_size: '24sp'
 
                 color: app.text_color
-                background_color: app.sbutton_color
+                background_color: 0, 0, 0, 0
                 background_normal: ''
 
-                pos_hint: {"x": 0.375, "y": 0}
+                pos_hint: {"x": 0.35, "y": 0.3}
 
                 canvas.before:
                     Color:
-                        rgba: app.outline_color  
-                    Line:
-                        width: 1
-                        rectangle: (self.x, self.y, self.width, self.height)
+                        rgba: app.sbutton_color
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
                 on_release: 
                     app.root.current = "calendar"
                     root.manager.transition.direction = "left"

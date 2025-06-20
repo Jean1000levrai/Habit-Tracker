@@ -6,6 +6,9 @@ from functions import *
 from login.login_script import *
 from login.login_ui_script import *
 
+from kivy.uix.gridlayout import GridLayout
+from kivy.graphics import Color, Rectangle, RoundedRectangle
+
 
 class MainWindow(Screen):
     """the main screen window"""
@@ -14,22 +17,30 @@ class MainWindow(Screen):
         self.app = App.get_running_app()
         self.hab_name = ''
         self.lst_btn = []
-        self.lst_btn_check = {}
+        self.lst_bg_btn = []
+        self.lst_btn_check = []
         self.lst_btn_details = []
         self.load_all()
 
     def empty_hab(self):
         layout = self.ids.labelled_habits
-        # clears habits
-        for btn in self.lst_btn:
+        # # clears habits
+        # for btn in self.lst_btn:
+        #     if btn.parent:
+        #         layout.remove_widget(btn)
+        # self.lst_btn.clear()
+        # # clears check boxes
+        # for cb in self.lst_btn_check:
+        #     if cb.parent:
+        #         layout.remove_widget(cb)
+        # self.lst_btn_check.clear()
+        for btn in self.lst_bg_btn:
             if btn.parent:
                 layout.remove_widget(btn)
-        self.lst_btn.clear()
-        # clears check boxes
-        for cb in self.lst_btn_check:
-            if cb.parent:
-                layout.remove_widget(cb)
-        self.lst_btn_check.clear()
+        self.lst_btn = []
+        self.lst_bg_btn = []
+        self.lst_btn_check = []
+        self.lst_btn_details = []
 
     def load_all(self):
         # open the config file
@@ -44,6 +55,11 @@ class MainWindow(Screen):
         # by loop on all the db and displays it with a button
         for row in db.show_habit_for_gui('*',self.user):
             info = f"{row[1]}"
+            btn_bg = GridLayout(cols=3, size_hint_y=None, height=60)
+            btn_bg.canvas.before.clear()
+            with btn_bg.canvas.before:
+                Color(0.15, 0.15, 0.15, 1)
+                btn_bg._bg_rect = RoundedRectangle(pos=btn_bg.pos, size=btn_bg.size)       
             btn = Button(
                 text=f'{info}', 
                 size_hint_x=0.7,         # makes the btn expand correctly, according to smart people
@@ -56,10 +72,9 @@ class MainWindow(Screen):
                 text_size=(0, None),
                 padding=(10, 10)
             )
-            btn_check = [Button(
+            btn_check = Button(
                 font_name="FontAwesome",
                 text="  ",
-                on_release=self.check,
                 size_hint_x=0.2,
                 size_hint_y=None,
                 height=60,
@@ -68,10 +83,10 @@ class MainWindow(Screen):
                 halign="center",
                 padding=(0, 0), 
                 text_size=(0, None),
-            ),
-            False]
+            )
             btn_detail = Button(
-                text="...", 
+                font_name="FontAwesome",
+                text="", 
                 size_hint_x=0.1,
                 size_hint_y=None,
                 height=60,
@@ -84,17 +99,21 @@ class MainWindow(Screen):
             )
             
             btn.bind(width=lambda instance, value: setattr(instance, 'text_size', (value, None)))
-            btn.bind(width=lambda instance, value: setattr(instance, 'text_size', (value, None)))     
-            btn_check[0].bind(size=lambda instance, value: setattr(instance, 'text_size', value))
+            btn.bind(width=lambda instance, value: setattr(instance, 'text_size', (value, None)))
+            btn_bg.bind(pos=lambda instance, value: setattr(btn_bg._bg_rect, 'pos', value))
+            btn_bg.bind(size=lambda instance, value: setattr(btn_bg._bg_rect, 'size', value))     
+            btn_check.bind(size=lambda instance, value: setattr(instance, 'text_size', value))
             
+            self.lst_bg_btn.append(btn_bg)
             self.lst_btn.append(btn)
-            self.lst_btn_check[btn_check[0]] = btn_check[1]
+            self.lst_btn_check.append(btn_check)
             self.lst_btn_details.append(btn_detail)
 
             self.app.bind(text_color=lambda instance, value, b=btn: setattr(b, 'color', value))
-            self.ids.labelled_habits.add_widget(btn)
-            self.ids.labelled_habits.add_widget(btn_check[0])
-            #self.ids.labelled_habits.add_widget(btn_detail)
+            self.ids.labelled_habits.add_widget(btn_bg)
+            btn_bg.add_widget(btn)
+            btn_bg.add_widget(btn_check)
+            btn_bg.add_widget(btn_detail)
             
             btn.bind(on_release=self.on_btn_release)
             

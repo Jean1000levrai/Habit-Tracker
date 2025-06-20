@@ -103,15 +103,15 @@ class App(MDApp):
             sm.add_widget(SignupPage(name="signup"))
             sm.add_widget(AddHabitMeasScreen(name="habMeasurable"))
         else:
-            sm.add_widget(LoginPage(name="login"))
             sm.add_widget(MainWindow(name="main"))
+            sm.add_widget(SignupPage(name="signup"))
+            sm.add_widget(LoginPage(name="login"))
             sm.add_widget(ReminderWindow(name="reminder"))
             sm.add_widget(CalendarScreen(name="calendar"))
             sm.add_widget(SettingsWindow(name="second"))
             sm.add_widget(AddHabitWindow(name="habYesNo"))
             sm.add_widget(HabitInfoWindow(name="info"))
             sm.add_widget(AboutWindow(name="about"))
-            sm.add_widget(SignupPage(name="signup"))
             sm.add_widget(AddHabitMeasScreen(name="habMeasurable"))
 
         self.theme_cls.theme_style = "Dark"

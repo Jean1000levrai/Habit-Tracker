@@ -49,8 +49,10 @@
                 id: username
                 hint_text: "Username or Email"
                 multiline: False
+
                 foreground_color: app.text_color
-                background_color: 1,1,1,1
+                background_color: app.outline_color
+
                 size_hint: None, None
                 size: 300, 40
                 pos_hint: {"center_x":0.5, "center_y":0.7}
@@ -103,6 +105,7 @@
                         rectangle: (self.x, self.y, self.width, self.height)
                 on_release:
                     root.login()
+
             Button:
                 id: signup_btn
                 text: "Sign up"
@@ -127,7 +130,7 @@
 
                 background_color: 0, 0, 0, 0
                 color: 0.5, 0.5, 0.5, 1
-                underline: True
+
                 background_down: ''
                 background_normal: ''
 
