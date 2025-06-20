@@ -1,4 +1,4 @@
-## English
+# English
 # 📱 Habit Tracker
 
 This project is made by Jean, currently a high school student in France.
@@ -55,8 +55,10 @@ Requires Linux or WSL
 ## 📄 License
 
 This project is licensed under the MIT License — see the LICENSE file for details.
-
-## Français
+#
+#
+#
+# Français
 # 📱 Habit Tracker
 
 Ce projet a été réalisé par Jean, actuellement lycéen en France.  
