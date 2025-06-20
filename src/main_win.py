@@ -6,9 +6,84 @@ from functions import *
 from login.login_script import *
 from login.login_ui_script import *
 
-from kivy.uix.gridlayout import GridLayout
+from kivy.uix.boxlayout import BoxLayout
 from kivy.graphics import Color, Rectangle, RoundedRectangle
 
+
+class HabitRow(BoxLayout):
+    def __init__(self, habit_name, app, on_btn_release, **kwargs):
+        super().__init__(orientation='horizontal', size_hint_y=None, height=60, **kwargs)
+        self.app = app
+        self.habit_name = habit_name
+
+        # Background
+        with self.canvas.before:
+            self.bg_color = Color(app.button_color)
+            self.bg_rect = RoundedRectangle(pos=self.pos, size=self.size)
+        self.bind(pos=self.update_rect, size=self.update_rect)
+        self.set_background_color(app.button_color )
+
+        # Main text button
+        self.btn = Button(
+            text=habit_name,
+            size_hint_x=0.7,
+            size_hint_y=1,
+            background_color=(0, 0, 0, 0),
+            color=app.text_color,
+            halign="left",
+            valign="middle",
+            padding=(10, 10),
+            text_size=(0, None)
+        )
+        self.btn.bind(width=self._update_text_size)
+
+        # Checkbox button
+        self.btn_check = Button(
+            font_name="FontAwesome",
+            text="  ",
+            size_hint_x=0.2,
+            size_hint_y=1,
+            background_color=(0, 0, 0, 0),
+            halign="center",
+            valign="middle"
+        )
+        self.btn_check.bind(size=self._update_text_size)
+
+        # Details/edit button
+        self.btn_detail = Button(
+            font_name="FontAwesome",
+            text="",
+            size_hint_x=0.1,
+            size_hint_y=1,
+            background_color=(0, 0, 0, 0),
+            color=app.text_color,
+            halign="center",
+            valign="middle"
+        )
+
+        # Re-bind color changes from app
+        app.bind(button_color=lambda _, value: setattr(self.bg_color, 'rgba', value))
+        app.bind(text_color=lambda _, value: setattr(self.btn, 'color', value))
+        app.bind(text_color=lambda _, value: setattr(self.btn_detail, 'color', value))
+
+        # Events
+        self.btn.bind(on_release=on_btn_release)
+
+        # Add buttons
+        self.add_widget(self.btn)
+        self.add_widget(self.btn_check)
+        self.add_widget(self.btn_detail)
+
+    def update_rect(self, *_):
+        self.bg_rect.pos = self.pos
+        self.bg_rect.size = self.size
+
+    def _update_text_size(self, instance, _):
+        instance.text_size = (instance.width, None)
+    
+    def set_background_color(self, rgba):
+        """Update background color dynamically."""
+        self.bg_color.rgba = rgba
 
 class MainWindow(Screen):
     """the main screen window"""
@@ -24,23 +99,14 @@ class MainWindow(Screen):
 
     def empty_hab(self):
         layout = self.ids.labelled_habits
-        # # clears habits
-        # for btn in self.lst_btn:
-        #     if btn.parent:
-        #         layout.remove_widget(btn)
-        # self.lst_btn.clear()
-        # # clears check boxes
-        # for cb in self.lst_btn_check:
-        #     if cb.parent:
-        #         layout.remove_widget(cb)
-        # self.lst_btn_check.clear()
+
         for btn in self.lst_bg_btn:
             if btn.parent:
                 layout.remove_widget(btn)
-        self.lst_btn = []
-        self.lst_bg_btn = []
-        self.lst_btn_check = []
-        self.lst_btn_details = []
+        self.lst_btn.clear()
+        self.lst_bg_btn.clear()
+        self.lst_btn_check.clear()
+        self.lst_btn_details.clear()
 
     def load_all(self):
         # open the config file
@@ -51,71 +117,38 @@ class MainWindow(Screen):
         # displays the name of the user at the top
         self.ids.title_app.text = self.user
 
+        # adds the default height of the scrollview
+        self.ids.labelled_habits.height = 0
+
         # displays all the habits from the db
         # by loop on all the db and displays it with a button
         for row in db.show_habit_for_gui('*',self.user):
-            info = f"{row[1]}"
-            btn_bg = GridLayout(cols=3, size_hint_y=None, height=60)
-            btn_bg.canvas.before.clear()
-            with btn_bg.canvas.before:
-                Color(0.15, 0.15, 0.15, 1)
-                btn_bg._bg_rect = RoundedRectangle(pos=btn_bg.pos, size=btn_bg.size)       
-            btn = Button(
-                text=f'{info}', 
-                size_hint_x=0.7,         # makes the btn expand correctly, according to smart people
-                size_hint_y=None,
-                height=60,
-                background_color=(0, 0, 0, 0),
-                color=self.app.text_color,
-                halign="left",
-                valign="middle",
-                text_size=(0, None),
-                padding=(10, 10)
-            )
-            btn_check = Button(
-                font_name="FontAwesome",
-                text="  ",
-                size_hint_x=0.2,
-                size_hint_y=None,
-                height=60,
-                background_color=(0, 0, 0, 0),
-                valign="middle",
-                halign="center",
-                padding=(0, 0), 
-                text_size=(0, None),
-            )
-            btn_detail = Button(
-                font_name="FontAwesome",
-                text="", 
-                size_hint_x=0.1,
-                size_hint_y=None,
-                height=60,
-                background_color=(0, 0, 0, 0),
-                color=self.app.text_color,
-                valign="middle",
-                halign="center",
-                text_size=(0, None),
-                padding=(10, 10)
-            )
-            
-            btn.bind(width=lambda instance, value: setattr(instance, 'text_size', (value, None)))
-            btn.bind(width=lambda instance, value: setattr(instance, 'text_size', (value, None)))
-            btn_bg.bind(pos=lambda instance, value: setattr(btn_bg._bg_rect, 'pos', value))
-            btn_bg.bind(size=lambda instance, value: setattr(btn_bg._bg_rect, 'size', value))     
-            btn_check.bind(size=lambda instance, value: setattr(instance, 'text_size', value))
-            
-            self.lst_bg_btn.append(btn_bg)
-            self.lst_btn.append(btn)
-            self.lst_btn_check.append(btn_check)
-            self.lst_btn_details.append(btn_detail)
 
-            self.app.bind(text_color=lambda instance, value, b=btn: setattr(b, 'color', value))
-            self.ids.labelled_habits.add_widget(btn_bg)
-            btn_bg.add_widget(btn)
-            btn_bg.add_widget(btn_check)
-            btn_bg.add_widget(btn_detail)
-            
-            btn.bind(on_release=self.on_btn_release)
+            habit_name = row[1]
+
+            habit_row = HabitRow(habit_name, self.app, self.on_btn_release)
+
+            # Store references (optional)
+            self.lst_btn.append(habit_row.btn)
+            self.lst_btn_check.append(habit_row.btn_check)
+            self.lst_btn_details.append(habit_row.btn_detail)
+            self.lst_bg_btn.append(habit_row)
+
+            self.ids.labelled_habits.add_widget(habit_row)
+            self.ids.labelled_habits.height += habit_row.height
+        # self.add = Button(text="ADD",
+        #     size_hint_x=0.5,
+        #     size_hint_y=1,
+        #     background_color=self.app.sbutton_color,
+        #     color=self.app.text_color,
+        #     halign="left",
+        #     valign="middle",
+        #     padding=(10, 10),
+        #     text_size=(0, None))
+        
+        # self.app.bind(text_color=lambda _, value: setattr(self.add, 'color', value))
+        # self.ids.labelled_habits.add_widget(self.add)
+        # self.ids.labelled_habits.height += self.add.height
             
     def check(self, instance):
         if self.lst_btn_check[instance]:

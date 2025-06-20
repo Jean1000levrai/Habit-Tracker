@@ -147,11 +147,14 @@
                 do_scroll_x: False
                 do_scroll_y: True
                 
-                StackLayout:
-                    cols: 1
+                BoxLayout:
                     id: labelled_habits
+                    orientation: 'vertical'
                     size_hint_y: None
+                    size_hint_x: 1
+                    width: self.parent.width
                     padding: 30, 10
+                    height: self.minimum_height
 <WelcomePopup>:
     title: "Welcome!"
     size_hint: 0.6, 0.4
@@ -164,17 +167,11 @@
 
         Label:
             text: "Welcome to the app!"
-        Label:
-            text: "Who are you?"
-        TextInput:
-            id: set_name
-            hint_text:"name"
 
         Button:
             text: "Close"
             size_hint_y: 0.3
             background_normal: ''
-            on_release: 
-                root.set_name()    
+            on_release:   
                 root.dismiss()
                 
