@@ -20,12 +20,14 @@ from kivy.uix.label import Label
 
 class AddHabitWindow(Screen):
     """the window where you add a habit"""
-    def __init__(self, **kw):
+    def __init__(self, edit_mode = False, **kw):
         super().__init__(**kw)
         self.app = App.get_running_app()
         self.info = {}
         self.hab = hmgr.HabitYesNo()
         self.hab_name = ''
+        self.edit_mode = edit_mode
+
         # open the config file
         with open(resource_path2("data/config.json")) as f:
             config = json.load(f)
@@ -66,15 +68,21 @@ class AddHabitWindow(Screen):
             config = json.load(f)
         self.user = config["name"]
 
-        try:
-            info = self.get_info()
+        # try:
+        print(self.edit_mode)
+        info = self.get_info()
+        if self.edit_mode:
+            db.update(info, self.user)
+            self.edit_mode = False
+        else:
             db.add_habit(info, self.user)
-            self.manager.get_screen("main").empty_hab()
-            self.manager.get_screen("main").load_all()
+        self.manager.get_screen("main").empty_hab()
+        self.manager.get_screen("main").load_all()
 
-            db.print_table(self.user)
-        except:
-            print("not a valid input")
+        db.print_table(self.user)
+        # except:
+        #     print(self.edit_mode)
+        #     print("not a valid input")
 
     def on_btn_release(self, instance):
         # open the config file

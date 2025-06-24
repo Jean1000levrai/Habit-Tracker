@@ -17,6 +17,8 @@ from kivy.uix.screenmanager import Screen
 class CalendarScreen(Screen):
     def __init__(self, **kw):
         super().__init__(**kw)
+        self.app = App.get_running_app()
+        
         # data to be used to ease the dev
         self.days = ['M', 'T', 'W', 'Th', 'F', 'S', 'Su']
         self.id_days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
@@ -38,7 +40,6 @@ class CalendarScreen(Screen):
         self.current_date = datetime.today().strftime("%d-%m-%Y")
         self.current_now = datetime.today()
         
-        self.app = App.get_running_app()
 
         # open the config file
         with open(resource_path2("data/config.json")) as f:
@@ -50,6 +51,17 @@ class CalendarScreen(Screen):
         self.sets_day(self.current_day, self.current_date)
         self.sets_every_hours()
 
+
+    def _update_button_bg(self, btn):
+        def update(_, value):
+            btn.background_color = value
+        return update
+
+    def _update_button_fg(self, btn):
+        def update(_, value):
+            btn.color = value
+        return update
+    
 #----------the hours btns----------
     def sets_every_hours(self):
         """method that initializes all the hours of the calendar
@@ -62,6 +74,7 @@ class CalendarScreen(Screen):
                 text = f"{j} : 00",
 
                 background_color=(0,0,0,0),
+                background_normal = '',
                 color=self.app.text_color,
                 size_hint_x = None,
                 width = 90,
@@ -71,8 +84,13 @@ class CalendarScreen(Screen):
                 text = "",
 
                 background_color=self.app.button_color,
+                background_normal = '',
                 color=self.app.text_color,
             )
+
+            # Bind color updates
+            self.app.fbind('button_color', self._update_button_bg(btn2))
+            self.app.fbind('text_color', self._update_button_fg(btn2))
             # adds it
             self.ids.calendar_square.add_widget(btn1)
             self.ids.calendar_square.add_widget(btn2)
@@ -100,8 +118,13 @@ class CalendarScreen(Screen):
                 width = 40,
                 height = 40,
                 background_color=self.app.button_color,
+                background_normal = '',
                 color=self.app.text_color,
             )
+
+            # Bind color updates
+            self.app.fbind('button_color', self._update_button_bg(btn))
+            self.app.fbind('text_color', self._update_button_fg(btn))
 
             # stores it (accessible through full name or abrevietion)
             # e.g. 'M' or "Monday"

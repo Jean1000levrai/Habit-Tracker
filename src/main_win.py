@@ -143,20 +143,32 @@ class MainWindow(Screen):
 
             self.ids.labelled_habits.add_widget(habit_row)
             self.ids.labelled_habits.height += habit_row.height
-        self.add = Button(text="ADD",
+        # Use canvas to draw a rounded rectangle behind the ADD button for rounded edges
+        self.add = Button(
+            text="ADD",
             size_hint_x=None,
             size_hint_y=None,
-            height = 50,
-            width = 100,
-            background_color=self.app.sbutton_color,
-            background_normal = '',
+            height=50,
+            width=100,
+            background_color=(0, 0, 0, 0),  # Transparent, so we can draw our own bg
+            background_normal='',
             color=self.app.text_color,
             halign="left",
             valign="middle",
             padding=(10, 10),
             pos_hint={"center_x": 0.5},
             on_release=self.app.popup
+        )
+        # the bg
+        with self.add.canvas.before:
+            self.add_bg_color = Color(*self.app.sbutton_color)
+            self.add_bg_rect = RoundedRectangle(
+            pos=self.add.pos,
+            size=self.add.size,
+            radius=[10, 10, 10, 10]
             )
+        self.add.bind(pos=lambda instance, value: setattr(self.add_bg_rect, 'pos', value))
+        self.add.bind(size=lambda instance, value: setattr(self.add_bg_rect, 'size', value))
         
         self.app.bind(text_color=lambda _, value: setattr(self.add, 'color', value))
         self.ids.labelled_habits.add_widget(self.add)
@@ -195,22 +207,30 @@ class MainWindow(Screen):
 
         # handles the window change
         self.manager.transition.direction = "left"
-        self.manager.current = "info"
+        self.manager.current = "habYesNo"
 
-    def add_the_info(self):
+        self.manager.get_screen("habYesNo").edit_mode = True
 
-        self.manager.get_screen("info").ids.name_of_the_hab.text = f"<- {self.hab_name}"
-        question = db.get_info_hab(self.hab_name, "question", self.user)
-        self.manager.get_screen("info").ids.qu_for_hab.text = question
+    def add_the_info(self, b = False):
+        if b:
+            self.manager.get_screen("habYesNo").ids.name.text = ''
+            self.manager.get_screen("habYesNo").ids.qu.text = ''
+            self.manager.get_screen("habYesNo").ids.descr.text = ''
 
-        descr = db.get_info_hab(self.hab_name, "description", self.user)
-        self.manager.get_screen("info").ids.descr_for_hab.text = str(descr)
+        else:
+            self.manager.get_screen("habYesNo").ids.name.text = self.hab_name
 
-        reminder = db.get_info_hab(self.hab_name, "reminder", self.user)
-        self.manager.get_screen("info").ids.rem_for_hab.text = str(reminder)
+            question = db.get_info_hab(self.hab_name, "question", self.user)
+            self.manager.get_screen("habYesNo").ids.qu.text = question
 
-        frequency = db.get_info_hab(self.hab_name, "frequency", self.user)
-        self.manager.get_screen("info").ids.freq_for_hab.text = str(frequency)
+            descr = db.get_info_hab(self.hab_name, "description", self.user)
+            self.manager.get_screen("habYesNo").ids.descr.text = str(descr)
+
+            # reminder = db.get_info_hab(self.hab_name, "reminder", self.user)
+            # self.manager.get_screen("habYesNo").ids.rem_for_hab.text = str(reminder)
+
+            # frequency = db.get_info_hab(self.hab_name, "frequency", self.user)
+            # self.manager.get_screen("habYesNo").ids.freq_for_hab.text = str(frequency)
 
 class SureDelPopup(Popup):
     pass

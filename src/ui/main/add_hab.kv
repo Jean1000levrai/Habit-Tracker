@@ -3,12 +3,15 @@
 
     # ----------Main-----------
     FloatLayout:
+        # rice the layout
         canvas.before:
             Color:
                 rgba: app.bg_color
             Rectangle:
                 pos: self.pos
                 size: self.size
+
+        # the layout where input goes
         BoxLayout:
             orientation: 'vertical'
             size_hint: 0.9, 0.27
@@ -122,7 +125,7 @@
             anchor_x: "center"
             anchor_y: "top"
 
-            # exit
+            # exit btn
             Button:
                 text: "<- Discard & Back"
 
@@ -143,6 +146,7 @@
                     Line:
                         width: 2
                         rectangle: (self.x, self.y, self.width, self.height)
-                on_release: 
+                on_release:
                     app.root.current = "main"
                     root.manager.transition.direction = "right"
+                    app.root.get_screen('main').add_the_info(True)

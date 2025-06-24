@@ -162,6 +162,31 @@ def drop_all_tables(user=''):
     conn.commit()
     conn.close()
 
+def update(hab, user=''):
+    """Update a habit's info in the database."""
+    conn = connect_to_db()
+    cur = conn.cursor()
+
+    info = hab_info(hab)
+    # info = [name, colour, question, reminder, description, frequency]
+
+    # Fetch id by name
+    cur.execute(f"SELECT id FROM habits_{user} WHERE name = ?", (info[0],))
+    row = cur.fetchone()
+    print(row)
+    if not row:
+        conn.close()
+        raise ValueError("Habit not found")
+    habit_id = row[0]
+
+    cur.execute(f"""
+        UPDATE habits_{user}
+        SET name = ?, question = ?, description = ?
+        WHERE id = ?
+    """, (info[0], info[2], info[4], habit_id))
+
+    conn.commit()
+    conn.close()
 
 if __name__ == "__main__":
     hab = hmgr.HabitYesNo("runnnn")
