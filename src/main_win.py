@@ -11,7 +11,7 @@ from kivy.graphics import Color, Rectangle, RoundedRectangle
 
 
 class HabitRow(BoxLayout):
-    def __init__(self, habit_name, app, on_btn_release, dell, **kwargs):
+    def __init__(self, habit_name, app, on_btn_release, dell, details_btn_release, **kwargs):
         super().__init__(orientation='horizontal', size_hint_y=None, height=60, **kwargs)
         self.app = app
         self.habit_name = habit_name
@@ -43,7 +43,7 @@ class HabitRow(BoxLayout):
             text=" X ",
             size_hint_x=0.1,
             size_hint_y=None,
-            height=50,
+            height=30,
             width=50,
             background_color=(0.8, 0.2, 0.3, 1),
             background_normal='',
@@ -73,6 +73,7 @@ class HabitRow(BoxLayout):
         # Events
         self.btn.bind(on_release=on_btn_release)
         self.btn_dell.bind(on_release=dell)
+        self.btn_detail.bind(on_release=details_btn_release)
 
         # Add buttons
         self.add_widget(self.btn)
@@ -105,6 +106,7 @@ class MainWindow(Screen):
     def empty_hab(self):
         layout = self.ids.labelled_habits
 
+        layout.remove_widget(self.add)
         for btn in self.lst_bg_btn:
             if btn.parent:
                 layout.remove_widget(btn)
@@ -131,7 +133,7 @@ class MainWindow(Screen):
 
             habit_name = row[1]
 
-            habit_row = HabitRow(habit_name, self.app, self.on_btn_release, self.delete_habit)
+            habit_row = HabitRow(habit_name, self.app, self.on_btn_release, self.delete_habit, self.details_btn_release)
 
             # Store references (optional)
             self.lst_btn.append(habit_row.btn)
@@ -141,19 +143,24 @@ class MainWindow(Screen):
 
             self.ids.labelled_habits.add_widget(habit_row)
             self.ids.labelled_habits.height += habit_row.height
-        # self.add = Button(text="ADD",
-        #     size_hint_x=0.5,
-        #     size_hint_y=1,
-        #     background_color=self.app.sbutton_color,
-        #     color=self.app.text_color,
-        #     halign="left",
-        #     valign="middle",
-        #     padding=(10, 10),
-        #     text_size=(0, None))
+        self.add = Button(text="ADD",
+            size_hint_x=None,
+            size_hint_y=None,
+            height = 50,
+            width = 100,
+            background_color=self.app.sbutton_color,
+            background_normal = '',
+            color=self.app.text_color,
+            halign="left",
+            valign="middle",
+            padding=(10, 10),
+            pos_hint={"center_x": 0.5},
+            on_release=self.app.popup
+            )
         
-        # self.app.bind(text_color=lambda _, value: setattr(self.add, 'color', value))
-        # self.ids.labelled_habits.add_widget(self.add)
-        # self.ids.labelled_habits.height += self.add.height
+        self.app.bind(text_color=lambda _, value: setattr(self.add, 'color', value))
+        self.ids.labelled_habits.add_widget(self.add)
+        self.ids.labelled_habits.height += self.add.height
 
     def delete_habit(self, instance):
         # open the config file
@@ -177,9 +184,12 @@ class MainWindow(Screen):
             self.lst_btn_dell[instance] = True
 
     def on_btn_release(self, instance):
+        print("checking in process ...")
+
+    def details_btn_release(self, instance):
         # recovers the name of the clicked btn
-        self.hab_name = instance.text
-        print(self.hab_name)
+        self.hab_name = instance.parent.btn.text
+        print(instance.parent.btn.text)
 
         self.add_the_info()
 
@@ -223,6 +233,3 @@ class WelcomePopup(Popup):
         with open("data/config.json", 'w') as f:
             json.dump(config, f, indent=1)
 
-class WindowMgr(ScreenManager):
-    """handles all the different windows"""
-    pass

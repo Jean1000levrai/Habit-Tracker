@@ -66,15 +66,15 @@ class AddHabitWindow(Screen):
             config = json.load(f)
         self.user = config["name"]
 
-        # try:
-        info = self.get_info()
-        db.add_habit(info, self.user)
-        self.manager.get_screen("main").empty_hab()
-        self.manager.get_screen("main").load_all()
+        try:
+            info = self.get_info()
+            db.add_habit(info, self.user)
+            self.manager.get_screen("main").empty_hab()
+            self.manager.get_screen("main").load_all()
 
-        db.print_table(self.user)
-        # except:
-        #     print("not a valid input")
+            db.print_table(self.user)
+        except:
+            print("not a valid input")
 
     def on_btn_release(self, instance):
         # open the config file

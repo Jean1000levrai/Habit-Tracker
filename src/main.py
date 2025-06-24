@@ -51,6 +51,11 @@ LabelBase.register(
 #     timeout=5
 # )
 
+
+class WindowMgr(ScreenManager):
+    """handles all the different windows"""
+    pass
+
 class App(MDApp):
     """MyMainApp is the main application class for the Habit Tracker application. 
     It manages the application's theme, loads the user interface files, and 
@@ -148,7 +153,7 @@ class App(MDApp):
             with open(resource_path2("data/config.json"), 'w') as f:
                 json.dump(config, f, indent=1)
  
-    def popup(self):
+    def popup(self, *args):
         """method that opens the popup"""
         popup = AddHabitPopup(self)
         popup.open()
