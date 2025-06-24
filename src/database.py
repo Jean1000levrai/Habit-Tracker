@@ -162,7 +162,7 @@ def drop_all_tables(user=''):
     conn.commit()
     conn.close()
 
-def update(hab, user=''):
+def update(hab, old_name, user=''):
     """Update a habit's info in the database."""
     conn = connect_to_db()
     cur = conn.cursor()
@@ -171,13 +171,13 @@ def update(hab, user=''):
     # info = [name, colour, question, reminder, description, frequency]
 
     # Fetch id by name
-    cur.execute(f"SELECT id FROM habits_{user} WHERE name = ?", (info[0],))
+    cur.execute(f"SELECT id FROM habits_{user} WHERE name = ?", (old_name,))
     row = cur.fetchone()
     print(row)
     if not row:
         conn.close()
         raise ValueError("Habit not found")
-    habit_id = row[0]
+    habit_id = str(row[0])
 
     cur.execute(f"""
         UPDATE habits_{user}

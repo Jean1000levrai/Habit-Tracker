@@ -27,6 +27,7 @@ class AddHabitWindow(Screen):
         self.hab = hmgr.HabitYesNo()
         self.hab_name = ''
         self.edit_mode = edit_mode
+        self.current_hab_name = ''
 
         # open the config file
         with open(resource_path2("data/config.json")) as f:
@@ -72,7 +73,7 @@ class AddHabitWindow(Screen):
         print(self.edit_mode)
         info = self.get_info()
         if self.edit_mode:
-            db.update(info, self.user)
+            db.update(info, self.current_hab_name, self.user)
             self.edit_mode = False
         else:
             db.add_habit(info, self.user)

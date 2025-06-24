@@ -209,6 +209,7 @@ class MainWindow(Screen):
         self.manager.transition.direction = "left"
         self.manager.current = "habYesNo"
 
+        self.manager.get_screen("habYesNo").current_hab_name = self.hab_name
         self.manager.get_screen("habYesNo").edit_mode = True
 
     def add_the_info(self, b = False):
@@ -216,8 +217,10 @@ class MainWindow(Screen):
             self.manager.get_screen("habYesNo").ids.name.text = ''
             self.manager.get_screen("habYesNo").ids.qu.text = ''
             self.manager.get_screen("habYesNo").ids.descr.text = ''
+            self.manager.get_screen("habYesNo").edit_mode = False
 
         else:
+            self.manager.get_screen("habYesNo").edit_mode = True
             self.manager.get_screen("habYesNo").ids.name.text = self.hab_name
 
             question = db.get_info_hab(self.hab_name, "question", self.user)
