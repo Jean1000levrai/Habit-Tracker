@@ -11,7 +11,7 @@ from kivy.graphics import Color, Rectangle, RoundedRectangle
 
 
 class HabitRow(BoxLayout):
-    def __init__(self, habit_name, app, on_btn_release, **kwargs):
+    def __init__(self, habit_name, app, on_btn_release, dell, **kwargs):
         super().__init__(orientation='horizontal', size_hint_y=None, height=60, **kwargs)
         self.app = app
         self.habit_name = habit_name
@@ -37,23 +37,27 @@ class HabitRow(BoxLayout):
         )
         self.btn.bind(width=self._update_text_size)
 
-        # Checkbox button
-        self.btn_check = Button(
+        # delete button
+        self.btn_dell = Button(
             font_name="FontAwesome",
-            text="  ",
-            size_hint_x=0.2,
-            size_hint_y=1,
-            background_color=(0, 0, 0, 0),
+            text=" X ",
+            size_hint_x=0.1,
+            size_hint_y=None,
+            height=50,
+            width=50,
+            background_color=(0.8, 0.2, 0.3, 1),
+            background_normal='',
             halign="center",
-            valign="middle"
+            valign="middle",
+            pos_hint={"center_y": 0.5}
         )
-        self.btn_check.bind(size=self._update_text_size)
+        self.btn_dell.bind(size=self._update_text_size)
 
         # Details/edit button
         self.btn_detail = Button(
             font_name="FontAwesome",
             text="",
-            size_hint_x=0.1,
+            size_hint_x=0.2,
             size_hint_y=1,
             background_color=(0, 0, 0, 0),
             color=app.text_color,
@@ -68,11 +72,12 @@ class HabitRow(BoxLayout):
 
         # Events
         self.btn.bind(on_release=on_btn_release)
+        self.btn_dell.bind(on_release=dell)
 
         # Add buttons
         self.add_widget(self.btn)
-        self.add_widget(self.btn_check)
         self.add_widget(self.btn_detail)
+        self.add_widget(self.btn_dell)
 
     def update_rect(self, *_):
         self.bg_rect.pos = self.pos
@@ -93,7 +98,7 @@ class MainWindow(Screen):
         self.hab_name = ''
         self.lst_btn = []
         self.lst_bg_btn = []
-        self.lst_btn_check = []
+        self.lst_btn_dell = []
         self.lst_btn_details = []
         self.load_all()
 
@@ -105,7 +110,7 @@ class MainWindow(Screen):
                 layout.remove_widget(btn)
         self.lst_btn.clear()
         self.lst_bg_btn.clear()
-        self.lst_btn_check.clear()
+        self.lst_btn_dell.clear()
         self.lst_btn_details.clear()
 
     def load_all(self):
@@ -126,11 +131,11 @@ class MainWindow(Screen):
 
             habit_name = row[1]
 
-            habit_row = HabitRow(habit_name, self.app, self.on_btn_release)
+            habit_row = HabitRow(habit_name, self.app, self.on_btn_release, self.delete_habit)
 
             # Store references (optional)
             self.lst_btn.append(habit_row.btn)
-            self.lst_btn_check.append(habit_row.btn_check)
+            self.lst_btn_dell.append(habit_row.btn_dell)
             self.lst_btn_details.append(habit_row.btn_detail)
             self.lst_bg_btn.append(habit_row)
 
@@ -149,15 +154,27 @@ class MainWindow(Screen):
         # self.app.bind(text_color=lambda _, value: setattr(self.add, 'color', value))
         # self.ids.labelled_habits.add_widget(self.add)
         # self.ids.labelled_habits.height += self.add.height
-            
+
+    def delete_habit(self, instance):
+        # open the config file
+        with open(resource_path2("data/config.json")) as f:
+            config = json.load(f)
+
+        hab_name = instance.parent.btn.text
+        print(hab_name)
+        db.delete_habit(hab_name, config["name"])
+        
+        self.manager.get_screen("main").empty_hab()
+        self.manager.get_screen("main").load_all()
+
     def check(self, instance):
-        if self.lst_btn_check[instance]:
+        if self.lst_btn_dell[instance]:
             instance.text = "  "
-            self.lst_btn_check[instance] = False
+            self.lst_btn_dell[instance] = False
             
         else:
             instance.text = "  "
-            self.lst_btn_check[instance] = True
+            self.lst_btn_dell[instance] = True
 
     def on_btn_release(self, instance):
         # recovers the name of the clicked btn
@@ -184,6 +201,9 @@ class MainWindow(Screen):
 
         frequency = db.get_info_hab(self.hab_name, "frequency", self.user)
         self.manager.get_screen("info").ids.freq_for_hab.text = str(frequency)
+
+class SureDelPopup(Popup):
+    pass
 
 class WelcomePopup(Popup):
     def __init__(self, obj, **kwargs):

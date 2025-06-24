@@ -174,4 +174,23 @@
             background_normal: ''
             on_release:   
                 root.dismiss()
+<SureDelPopup>:
+    title: ""
+    size_hint: 0.6, 0.4
+    auto_dismiss: False
+
+    BoxLayout:
+        orientation: 'vertical'
+        spacing: 10
+        padding: 10
+
+        Label:
+            text: "Welcome to the app!"
+
+        Button:
+            text: "Close"
+            size_hint_y: 0.3
+            background_normal: ''
+            on_release:   
+                root.dismiss()
                 

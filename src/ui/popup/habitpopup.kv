@@ -19,6 +19,7 @@
             text: "Yes No Habit\n e.g. brush your teeth"
             background_color: app.panel_color 
             background_normal: ''
+            color: app.text_color
             on_release: 
                 app.root.current = "habYesNo"
                 app.root.get_screen("main").manager.transition.direction = "left"
@@ -29,6 +30,7 @@
             text: "Habit Measurable\n e.g. read at least 10 pages"
             background_color: app.panel_color 
             background_normal: ''
+            color: app.text_color
             on_release: 
                 app.root.current = "habMeasurable"
                 app.root.get_screen("main").manager.transition.direction = "left"
@@ -37,6 +39,7 @@
         # cancel
         Button:
             background_color: (1,0.2,0.2,1)
+            color: app.text_color
             background_normal: ''
             size_hint_y: 0.3
             text: "Cancel"
