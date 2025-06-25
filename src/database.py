@@ -3,7 +3,7 @@ import habit_mgr as hmgr
 from functions import *
 from calendar_db import *
 
-
+# -----------creation/drop-----------
 def connect_to_db():
     return sql.connect(resource_path2("data/db_habit.db"))
 
@@ -15,10 +15,13 @@ def create_db(user=''):
             CREATE TABLE IF NOT EXISTS habits_{user} (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL UNIQUE,
-                colour TEXT,
                 question TEXT,
                 reminder BOOLEAN,
                 description TEXT,
+                unit TEXT,
+                quantity REAL,
+                threshold REAL,
+                is_measurable BOOLEAN,
                 frequency TEXT
             )
     """)
@@ -40,28 +43,23 @@ def create_db(user=''):
     conn.commit()
     conn.close()
 
-def get_habits_with_days(user=''):
+def drop_all_tables(user=''):
+    """Drops all tables related to the user in the database."""
     conn = connect_to_db()
     cur = conn.cursor()
-    cur.execute(f"""
-        SELECT h.*, d.monday, d.tuesday, d.wednesday, d.thursday, d.friday, d.saturday, d.sunday
-        FROM habits_{user} h
-        LEFT JOIN habit_days_{user} d ON h.id = d.habit_id
-    """)
-    results = cur.fetchall()
+    # Drop the main habits table
+    cur.execute(f"DROP TABLE IF EXISTS habits_{user}")
+    # Drop the days table
+    cur.execute(f"DROP TABLE IF EXISTS habit_days_{user}")
+    conn.commit()
     conn.close()
-    return results
 
-def print_table(user=''):
-    conn = connect_to_db()
-    cur = conn.cursor()
-    cur.execute(f"SELECT * FROM habits_{user}")
-    rows = cur.fetchall()
-    for row in rows:
-        print(row)
+
+
+# -----------add/delete/update-----------
 
 def add_habit(habit, user=''):
-    """Add a habit into the database safely."""
+    """Add a habit into the database safely for the yes no"""
     info = hab_info(habit) 
     print(info)
     print(len(info))
@@ -70,14 +68,37 @@ def add_habit(habit, user=''):
     cur = conn.cursor()
 
     cur.execute(f"""
-        INSERT INTO habits_{user} (name, colour, question, reminder, description)
-        VALUES (?, ?, ?, ?, ?)
-    """, info[:5])
+        INSERT INTO habits_{user} (name, question, reminder, description)
+        VALUES (?, ?, ?, ?)
+    """, info[:4])
 
     cur.execute(f"""
         INSERT INTO habit_days_{user} (monday, tuesday, wednesday, thursday, friday, saturday, sunday)
         VALUES (?, ?, ?, ?, ?, ?, ?)
-    """, info[5][3])
+    """, info[4][3])
+    
+    conn.commit()
+    conn.close()
+
+def add_habit_m(habit, user=''):
+    """Add a habit into the database safely for the measurables"""
+    info = hab_info_m(habit) 
+    print(info)
+    print(len(info))
+
+    conn = connect_to_db()
+    cur = conn.cursor()
+
+    cur.execute(f"""
+        INSERT INTO habits_{user} 
+        (name, question, reminder, description, unit, quantity, threshold, is_measurable)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    """, [info[:7]]+[True])
+
+    cur.execute(f"""
+        INSERT INTO habit_days_{user} (monday, tuesday, wednesday, thursday, friday, saturday, sunday)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    """, info[-1][3])
     
     conn.commit()
     conn.close()
@@ -93,72 +114,6 @@ def delete_habit(name = '*', user=''):
         cur.execute(f"""DELETE FROM habits_{user}
                 WHERE name = ?""", (name,))
     
-    conn.commit()
-    conn.close()
-
-def hab_info(hab = hmgr.HabitYesNo()):
-    """function taht takes a habityesno is param,
-    returns every attributes of it. used for sql"""
-    return [hab.name,
-            hab.colour,
-            hab.question,
-            hab.reminder,
-            hab.description,
-            hab.frequency]
-
-def show_habit_for_gui(name, user=''):
-    """function that takes the name or a star of a habit
-    in parameter,returns every attribute' values of the
-    habit or of every habits if a star"""
-    # connect to the db
-    conn = connect_to_db()
-    cur = conn.cursor()
-
-    # select everything if a *
-    if name == "*":
-        cur.execute(f"""SELECT * FROM habits_{user}""")
-    # or just from one habit
-    else:
-        cur.execute(f"""SELECT * FROM habits_{user}
-                    WHERE name = ?""", (name,))
-    
-    # recovers the values
-    list_habits = cur.fetchall()
-
-    conn.close()
-
-    return list_habits
-
-def get_info_hab(hab_name, attr, user=''):
-    """function that takes the name and an attribute
-    of a habit, returns the value of the attribute"""
-    # connect to the db
-    conn = connect_to_db()
-    cur = conn.cursor()
-    
-    # check if attr is valid, prevent sql injection
-    allowed_attr = ["question", "reminder", "description", "frequency", "created_at"]
-    if attr not in allowed_attr:
-        raise ValueError("invalid attribute, please try something else")
-
-    # select the info
-    exe = f"SELECT {attr} FROM habits_{user} WHERE name = ?"
-    cur.execute(exe,(hab_name, ))
-    rep = cur.fetchone()
-
-    conn.close()
-    if rep:
-        return rep[0]
-    return None
-
-def drop_all_tables(user=''):
-    """Drops all tables related to the user in the database."""
-    conn = connect_to_db()
-    cur = conn.cursor()
-    # Drop the main habits table
-    cur.execute(f"DROP TABLE IF EXISTS habits_{user}")
-    # Drop the days table
-    cur.execute(f"DROP TABLE IF EXISTS habit_days_{user}")
     conn.commit()
     conn.close()
 
@@ -183,11 +138,119 @@ def update(hab, old_name, user=''):
         UPDATE habits_{user}
         SET name = ?, question = ?, description = ?
         WHERE id = ?
-    """, (info[0], info[2], info[4], habit_id))
+    """, (info[0], info[1], info[3], habit_id))
 
     conn.commit()
     conn.close()
 
+
+
+# -----------get-----------
+
+# ----for functions----
+def hab_info(hab = hmgr.HabitYesNo()):
+    """function that takes a habityesno is param,
+    returns every attributes of it. used for sql"""
+    return [hab.name,
+            hab.question,
+            hab.reminder,
+            hab.description,
+            hab.frequency]
+
+def hab_info_m(hab = hmgr.HabitMeasurable()):
+    """function taht takes a HabitMeasurable is param,
+    returns every attributes of it. used for sql"""
+    return [hab.name,
+            hab.question,
+            hab.reminder,
+            hab.description,
+            hab.unit,
+            hab.threshold,
+            hab.quantity,
+            hab.frequency
+            ]
+
+def get_info_hab(hab_name, attr, user=''):
+    """function that takes the name and an attribute
+    of a habit, returns the value of the attribute"""
+    # connect to the db
+    conn = connect_to_db()
+    cur = conn.cursor()
+    
+    # check if attr is valid, prevent sql injection
+    allowed_attr = ["question", "reminder", "description", "frequency", "created_at"]
+    if attr not in allowed_attr:
+        raise ValueError("invalid attribute, please try something else")
+
+    # select the info
+    exe = f"SELECT {attr} FROM habits_{user} WHERE name = ?"
+    cur.execute(exe,(hab_name, ))
+    rep = cur.fetchone()
+
+    conn.close()
+    if rep:
+        return rep[0]
+    return None
+
+# ----for ui/debug----
+def get_habits_with_days(user=''):
+    conn = connect_to_db()
+    cur = conn.cursor()
+    cur.execute(f"""
+        SELECT h.*, d.monday, d.tuesday, d.wednesday, d.thursday, d.friday, d.saturday, d.sunday
+        FROM habits_{user} h
+        LEFT JOIN habit_days_{user} d ON h.id = d.habit_id
+    """)
+    results = cur.fetchall()
+    conn.close()
+    return results
+
+def print_table(user=''):
+    conn = connect_to_db()
+    cur = conn.cursor()
+    cur.execute(f"SELECT * FROM habits_{user}")
+    rows = cur.fetchall()
+    for row in rows:
+        print(row)
+
+def show_habit_for_gui(name, user=''):
+    """function that takes the name or a star of a habit
+    in parameter,returns every attribute' values of the
+    habit or of every habits if a star"""
+    # connect to the db
+    conn = connect_to_db()
+    cur = conn.cursor()
+
+    # select everything if a *
+    if name == "*":
+        cur.execute(f"""SELECT * FROM habits_{user}""")
+    # or just from one habit
+    else:
+        cur.execute(f"""SELECT * FROM habits_{user}
+                    WHERE name = ?""", (name,))
+    
+    # recovers the values
+    list_habits = cur.fetchall()
+
+    conn.close()
+
+    return list_habits
+
+
+
+# -----------else-----------
+
+
+
+
+
+
+
+
+
+
+
+# -----------main-----------
 if __name__ == "__main__":
     hab = hmgr.HabitYesNo("runnnn")
     # create_db("easydoor")

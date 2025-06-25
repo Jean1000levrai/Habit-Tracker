@@ -36,7 +36,7 @@ class AddHabitWindow(Screen):
 
     def get_info(self):
         """method that gets the informations from 
-        the textinput that the player has filled.
+        the textinput that the user has filled.
         returns a HabitYesNo containing these infos"""
         # gets the infos into a dic
         self.info["name"] = self.ids.name.text
@@ -138,31 +138,6 @@ class AddHabitWindow(Screen):
             self.ids.reminder_off.text = "Reminder : on"
         else:
             self.ids.reminder_off.text = "Reminder : off"
-
-class HabitInfoWindow(Screen):
-    """window where the informations of the habit will be displayed"""
-    def __init__(self, **kw):
-        super().__init__(**kw)
-        # open the config file
-        with open(resource_path2("data/config.json")) as f:
-            config = json.load(f)
-        self.user = config["name"]
-
-    def delete_habit(self):
-        # open the config file
-        with open(resource_path2("data/config.json")) as f:
-            config = json.load(f)
-
-        hab_name = self.ids.name_of_the_hab.text[3:]
-        db.delete_habit(hab_name, config["name"])
-
-        # sets it so that next time it wont show the popup
-        config["first_timer"] = False
-        with open(resource_path2("data/config.json"), 'w') as f:
-            json.dump(config, f, indent=1)
-        
-        self.manager.get_screen("main").empty_hab()
-        self.manager.get_screen("main").load_all()
 
 class AddHabitPopup(Popup):
     """popup where the user will be able to

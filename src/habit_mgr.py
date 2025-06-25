@@ -1,9 +1,8 @@
 
 
 class HabitYesNo:
-    def __init__(self, name="New Habit", colour = "[1, 1, 1, 1]", qu="", reminder=False, descr=""):
+    def __init__(self, name="New Habit", qu="", reminder=False, descr=""):
         self.__name = name            # str
-        self.__colour = colour        # #RRGGBB hex
         self.__question = qu          # str
         self.__reminder = reminder    # bool
         self.__description = descr    # str
@@ -15,11 +14,7 @@ class HabitYesNo:
     @property
     def name(self):
         return self.__name
-    
-    @property
-    def colour(self):
-        return self.__colour
-    
+
     @property
     def question(self):
         return self.__question
@@ -42,10 +37,6 @@ class HabitYesNo:
         if not val.strip():
             raise ValueError("Habit name cannot be empty.")
         self.__name = val
-
-    @colour.setter
-    def colour(self, val):
-        self.__colour = val
 
     @question.setter
     def question(self, val):
@@ -75,15 +66,14 @@ class HabitYesNo:
 
 
 class HabitMeasurable:
-    def __init__(self, name="New Habit", colour = "[1, 1, 1, 1]", qu='', reminder=False, descr='', unit=''):
+    def __init__(self, name="New Habit", qu='', reminder=False, descr='', unit='', quantity = 0):
         self.__name = name            # str
-        self.__colour = colour        # #RRGGBB hex
         self.__question = qu          # str
         self.__reminder = reminder    # bool
         self.__description = descr    # str
         self.__frequency = None
         self.unit = ''
-        self.threshold = 0
+        self.threshold = quantity
         self.quantity = 0
         self.is_active = True
 
@@ -91,10 +81,6 @@ class HabitMeasurable:
     @property
     def name(self):
         return self.__name
-    
-    @property
-    def colour(self):
-        return self.__colour
     
     @property
     def question(self):
@@ -118,10 +104,6 @@ class HabitMeasurable:
         if not val.strip():
             raise ValueError("Habit name cannot be empty.")
         self.__name = val
-
-    @colour.setter
-    def colour(self, val):
-        self.__colour = val
 
     @question.setter
     def question(self, val):

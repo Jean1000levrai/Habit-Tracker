@@ -80,7 +80,7 @@ class App(MDApp):
         # loads the files for all the windows
         Builder.load_file(resource_path("ui/main/main.kv"))
         Builder.load_file(resource_path("ui/main/add_hab.kv"))
-        Builder.load_file(resource_path("ui/main/habitInfoWindow.kv"))
+        # Builder.load_file(resource_path("ui/main/habitInfoWindow.kv"))
         Builder.load_file(resource_path("ui/main/reminderWindow.kv"))
         Builder.load_file(resource_path("ui/settings/settings.kv"))
         Builder.load_file(resource_path("ui/settings/aboutWindow.kv"))
@@ -103,7 +103,7 @@ class App(MDApp):
             sm.add_widget(CalendarScreen(name="calendar"))
             sm.add_widget(SettingsWindow(name="second"))
             sm.add_widget(AddHabitWindow(name="habYesNo"))
-            sm.add_widget(HabitInfoWindow(name="info"))
+            # sm.add_widget(HabitInfoWindow(name="info"))
             sm.add_widget(AboutWindow(name="about"))
             sm.add_widget(SignupPage(name="signup"))
             sm.add_widget(AddHabitMeasScreen(name="habMeasurable"))
@@ -115,7 +115,7 @@ class App(MDApp):
             sm.add_widget(CalendarScreen(name="calendar"))
             sm.add_widget(SettingsWindow(name="second"))
             sm.add_widget(AddHabitWindow(name="habYesNo"))
-            sm.add_widget(HabitInfoWindow(name="info"))
+            # sm.add_widget(HabitInfoWindow(name="info"))
             sm.add_widget(AboutWindow(name="about"))
             sm.add_widget(AddHabitMeasScreen(name="habMeasurable"))
 
