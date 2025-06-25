@@ -11,10 +11,10 @@ panel for habit scrollview 😥 5h
     habit clickable 😝
         timeline
         info 😆
-        edit habit
+        edit habit 😆 (name doesnt work)
         delete habit 😥
 
-habit reminder 😥 7h+
+habit reminder 😆 7h+
     ui 😥
     backend 😥
     api
@@ -31,6 +31,7 @@ styling  1h
 
 settings 😥
     themes 😝
+    languages
     import/save habit file
     about 😆
     github link 😝
