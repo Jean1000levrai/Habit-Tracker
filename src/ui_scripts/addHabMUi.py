@@ -36,6 +36,9 @@ class AddHabitMeasScreen(Screen):
         """method that gets the informations from 
         the textinput that the user has filled.
         returns a HabitYesNo containing these infos"""
+
+        print("reminder varrrrrrrrrrrrr")
+        print(reminder_var)
         # gets the infos into a dic
         self.info["name"] = self.ids.name.text
         self.info["threshold"] = self.ids.threshold.text
@@ -59,6 +62,8 @@ class AddHabitMeasScreen(Screen):
         self.hab.unit = self.info["unit"]
         self.hab.threshold = self.info["threshold"]
 
+        return self.hab
+
     def save_btn(self):
         """method that handles the 'save' button 
         at the bottom of the screen. It updates the
@@ -71,18 +76,18 @@ class AddHabitMeasScreen(Screen):
             config = json.load(f)
         self.user = config["name"]
 
-        # try:
-        print(self.edit_mode)
-        info = self.get_info()
-        if self.edit_mode:
-            db.update(info, self.current_hab_name, self.user)
-            self.edit_mode = False
-        else:
-            db.add_habit_m(info, self.user)
-        self.manager.get_screen("main").empty_hab()
-        self.manager.get_screen("main").load_all()
+        try:
+            print(self.edit_mode)
+            info = self.get_info()
+            if self.edit_mode:
+                db.update(info, self.current_hab_name, self.user)
+                self.edit_mode = False
+            else:
+                db.add_habit_m(info, self.user)
+            self.manager.get_screen("main").empty_hab()
+            self.manager.get_screen("main").load_all()
 
-        db.print_table(self.user)
-        # except:
-        #     print(self.edit_mode)
-        #     print("not a valid input")
+            db.print_table(self.user)
+        except:
+            print(self.edit_mode)
+            print("not a valid input")

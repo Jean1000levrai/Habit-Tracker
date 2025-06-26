@@ -69,23 +69,23 @@ class AddHabitWindow(Screen):
             config = json.load(f)
         self.user = config["name"]
 
-        # try:
-        print(self.edit_mode)
-        info = self.get_info()
-        if self.edit_mode:
-            db.update(info, self.current_hab_name, self.user)
-            self.edit_mode = False
-        else:
-            db.add_habit(info, self.user)
-        self.manager.get_screen("main").empty_hab()
-        self.manager.get_screen("main").load_all()
+        try:
+            print(self.edit_mode)
+            info = self.get_info()
+            if self.edit_mode:
+                db.update(info, self.current_hab_name, self.user)
+                self.edit_mode = False
+            else:
+                db.add_habit(info, self.user)
+            self.manager.get_screen("main").empty_hab()
+            self.manager.get_screen("main").load_all()
 
-        db.print_table(self.user)
-        # except:
-        #     print(self.edit_mode)
-        #     print("not a valid input")
+            db.print_table(self.user)
+        except:
+            print(self.edit_mode)
+            print("not a valid input")
 
-    def on_btn_release(self, instance):
+    def on_btn_releasde(self, instance):
         # open the config file
         with open(resource_path2("data/config.json")) as f:
             config = json.load(f)
@@ -127,11 +127,6 @@ class AddHabitWindow(Screen):
         self.user = config["name"]
 
         db.delete_habit(self.hab_name, self.user)
-        # --------------TO BE CONTINUED
-
-    def color_selected(self, color):
-        self.info["col"] = (str(color))
-        self.hab.colour = self.info["col"]
 
     def reminder_on_off(self):
         if self.ids.reminder_off.text == "Reminder : off":

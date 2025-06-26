@@ -89,11 +89,14 @@ def add_habit_m(habit, user=''):
     conn = connect_to_db()
     cur = conn.cursor()
 
+    print("_________________________________________________")
+    print(info[:7]+[True])
+
     cur.execute(f"""
         INSERT INTO habits_{user} 
         (name, question, reminder, description, unit, quantity, threshold, is_measurable)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    """, [info[:7]]+[True])
+    """, info[:7]+[True])
 
     cur.execute(f"""
         INSERT INTO habit_days_{user} (monday, tuesday, wednesday, thursday, friday, saturday, sunday)
@@ -178,7 +181,8 @@ def get_info_hab(hab_name, attr, user=''):
     cur = conn.cursor()
     
     # check if attr is valid, prevent sql injection
-    allowed_attr = ["question", "reminder", "description", "frequency", "created_at"]
+    allowed_attr = ["question", "reminder", "description", "frequency",
+                     "id", "unit", "quantity", "threshold", "is_measurable"]
     if attr not in allowed_attr:
         raise ValueError("invalid attribute, please try something else")
 
@@ -253,10 +257,12 @@ def show_habit_for_gui(name, user=''):
 # -----------main-----------
 if __name__ == "__main__":
     hab = hmgr.HabitYesNo("runnnn")
-    # create_db("easydoor")
+    create_db("bebouu")
     create_db('')
+    create_db('jean')
     # delete_habit("*", "easydoor")
     # print(get_habits_with_days("jen"))
     print("--------------------")
-    print(get_habits_with_days(""))
+    # print(get_habits_with_days(""))
     # print(get_info_hab())
+    

@@ -203,17 +203,52 @@ class MainWindow(Screen):
         self.hab_name = instance.parent.btn.text
         print(instance.parent.btn.text)
 
-        self.add_the_info()
+        is_m = db.get_info_hab(self.hab_name, "is_measurable", self.user)
+        if is_m:
+            self.add_the_info_m()
 
-        # handles the window change
-        self.manager.transition.direction = "left"
-        self.manager.current = "habYesNo"
+            # handles the window change
+            self.manager.transition.direction = "left"
+            self.manager.current = "habMeasurable"
 
-        self.manager.get_screen("habYesNo").current_hab_name = self.hab_name
-        self.manager.get_screen("habYesNo").edit_mode = True
+            self.manager.get_screen("habMeasurable").current_hab_name = self.hab_name
+            self.manager.get_screen("habMeasurable").edit_mode = True
+        else:
+            self.add_the_info()
 
-    def add_the_info(self, b = False):
-        if b:
+            # handles the window change
+            self.manager.transition.direction = "left"
+            self.manager.current = "habYesNo"
+
+            self.manager.get_screen("habYesNo").current_hab_name = self.hab_name
+            self.manager.get_screen("habYesNo").edit_mode = True
+
+    def add_the_info_m(self, no_edit = False):
+        if no_edit:
+            self.manager.get_screen("habMeasurable").ids.name.text = ''
+            self.manager.get_screen("habMeasurable").ids.qu.text = ''
+            self.manager.get_screen("habMeasurable").ids.threshold.text = ''
+            self.manager.get_screen("habMeasurable").ids.unit.text = ''
+            self.manager.get_screen("habMeasurable").ids.descr.text = ''
+            self.manager.get_screen("habMeasurable").edit_mode = False
+        else:
+            self.manager.get_screen("habMeasurable").edit_mode = True
+            self.manager.get_screen("habMeasurable").ids.name.text = self.hab_name
+
+            question = db.get_info_hab(self.hab_name, "question", self.user)
+            self.manager.get_screen("habMeasurable").ids.qu.text = question
+
+            # threshold = db.get_info_hab(self.hab_name, "threshold", self.user)
+            # self.manager.get_screen("habMeasurable").ids.threshold.text = threshold
+
+            unit = db.get_info_hab(self.hab_name, "unit", self.user)
+            self.manager.get_screen("habMeasurable").ids.unit.text = str(unit)
+
+            descr = db.get_info_hab(self.hab_name, "description", self.user)
+            self.manager.get_screen("habMeasurable").ids.descr.text = str(descr)
+
+    def add_the_info(self, no_edit = False):
+        if no_edit:
             self.manager.get_screen("habYesNo").ids.name.text = ''
             self.manager.get_screen("habYesNo").ids.qu.text = ''
             self.manager.get_screen("habYesNo").ids.descr.text = ''
