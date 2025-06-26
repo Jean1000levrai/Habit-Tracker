@@ -145,5 +145,5 @@ class TimePopup(Popup):
         global reminder_var
         reminder_var[2] = []
 
-
+# [nb_times, frequency, different hours(according to nb of times), array of the days]
 reminder_var = [0, "Daily", [], [False, False, False, False, False, False, False]]

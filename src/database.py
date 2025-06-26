@@ -146,6 +146,32 @@ def update(hab, old_name, user=''):
     conn.commit()
     conn.close()
 
+def update_m(hab, old_name, user=''):
+    """Update a habit's info in the database."""
+    conn = connect_to_db()
+    cur = conn.cursor()
+
+    info = hab_info_m(hab)
+    # info = [name, question, reminder, description, unit, threshold, quantity, frequency]
+
+    # Fetch id by name
+    cur.execute(f"SELECT id FROM habits_{user} WHERE name = ?", (old_name,))
+    row = cur.fetchone()
+    print(row)
+    if not row:
+        conn.close()
+        raise ValueError("Habit not found")
+    habit_id = str(row[0])
+
+    cur.execute(f"""
+        UPDATE habits_{user}
+        SET name = ?, question = ?, description = ?, unit = ?, threshold = ?, quantity = ?
+        WHERE id = ?
+    """, (info[0], info[1], info[3], info[4], info[5], info[6], habit_id))
+
+    conn.commit()
+    conn.close()
+
 
 
 # -----------get-----------
@@ -196,7 +222,7 @@ def get_info_hab(hab_name, attr, user=''):
         return rep[0]
     return None
 
-# ----for ui/debug----
+# ----for debug----
 def get_habits_with_days(user=''):
     conn = connect_to_db()
     cur = conn.cursor()
@@ -217,7 +243,8 @@ def print_table(user=''):
     for row in rows:
         print(row)
 
-def show_habit_for_gui(name, user=''):
+# ----ui----
+def show_habit_for_gui(name = '*', user=''):
     """function that takes the name or a star of a habit
     in parameter,returns every attribute' values of the
     habit or of every habits if a star"""
@@ -240,17 +267,53 @@ def show_habit_for_gui(name, user=''):
 
     return list_habits
 
+def sort_by_alpha(name='*', user=''):
+    # connect to the db
+    conn = connect_to_db()
+    cur = conn.cursor()
+
+    # select everything if a *
+    if name == "*":
+        cur.execute(f"""SELECT * FROM habits_{user} 
+                    ORDER BY name""")
+    # or just from one habit
+    else:
+        cur.execute(f"""SELECT * FROM habits_{user}
+                    WHERE name = ? 
+                    ORDER BY name""", (name,))
+    
+    # recovers the values
+    list_habits = cur.fetchall()
+
+    conn.close()
+
+    return list_habits
+
+def sort_by_time(name='*', user=''):
+    # connect to the db
+    conn = connect_to_db()
+    cur = conn.cursor()
+
+    # select everything if a *
+    if name == "*":
+        cur.execute(f"""SELECT * FROM habits_{user} 
+                    ORDER BY name""")
+    # or just from one habit
+    else:
+        cur.execute(f"""SELECT * FROM habits_{user}
+                    WHERE name = ? 
+                    ORDER BY name""", (name,))
+    
+    # recovers the values
+    list_habits = cur.fetchall()
+
+    conn.close()
+
+    return list_habits
+
 
 
 # -----------else-----------
-
-
-
-
-
-
-
-
 
 
 

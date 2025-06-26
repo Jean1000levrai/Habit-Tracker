@@ -238,8 +238,8 @@ class MainWindow(Screen):
             question = db.get_info_hab(self.hab_name, "question", self.user)
             self.manager.get_screen("habMeasurable").ids.qu.text = question
 
-            # threshold = db.get_info_hab(self.hab_name, "threshold", self.user)
-            # self.manager.get_screen("habMeasurable").ids.threshold.text = threshold
+            threshold = db.get_info_hab(self.hab_name, "threshold", self.user)
+            self.manager.get_screen("habMeasurable").ids.threshold.text = str(threshold)
 
             unit = db.get_info_hab(self.hab_name, "unit", self.user)
             self.manager.get_screen("habMeasurable").ids.unit.text = str(unit)

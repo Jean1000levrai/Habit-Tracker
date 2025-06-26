@@ -80,7 +80,7 @@ class AddHabitMeasScreen(Screen):
             print(self.edit_mode)
             info = self.get_info()
             if self.edit_mode:
-                db.update(info, self.current_hab_name, self.user)
+                db.update_m(info, self.current_hab_name, self.user)
                 self.edit_mode = False
             else:
                 db.add_habit_m(info, self.user)

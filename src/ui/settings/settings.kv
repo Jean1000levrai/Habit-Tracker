@@ -39,6 +39,7 @@
             size_hint: 0.9, 0.8
             pos_hint: {"x": 0.05, "y": 0.1}
             
+            # visual for the panel
             canvas.before:
                 # outline
                 Color:
@@ -95,6 +96,17 @@
                         on_release:
                             app.root.current = "login"
                             root.signout()
+
+                    # sorting habit
+                    Spinner:
+                        id: sort_hab
+                        text: 'Select an option'
+                        values: ['Last created', 'Alphabetical', 'Time']
+                        size_hint: None, None
+                        size: 200, 44
+                        on_text: root.on_selection(self, self.text)
+
+                    # about button
                     Button:
                         color: app.text_color
                         background_color: app.button_color
@@ -109,6 +121,8 @@
                         on_release:
                             app.root.current = "about"
                             root.manager.transition.direction = "left"
+
+                    # git link
                     Button:
                         id: github
                         color: app.text_color
