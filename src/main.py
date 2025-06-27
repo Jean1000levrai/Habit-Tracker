@@ -24,6 +24,7 @@ from ui_scripts.settingsUi import *
 from ui_scripts.addHabitUi import *
 from ui_scripts.calendar_script import *
 from ui_scripts.addHabMUi import *
+from ui_scripts.progress_view import *
 
 # ui utilities
 from kivy.uix.button import Button
@@ -81,6 +82,7 @@ class App(MDApp):
         Builder.load_file(resource_path("ui/main/main.kv"))
         Builder.load_file(resource_path("ui/main/add_hab.kv"))
         Builder.load_file(resource_path("ui/main/reminderWindow.kv"))
+        Builder.load_file(resource_path("ui/main/add_hab_m.kv"))
         Builder.load_file(resource_path("ui/settings/settings.kv"))
         Builder.load_file(resource_path("ui/settings/aboutWindow.kv"))
         Builder.load_file(resource_path("ui/popup/habitpopup.kv"))
@@ -88,7 +90,7 @@ class App(MDApp):
         Builder.load_file(resource_path("ui/login_ui/login_page.kv"))
         Builder.load_file(resource_path("ui/login_ui/signup.kv"))
         Builder.load_file(resource_path("ui/calendar/calendar_ui.kv"))
-        Builder.load_file(resource_path("ui/main/add_hab_m.kv"))
+        Builder.load_file(resource_path("ui/calendar/progress_view.kv"))
         
         # adds them to the window manager
         sm = WindowMgr()
@@ -97,24 +99,18 @@ class App(MDApp):
             config = json.load(f)
         if config["first_timer"] == True:
             sm.add_widget(LoginPage(name="login"))
-            sm.add_widget(ReminderWindow(name="reminder"))
             sm.add_widget(MainWindow(name="main"))
-            sm.add_widget(CalendarScreen(name="calendar"))
-            sm.add_widget(SettingsWindow(name="second"))
-            sm.add_widget(AddHabitWindow(name="habYesNo"))
-            sm.add_widget(AboutWindow(name="about"))
-            sm.add_widget(SignupPage(name="signup"))
-            sm.add_widget(AddHabitMeasScreen(name="habMeasurable"))
         else:
             sm.add_widget(MainWindow(name="main"))
-            sm.add_widget(SignupPage(name="signup"))
             sm.add_widget(LoginPage(name="login"))
-            sm.add_widget(ReminderWindow(name="reminder"))
-            sm.add_widget(CalendarScreen(name="calendar"))
-            sm.add_widget(SettingsWindow(name="second"))
-            sm.add_widget(AddHabitWindow(name="habYesNo"))
-            sm.add_widget(AboutWindow(name="about"))
-            sm.add_widget(AddHabitMeasScreen(name="habMeasurable"))
+        sm.add_widget(ReminderWindow(name="reminder"))
+        sm.add_widget(CalendarScreen(name="calendar"))
+        sm.add_widget(SettingsWindow(name="second"))
+        sm.add_widget(AddHabitWindow(name="habYesNo"))
+        sm.add_widget(AboutWindow(name="about"))
+        sm.add_widget(SignupPage(name="signup"))
+        sm.add_widget(AddHabitMeasScreen(name="habMeasurable"))
+        sm.add_widget(ProgressViewWindow(name="progress_view"))
 
         self.theme_cls.theme_style = "Dark"
 

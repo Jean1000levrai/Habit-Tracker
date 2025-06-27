@@ -58,6 +58,7 @@
                 RoundedRectangle:
                     pos: self.x + 5, self.y + 7
                     size: self.width - 9, self.height * 1.5 - 9
+            # add habit
             Button:
                 size_hint: 0.3, 1
                 text: "+"
@@ -80,6 +81,7 @@
                         pos: self.pos
                         size: self.size
                 
+            # settings button
             Button:
                 size_hint: 0.3, 1
                 text: ""
@@ -102,6 +104,8 @@
                 on_release: 
                     app.root.current = "second"
                     root.manager.transition.direction = "left"
+            
+            # progress view window button
             Button:
                 size_hint: 0.3, 1
                 text: ""
@@ -121,13 +125,14 @@
                         pos: self.pos
                         size: self.size
                 on_release: 
-                    app.root.current = "calendar"
+                    app.root.current = "progress_view"
                     root.manager.transition.direction = "left"
         # ---------------scrollable of habits----------------
         FloatLayout:
             size_hint: 0.9, 0.75
             pos_hint: {"x": 0.05, "y": 0.1}
             
+            # rice nice
             canvas.before:
                 # outline
                 Color:
@@ -141,6 +146,7 @@
                     pos: self.x + 2, self.y + 2
                     size: self.width - 4, self.height - 4
 
+            # where you scroll
             ScrollView:
                 size_hint: 1, 0.98
                 pos_hint: { "y": 0.01}
@@ -186,7 +192,7 @@
         padding: 10
 
         Label:
-            text: "Welcome to the app!"
+            text: "Are you want to delete this habit\nAll the progress you had will also be delete with no way to recover the data"
 
         Button:
             text: "Close"

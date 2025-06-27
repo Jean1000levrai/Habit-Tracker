@@ -304,6 +304,7 @@ def print_table(user=''):
         print(row)
 
 # ui
+# select
 def show_habit_for_gui(name = '*', user=''):
     """function that takes the name or a star of a habit
     in parameter,returns every attribute' values of the
@@ -371,7 +372,31 @@ def sort_by_time(name='*', user=''):
 
     return list_habits
 
+# utils
+def nb_hab(user = ''):
+    # connect to the db
+    conn = connect_to_db()
+    cur = conn.cursor()
 
+    cur.execute(f"""
+            SELECT COUNT(*) FROM habits_{user}
+        """)
+    count = cur.fetchone()[0]
+    
+    conn.close()
+    return count
+
+def nb_dates(user = ''):
+    conn = connect_to_db()
+    cur = conn.cursor()
+
+    cur.execute(f"""
+            SELECT COUNT(DISTINCT date) FROM habit_logs_{user} 
+        """)
+    count = cur.fetchone()[0]
+    
+    conn.close()
+    return count
 
 # -----------else-----------
 

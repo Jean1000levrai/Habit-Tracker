@@ -150,7 +150,7 @@ class MainWindow(Screen):
             self.lst_bg_btn.append(habit_row)
 
             self.ids.labelled_habits.add_widget(habit_row)
-            self.ids.labelled_habits.height += habit_row.height
+            self.ids.labelled_habits.height += habit_row.height + 10
         # Use canvas to draw a rounded rectangle behind the ADD button for rounded edges
         self.add = Button(
             text="ADD",
@@ -180,7 +180,7 @@ class MainWindow(Screen):
         
         self.app.bind(text_color=lambda _, value: setattr(self.add, 'color', value))
         self.ids.labelled_habits.add_widget(self.add)
-        self.ids.labelled_habits.height += self.add.height
+        self.ids.labelled_habits.height += self.add.height + 20
 
     def delete_habit(self, instance):
         # open the config file
