@@ -1,0 +1,166 @@
+<AddHabitMeasScreen>:
+    name: "habMeasurable"
+
+    # ----------Main-----------
+    FloatLayout:
+        canvas.before:
+            Color:
+                rgba: app.bg_color
+            Rectangle:
+                pos: self.pos
+                size: self.size
+        BoxLayout:
+            orientation: 'vertical'
+            size_hint: 0.9, 0.37
+            pos_hint: {"center_x": 0.5, "top": 0.95}
+
+            spacing: dp(10)
+            padding: dp(10)
+
+            # name
+            TextInput:
+                id: name
+                hint_text: "Name"
+                multiline: False
+                foreground_color: app.text_color
+                background_color:app.outline_color 
+
+            # min threshold
+            TextInput:
+                id: threshold
+                hint_text: "how much ?"
+                multiline: False
+                foreground_color: app.text_color
+                background_color:app.outline_color 
+            # unit
+            TextInput:
+                id: unit
+                hint_text: "Unit (km, nb pages, ...)"
+                multiline: False
+                foreground_color: app.text_color
+                background_color:app.outline_color 
+
+            # question
+            TextInput:
+                id: qu
+                hint_text: "Question"
+                multiline: False
+                foreground_color: app.text_color
+                background_color:app.outline_color 
+
+            # descrpt
+            TextInput:
+                id: descr
+                hint_text: "Description"
+                multiline: False
+                foreground_color: app.text_color
+                background_color:app.outline_color
+
+            # reminder
+            Button:
+                color: app.text_color
+                background_color: app.button_color
+                background_normal: ''
+                padding: 5, 0
+
+                canvas.before:
+                    Color:
+                        rgba: app.outline_color  
+                    Line:
+                        width: 1
+                        rectangle: (self.x, self.y, self.width, self.height)
+
+                text: "Reminder"
+                size_hint_y: None
+                height: 30
+                halign: "left"
+                valign: "middle"
+                text_size: self.size
+
+                on_release:
+
+                    app.root.current = "reminder"
+                    root.manager.transition.direction = "left"
+
+            # on off
+            Button:
+                id: reminder_off
+                color: app.text_color
+                background_color: app.button_color
+                background_normal: ''
+                padding: 5, 0
+
+                canvas.before:
+                    Color:
+                        rgba: app.outline_color  
+                    Line:
+                        width: 1
+                        rectangle: (self.x, self.y, self.width, self.height)
+
+                text: "Reminder : off"
+                size_hint_y: None
+                height: 30
+                halign: "left"
+                valign: "middle"
+                text_size: self.size
+
+                on_release:
+                    root.reminder_on_off()  
+
+
+            
+        # ------------Save btn--------------
+        AnchorLayout:
+            anchor_x: "center"
+            anchor_y: "bottom"
+
+            # save
+            Button:
+                text: "Save"
+                size_hint: None, None
+                size: 150, 50
+
+                color: app.text_color
+                background_color: app.sbutton_color 
+                background_normal: ''
+
+                canvas.before:
+                    Color:
+                        rgba: app.outline_color   
+                    Line:
+                        width: 1
+                        rectangle: (self.x, self.y, self.width, self.height)
+                on_release:
+                    root.save_btn()
+                    app.root.current = "main"
+        
+        # ------------exit btn--------------
+        AnchorLayout:
+            anchor_x: "center"
+            anchor_y: "top"
+
+            # exit
+            Button:
+                text: "<- Discard & Back"
+
+                size_hint: None, None
+                size: 360, 40
+
+                halign: "left"
+                valign: "middle"
+                text_size: self.width, None
+                padding: 10, 0
+
+                color: app.text_color
+                background_color: app.back_btn_color
+                background_normal: ''
+                canvas.before:
+                    Color:
+                        rgba: app.outline_color   
+                    Line:
+                        width: 2
+                        rectangle: (self.x, self.y, self.width, self.height)
+                on_release: 
+                    app.root.current = "main"
+                    root.manager.transition.direction = "right"
+                    app.root.get_screen('main').add_the_info(True)

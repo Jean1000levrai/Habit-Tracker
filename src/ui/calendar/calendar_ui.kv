@@ -1,0 +1,168 @@
+<CalendarScreen>
+    name: "calendar"
+
+    # ----------Main-----------
+    FloatLayout:
+        canvas.before:
+            Color:
+                rgba: app.bg_color
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+            Color:
+                rgba: app.outline_color
+            Rectangle:
+                pos: self.x + 100, self.y + self.height * 0.05
+                size: 2, self.height * 0.7
+
+        # ----------top panel-----------
+        FloatLayout:
+            id: top_panel_cal
+            size_hint: 1,0.2
+            pos_hint: {"x":0, "y":0.75}
+            canvas.before:
+                Color:
+                    rgba: app.outline_color  
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+                # the outline becuz it looks better, some rando guy told me hehe
+                Color:
+                    rgba: app.panel_color
+                Rectangle:
+                    pos: self.x, self.y+2
+                    size: self.size
+
+            Label:
+                id: date
+                text: "DD/MM/YYYY"
+                font_size: '24sp'
+                pos_hint: {"top": 1}
+
+            Button:
+                text: "<"
+                pos_hint: {"right": 0.15,"top": 0.9}
+                size_hint: None, None
+                size: 40, 40
+                color: app.text_color
+                background_color: app.button_color
+                background_normal: ''
+                canvas.before:
+                    Color:
+                        rgba: app.outline_color  
+                    Line:
+                        width: 1
+                        rectangle: (self.x, self.y, self.width, self.height)
+                on_release:
+                    root.day_forward(-1)
+
+            Button:
+                text:">"
+                pos_hint: {"right": 0.95, "top": 0.9}
+                size_hint: None, None
+                size: 40, 40
+                color: app.text_color
+                background_color: app.button_color
+                background_normal: ''
+                canvas.before:
+                    Color:
+                        rgba: app.outline_color  
+                    Line:
+                        width: 1
+                        rectangle: (self.x, self.y, self.width, self.height)
+                on_release:
+                    root.day_forward(1)
+        
+        # ----------Calendar-----------
+        
+        ScrollView:
+            
+            size_hint: 1, 0.7
+            pos_hint:{"x":0, "y":0.05}
+            do_scroll_x: False
+            do_scroll_y: True
+
+            canvas.before:
+                Color:
+                    rgba: app.outline_color  
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+                # the outline becuz it looks better, some rando guy told me hehe
+                Color:
+                    rgba: app.bg_color
+                Rectangle:
+                    pos: self.x, self.y+2
+                    size: self.size
+                # line separator
+                Color:
+                    rgba: app.outline_color  
+                Rectangle:
+                    pos: 100, self.y
+                    size: 2, self.height
+            GridLayout:
+                id: calendar_square
+
+                cols: 2
+                size_hint_y: None
+                height: self.minimum_height
+                row_default_height: 40
+                row_force_default: True
+                spacing: 5
+                padding: 5
+
+
+        # ------------exit btn--------------
+        AnchorLayout:
+            anchor_x: "center"
+            anchor_y: "top"
+
+            Button:
+                text: "<- Discard & Back"
+
+                size_hint: None, 0.05
+                size: 360, 40
+
+                halign: "left"
+                valign: "middle"
+                text_size: self.width, None
+                padding: 10, 0
+
+                color: app.text_color
+                background_color: app.back_btn_color  
+                background_normal: ''
+                canvas.before:
+                    Color:
+                        rgba: app.outline_color   
+                    Line:
+                        width: 2
+                        rectangle: (self.x, self.y, self.width, self.height)
+                on_release: 
+                    app.root.current = "main"
+                    root.manager.transition.direction = "right"
+
+        # ------------Save btn--------------
+        AnchorLayout:
+            anchor_x: "center"
+            anchor_y: "bottom"
+
+            Button:
+                text: "Save"
+                size_hint: None, 0.05
+                size: 150, 50
+
+                color: app.text_color
+                background_color: app.sbutton_color 
+                background_normal: ''
+
+                canvas.before:
+                    Color:
+                        rgba: app.outline_color   
+                    Line:
+                        width: 1
+                        rectangle: (self.x, self.y, self.width, self.height)
+                on_release:
+                    
+        
+
