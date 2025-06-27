@@ -32,6 +32,23 @@ class SettingsWindow(Screen):
         # loads the default config when signed out
         self.manager.get_screen("main").empty_hab()
         self.manager.get_screen("main").load_all()
+    
+    def sort_hab(self):
+        text = self.ids.sort_hab.text[9:]
+
+        # open the config file
+        with open(fct.resource_path2("data/config.json")) as f:
+            config = json.load(f)
+
+        # change the sorting method through the config file
+        config["sort"] = text
+        with open(fct.resource_path2("data/config.json"), 'w') as f:
+            json.dump(config, f, indent=1)
+
+        # reloads the habits
+        self.manager.get_screen("main").empty_hab()
+        self.manager.get_screen("main").load_all()
+
 
 
 class AboutWindow(Screen):

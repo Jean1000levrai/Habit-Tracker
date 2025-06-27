@@ -19,7 +19,6 @@ def create_db(user=''):
                 reminder BOOLEAN,
                 description TEXT,
                 unit TEXT,
-                quantity REAL,
                 threshold REAL,
                 is_measurable BOOLEAN,
                 frequency TEXT
@@ -40,6 +39,18 @@ def create_db(user=''):
             )
     """)
 
+    cur.execute(f"""
+        CREATE TABLE IF NOT EXISTS habit_logs_{user} (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            habit_id INTEGER NOT NULL,
+            date TEXT NOT NULL,
+            quantity REAL,
+            is_completed BOOLEAN NOT NULL DEFAULT 0,
+            FOREIGN KEY(habit_id) REFERENCES habits_{user}(id) ON DELETE CASCADE,
+            UNIQUE(habit_id, date)
+            )
+    """)
+
     conn.commit()
     conn.close()
 
@@ -51,6 +62,8 @@ def drop_all_tables(user=''):
     cur.execute(f"DROP TABLE IF EXISTS habits_{user}")
     # Drop the days table
     cur.execute(f"DROP TABLE IF EXISTS habit_days_{user}")
+    # Drop the logs table
+    cur.execute(f"DROP TABLE IF EXISTS habit_logs_{user}")
     conn.commit()
     conn.close()
 
@@ -94,9 +107,9 @@ def add_habit_m(habit, user=''):
 
     cur.execute(f"""
         INSERT INTO habits_{user} 
-        (name, question, reminder, description, unit, quantity, threshold, is_measurable)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    """, info[:7]+[True])
+        (name, question, reminder, description, unit, threshold, is_measurable)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    """, info[:6]+[True])
 
     cur.execute(f"""
         INSERT INTO habit_days_{user} (monday, tuesday, wednesday, thursday, friday, saturday, sunday)
@@ -120,6 +133,7 @@ def delete_habit(name = '*', user=''):
     conn.commit()
     conn.close()
 
+# update
 def update(hab, old_name, user=''):
     """Update a habit's info in the database."""
     conn = connect_to_db()
@@ -172,11 +186,57 @@ def update_m(hab, old_name, user=''):
     conn.commit()
     conn.close()
 
+def valid(hab_name, date, val=1, user=''):
+    conn = connect_to_db()
+    cur = conn.cursor()
+
+    # Get the habit_id from the habit name
+    cur.execute(f"SELECT id FROM habits_{user} WHERE name = ?", (hab_name,))
+    result = cur.fetchone()
+    if result is None:
+        conn.close()
+        raise ValueError(f"Habit '{hab_name}' not found.")
+
+    habit_id = result[0]
+
+    # Update the log entry
+    cur.execute(f"""
+        UPDATE habit_logs_{user}
+        SET is_completed = ?
+        WHERE habit_id = ? AND date = ?
+    """, (val, habit_id, date))
+
+    conn.commit()
+    conn.close()
+
+def add_quantity(hab_name, date, quantity, user=''):
+    conn = connect_to_db()
+    cur = conn.cursor()
+
+    # Get the habit_id and threshold
+    cur.execute(f"SELECT id, threshold FROM habits_{user} WHERE name = ?", (hab_name,))
+    result = cur.fetchone()
+    if result is None:
+        conn.close()
+        raise ValueError(f"Habit '{hab_name}' not found.")
+    
+    habit_id, threshold = result
+
+    # Update the log quantity
+    # is_completed only true if quantity is greater than threshold
+    cur.execute(f"""
+        UPDATE habit_logs_{user}
+        SET quantity = ?, is_completed = ?
+        WHERE habit_id = ? AND date = ?
+    """, (quantity, int(quantity >= threshold), habit_id, date))
+
+    conn.commit()
+    conn.close()
 
 
 # -----------get-----------
 
-# ----for functions----
+# for functions
 def hab_info(hab = hmgr.HabitYesNo()):
     """function that takes a habityesno is param,
     returns every attributes of it. used for sql"""
@@ -195,7 +255,6 @@ def hab_info_m(hab = hmgr.HabitMeasurable()):
             hab.description,
             hab.unit,
             hab.threshold,
-            hab.quantity,
             hab.frequency
             ]
 
@@ -222,14 +281,15 @@ def get_info_hab(hab_name, attr, user=''):
         return rep[0]
     return None
 
-# ----for debug----
+# for debug
 def get_habits_with_days(user=''):
     conn = connect_to_db()
     cur = conn.cursor()
     cur.execute(f"""
-        SELECT h.*, d.monday, d.tuesday, d.wednesday, d.thursday, d.friday, d.saturday, d.sunday
+        SELECT h.*, d.monday, d.tuesday, d.wednesday, d.thursday, d.friday, d.saturday, d.sunday, l.*
         FROM habits_{user} h
         LEFT JOIN habit_days_{user} d ON h.id = d.habit_id
+        LEFT JOIN habit_logs_{user} l ON h.id = l.habit_id
     """)
     results = cur.fetchall()
     conn.close()
@@ -243,7 +303,7 @@ def print_table(user=''):
     for row in rows:
         print(row)
 
-# ----ui----
+# ui
 def show_habit_for_gui(name = '*', user=''):
     """function that takes the name or a star of a habit
     in parameter,returns every attribute' values of the
@@ -320,12 +380,14 @@ def sort_by_time(name='*', user=''):
 # -----------main-----------
 if __name__ == "__main__":
     hab = hmgr.HabitYesNo("runnnn")
+
     create_db("bebouu")
     create_db('')
     create_db('jean')
+
     # delete_habit("*", "easydoor")
     # print(get_habits_with_days("jen"))
     print("--------------------")
-    # print(get_habits_with_days(""))
+    print(get_habits_with_days(""))
     # print(get_info_hab())
     

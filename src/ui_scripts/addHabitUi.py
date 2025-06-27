@@ -85,7 +85,7 @@ class AddHabitWindow(Screen):
             print(self.edit_mode)
             print("not a valid input")
 
-    def on_btn_releasde(self, instance):
+    '''def on_btn_releasde(self, instance):
         # open the config file
         with open(resource_path2("data/config.json")) as f:
             config = json.load(f)
@@ -132,7 +132,7 @@ class AddHabitWindow(Screen):
         if self.ids.reminder_off.text == "Reminder : off":
             self.ids.reminder_off.text = "Reminder : on"
         else:
-            self.ids.reminder_off.text = "Reminder : off"
+            self.ids.reminder_off.text = "Reminder : off"'''
 
 class AddHabitPopup(Popup):
     """popup where the user will be able to

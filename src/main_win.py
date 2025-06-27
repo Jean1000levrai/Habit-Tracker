@@ -127,9 +127,17 @@ class MainWindow(Screen):
         # adds the default height of the scrollview
         self.ids.labelled_habits.height = 0
 
+        match config["sort"]: 
+            case "Last created":
+                sort = db.show_habit_for_gui('*',self.user)
+            case "Alphabetical":
+                sort = db.sort_by_alpha('*', self.user)
+            case "Time":
+                sort = db.sort_by_time('*', self.user)
+
         # displays all the habits from the db
         # by loop on all the db and displays it with a button
-        for row in db.show_habit_for_gui('*',self.user):
+        for row in sort:
 
             habit_name = row[1]
 
@@ -223,15 +231,8 @@ class MainWindow(Screen):
             self.manager.get_screen("habYesNo").current_hab_name = self.hab_name
             self.manager.get_screen("habYesNo").edit_mode = True
 
-    def add_the_info_m(self, no_edit = False):
-        if no_edit:
-            self.manager.get_screen("habMeasurable").ids.name.text = ''
-            self.manager.get_screen("habMeasurable").ids.qu.text = ''
-            self.manager.get_screen("habMeasurable").ids.threshold.text = ''
-            self.manager.get_screen("habMeasurable").ids.unit.text = ''
-            self.manager.get_screen("habMeasurable").ids.descr.text = ''
-            self.manager.get_screen("habMeasurable").edit_mode = False
-        else:
+    def add_the_info_m(self, edit = False):
+        if not edit:
             self.manager.get_screen("habMeasurable").edit_mode = True
             self.manager.get_screen("habMeasurable").ids.name.text = self.hab_name
 
@@ -246,15 +247,18 @@ class MainWindow(Screen):
 
             descr = db.get_info_hab(self.hab_name, "description", self.user)
             self.manager.get_screen("habMeasurable").ids.descr.text = str(descr)
-
-    def add_the_info(self, no_edit = False):
-        if no_edit:
-            self.manager.get_screen("habYesNo").ids.name.text = ''
-            self.manager.get_screen("habYesNo").ids.qu.text = ''
-            self.manager.get_screen("habYesNo").ids.descr.text = ''
-            self.manager.get_screen("habYesNo").edit_mode = False
-
         else:
+            print('good')
+            self.manager.get_screen("habMeasurable").ids.name.text = ''
+            self.manager.get_screen("habMeasurable").ids.qu.text = ''
+            self.manager.get_screen("habMeasurable").ids.threshold.text = ''
+            self.manager.get_screen("habMeasurable").ids.unit.text = ''
+            self.manager.get_screen("habMeasurable").ids.descr.text = ''
+            self.manager.get_screen("habMeasurable").edit_mode = False
+        
+
+    def add_the_info(self, edit = False):
+        if not edit:
             self.manager.get_screen("habYesNo").edit_mode = True
             self.manager.get_screen("habYesNo").ids.name.text = self.hab_name
 
@@ -269,6 +273,14 @@ class MainWindow(Screen):
 
             # frequency = db.get_info_hab(self.hab_name, "frequency", self.user)
             # self.manager.get_screen("habYesNo").ids.freq_for_hab.text = str(frequency)
+
+        else:
+            self.manager.get_screen("habYesNo").ids.name.text = ''
+            self.manager.get_screen("habYesNo").ids.qu.text = ''
+            self.manager.get_screen("habYesNo").ids.descr.text = ''
+            self.manager.get_screen("habYesNo").edit_mode = False
+
+        
 
 class SureDelPopup(Popup):
     pass

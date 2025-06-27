@@ -64,10 +64,16 @@
                     id: labelled_settings
                     size_hint_y: None
                     padding: 30, 10
+                    spacing: 10
+                    background_color: app.button_color
+                    color: app.text_color
+                    font_size: 16
                     
                     # themes button
                     Button:
                         id: settings_theme
+                        size_hint: None, None
+                        size: 200, 44
                         color: app.text_color
                         background_color: app.button_color
                         background_normal: ''
@@ -86,6 +92,8 @@
                         color: app.text_color
                         background_color: app.button_color
                         background_normal: ''
+                        size_hint: None, None
+                        size: 200, 44
                         text: "sign out"
                         canvas.before:
                             Color:
@@ -100,11 +108,21 @@
                     # sorting habit
                     Spinner:
                         id: sort_hab
-                        text: 'Select an option'
-                        values: ['Last created', 'Alphabetical', 'Time']
+                        text: 'Sort by: Last created'
+                        values: ['Sort by: Last created', 'Sort by: Alphabetical', 'Sort by: Time']
                         size_hint: None, None
                         size: 200, 44
-                        on_text: root.on_selection(self, self.text)
+
+                        color: app.text_color
+                        background_color: app.button_color
+                        background_normal: ''
+                        canvas.before:
+                            Color:
+                                rgba: app.button_color  
+                            Line:
+                                width: 1
+                                rectangle: (self.x, self.y, self.width, self.height)
+                        on_text: root.sort_hab()
 
                     # about button
                     Button:
@@ -112,6 +130,8 @@
                         background_color: app.button_color
                         background_normal: ''
                         text: "About"
+                        size_hint: None, None
+                        size: 200, 44
                         canvas.before:
                             Color:
                                 rgba: app.button_color
@@ -129,6 +149,8 @@
                         background_color: app.button_color
                         background_normal: ''
                         text: "Github"
+                        size_hint: None, None
+                        size: 200, 44
                         canvas.before:
                             Color:
                                 rgba: app.button_color  
