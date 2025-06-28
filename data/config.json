@@ -1,6 +1,7 @@
 {
  "first_timer": false,
- "theme": "light",
+ "theme": "dark",
  "name": "",
- "streak": 0
+ "streak": 0,
+ "sort": "Last created"
 }

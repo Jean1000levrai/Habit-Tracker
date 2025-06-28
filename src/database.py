@@ -1,4 +1,6 @@
 import sqlite3 as sql
+from datetime import datetime, timedelta
+
 import habit_mgr as hmgr
 from functions import *
 from calendar_db import *
@@ -398,21 +400,73 @@ def nb_dates(user = ''):
     conn.close()
     return count
 
+def get_all_habits(user=''):
+    conn = connect_to_db()
+    cur = conn.cursor()
+    cur.execute(f"SELECT id, name FROM habits_{user}")
+    habits = cur.fetchall()
+    conn.close()
+    return habits
+
+def get_all_dates(user=''):
+    conn = connect_to_db()
+    cur = conn.cursor()
+    cur.execute(f"SELECT DISTINCT date FROM habit_logs_{user} ORDER BY date ASC")
+    dates = [row[0] for row in cur.fetchall()]
+    conn.close()
+    return dates
+
+def check_log(habit_id, date, user=''):
+    conn = connect_to_db()
+    cur = conn.cursor()
+    cur.execute(f"""
+        SELECT is_completed FROM habit_logs_{user}
+        WHERE habit_id=? AND date=?
+    """, (habit_id, date))
+    row = cur.fetchone()
+    conn.close()
+    return bool(row[0]) if row else False
+
 # -----------else-----------
 
+def insert_sample_data(user=''):
+    conn = connect_to_db()
+    cur = conn.cursor()
 
+    habits = [
+        ("Drink Water", "Did you drink enough water today?", 0, "Stay hydrated", "liters", 2.0, 1, "daily"),
+        ("Exercise", "Did you exercise today?", 0, "Stay fit", "minutes", 30.0, 1, "daily"),
+        ("Read", "Did you read today?", 0, "Develop your mind", "pages", 10.0, 1, "daily"),
+    ]
+
+    # Insert habits
+    for habit in habits:
+        cur.execute(f"""
+            INSERT OR IGNORE INTO habits_{user} 
+            (name, question, reminder, description, unit, threshold, is_measurable, frequency)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        """, habit)
+
+    # Get habit IDs
+    cur.execute(f"SELECT id FROM habits_{user}")
+    habit_ids = [row[0] for row in cur.fetchall()]
+
+    # Generate logs for the past 5 days
+    today = datetime.today()
+    for i in range(5):
+        date_str = (today - timedelta(days=i)).strftime("%Y-%m-%d")
+        for habit_id in habit_ids:
+            cur.execute(f"""
+                INSERT OR IGNORE INTO habit_logs_{user}
+                (habit_id, date, quantity, is_completed)
+                VALUES (?, ?, ?, ?)
+            """, (habit_id, date_str, 1.0, 1))
+
+    conn.commit()
+    conn.close()
 
 # -----------main-----------
 if __name__ == "__main__":
-    hab = hmgr.HabitYesNo("runnnn")
-
-    create_db("bebouu")
-    create_db('')
-    create_db('jean')
-
-    # delete_habit("*", "easydoor")
-    # print(get_habits_with_days("jen"))
-    print("--------------------")
-    print(get_habits_with_days(""))
-    # print(get_info_hab())
-    
+    # create_db('')
+    # insert_sample_data('')
+    print(get_habits_with_days(''))    

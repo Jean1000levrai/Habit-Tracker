@@ -19,7 +19,7 @@
             Button:
                 text: "<- Discard & Back"
 
-                size_hint: None, None
+                size_hint: None, 0.05
                 size: 360, 40
 
                 halign: "left"
@@ -44,8 +44,11 @@
         # # ------------where the habit will be------------
         ScrollView:
             id: table
-            size_hint: 1, 0.98
-            pos_hint: { "y": 0.01}
-            do_scroll_x: True
-            do_scroll_y: True
+            size_hint_y: 1
+            GridLayout:
+                id: table_grid
+                cols: 1  # Set dynamically in Python
+                size_hint: None, None
+                width: self.minimum_width
+                height: self.minimum_height
 
