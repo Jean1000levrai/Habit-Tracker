@@ -427,6 +427,21 @@ def check_log(habit_id, date, user=''):
     conn.close()
     return bool(row[0]) if row else False
 
+def habits_has_date(date, user=''):
+    conn = connect_to_db()
+    cur = conn.cursor()
+
+    cur.execute(f"""SELECT h.name 
+                    FROM habits_{user} h 
+                    LEFT JOIN habit_logs_{user} l 
+                    ON h.id = l.habit_id
+                    WHERE l.date = ?""", (date,))
+    results = cur.fetchall()
+
+    conn.close()
+
+    return [row[0] for row in results]
+
 # -----------else-----------
 
 def insert_sample_data(user=''):
@@ -470,3 +485,4 @@ if __name__ == "__main__":
     # create_db('')
     # insert_sample_data('')
     print(get_habits_with_days(''))    
+

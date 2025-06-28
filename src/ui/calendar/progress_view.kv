@@ -41,10 +41,21 @@
                     root.manager.transition.direction = "right"
                     app.root.get_screen('main').add_the_info(True)
 
-        # # ------------where the habit will be------------
+        # ------------progress rectangle------------
         ScrollView:
             id: table
-            size_hint_y: 1
+            size_hint: 0.9, None  # width = 90% of screen, height fixed
+            height: root.height * 0.5
+            pos_hint: {"center_x": 0.5, "top": 0.9}  # below header, center horizontally
+
+            # outline where the progress will be
+            canvas.before:
+                Color:
+                    rgba: app.outline_color
+                Line:
+                    width: 1.5
+                    rectangle: (self.x, self.y, self.width, self.height)
+
             GridLayout:
                 id: table_grid
                 cols: 1  # Set dynamically in Python
