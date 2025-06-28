@@ -94,17 +94,19 @@ def add_habit(habit, user=''):
     """, info[4][3])
 
     # insert the logs
-    cur.execute(f"""
-        SELECT id FROM habits_{user}
-        WHERE name = ?""",(info[0],))
-    habit_id = cur.fetchone()[0]
+    print()
+    if info[4][3][datetime.today().weekday()] == 1:
+        cur.execute(f"""
+            SELECT id FROM habits_{user}
+            WHERE name = ?""",(info[0],))
+        habit_id = cur.fetchone()[0]
 
-    date = datetime.today()
-    cur.execute(f"""
-                INSERT OR IGNORE INTO habit_logs_{user}
-                (habit_id, date, quantity, is_completed)
-                VALUES (?, ?, ?, ?)
-            """, (habit_id, date, 0, 0))
+        date = datetime.today().strftime("%Y-%m-%d")
+        cur.execute(f"""
+                    INSERT OR IGNORE INTO habit_logs_{user}
+                    (habit_id, date, quantity, is_completed)
+                    VALUES (?, ?, ?, ?)
+                """, (habit_id, date, 0, 0))
     
     conn.commit()
     conn.close()
@@ -112,21 +114,18 @@ def add_habit(habit, user=''):
 def add_habit_m(habit, user=''):
     """Add a habit into the database safely for the measurables"""
     info = hab_info_m(habit) 
-    print(info)
-    print(len(info))
 
     conn = connect_to_db()
     cur = conn.cursor()
 
-    print("_________________________________________________")
-    print(info[:7]+[True])
-
+    # insert the actual habit
     cur.execute(f"""
         INSERT INTO habits_{user} 
         (name, question, reminder, description, unit, threshold, is_measurable)
         VALUES (?, ?, ?, ?, ?, ?, ?)
     """, info[:6]+[True])
 
+    # insert the days where the habit is active
     cur.execute(f"""
         INSERT INTO habit_days_{user} (monday, tuesday, wednesday, thursday, friday, saturday, sunday)
         VALUES (?, ?, ?, ?, ?, ?, ?)
@@ -531,7 +530,10 @@ def insert_sample_data(user=''):
 
 # -----------main-----------
 if __name__ == "__main__":
-    # create_db('')
-    # insert_sample_data('')
-    # print(get_habits_with_days(''))    
-    print_logs()
+    create_db('')
+    print_habits_everuthing('')
+    delete_habit()
+    # print_logs()
+    # drop_all_tables('')
+
+# BUG doesnt seem to delete the logs check that next time pal xoxo

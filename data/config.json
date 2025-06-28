@@ -1,8 +1,21 @@
 {
- "first_timer": false,
- "theme": "dark",
- "name": "",
- "streak": 0,
- "sort": "Last created",
- "reminder_var": [0, "Daily", [], [false, false, false, false, false, false, false]]
+    "first_timer": false,
+    "theme": "dark",
+    "name": "",
+    "streak": 0,
+    "sort": "Last created",
+    "reminder_var": [
+        0,
+        "Daily",
+        [],
+        [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+        ]
+    ]
 }

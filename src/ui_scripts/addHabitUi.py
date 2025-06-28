@@ -86,7 +86,7 @@ class AddHabitWindow(Screen):
             print("not a valid input")
         
         # resets the reminder var
-        reminder_var = [0, "Daily", [], [False, False, False, False, False, False, False]]
+        reminder_var = [0, "Daily", [], [True, True, True, True, True, True, True]]
         with open(resource_path2("data/config.json"), "r") as f:
             config = json.load(f)
 
