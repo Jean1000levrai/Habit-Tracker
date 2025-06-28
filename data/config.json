@@ -1,7 +1,22 @@
 {
- "first_timer": false,
- "theme": "dark",
- "name": "",
- "streak": 0,
- "sort": "Last created"
+    "first_timer": false,
+    "theme": "dark",
+    "name": "",
+    "streak": 0,
+    "sort": "Last created",
+    "EMOJIS": ["😀", "😂", "😎", "😍", "😭", "🥳", "🤔", "🙃", "😴", "😡"],
+    "reminder_var": [
+        0,
+        "Daily",
+        [],
+        [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+        ]
+    ]
 }

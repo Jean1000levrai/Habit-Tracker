@@ -60,10 +60,21 @@ class ProgressViewWindow(Screen):
                                 background_color=(0.1, 0.1, 0.1, 1), color=(1, 1, 1, 1),
                                 disabled=True))
             # Habit columns: just red buttons for now
-            for _ in habits:
-                grid.add_widget(Button(
-                    background_color=(1, 0, 0, 1),  # Red
-                    size_hint=(None, None),
-                    size=(100, 40),
-                    text=""
-                ))
+            habs_date = db.habits_has_date(date)
+            print("habs_date",habs_date)
+            for hab in habits:
+                print("hab",hab)
+                if hab[1] in habs_date:
+                    grid.add_widget(Button(
+                        background_color=(1, 0, 0, 1),  # Red
+                        size_hint=(None, None),
+                        size=(100, 40),
+                        text=""
+                        ))
+                else:
+                    grid.add_widget(Button(
+                        background_color=(0.8, 0.8, 0.8, 1),  # light gray
+                        size_hint=(None, None),
+                        size=(100, 40),
+                        text=""
+                        ))
