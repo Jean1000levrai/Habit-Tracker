@@ -117,7 +117,6 @@ class TimePopup(Popup):
                         self.container_days.add_widget(self.btn_days[day][0])
 
     def save(self):
-        global reminder_var
 
         # update the var holding the value
         # time  
@@ -139,8 +138,7 @@ class TimePopup(Popup):
             i = i + 1
 
         print(reminder_var)
-
-        
+       
     def dismiss_1(self):
         global reminder_var
         reminder_var[2] = []

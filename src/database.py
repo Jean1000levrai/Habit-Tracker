@@ -1,5 +1,6 @@
 import sqlite3 as sql
 from datetime import datetime, timedelta
+import json
 
 import habit_mgr as hmgr
 from functions import *
@@ -30,13 +31,13 @@ def create_db(user=''):
     cur.execute(f"""
         CREATE TABLE IF NOT EXISTS habit_days_{user} (
             habit_id INTEGER PRIMARY KEY,
-            monday BOOLEAN DEFAULT 0,
-            tuesday BOOLEAN DEFAULT 0,
-            wednesday BOOLEAN DEFAULT 0,
-            thursday BOOLEAN DEFAULT 0,
-            friday BOOLEAN DEFAULT 0,
-            saturday BOOLEAN DEFAULT 0,
-            sunday BOOLEAN DEFAULT 0,
+            monday BOOLEAN DEFAULT 1,
+            tuesday BOOLEAN DEFAULT 1,
+            wednesday BOOLEAN DEFAULT 1,
+            thursday BOOLEAN DEFAULT 1,
+            friday BOOLEAN DEFAULT 1,
+            saturday BOOLEAN DEFAULT 1,
+            sunday BOOLEAN DEFAULT 1,
             FOREIGN KEY(habit_id) REFERENCES habits_{user}(id) ON DELETE CASCADE
             )
     """)
@@ -76,21 +77,34 @@ def drop_all_tables(user=''):
 def add_habit(habit, user=''):
     """Add a habit into the database safely for the yes no"""
     info = hab_info(habit) 
-    print(info)
-    print(len(info))
 
     conn = connect_to_db()
     cur = conn.cursor()
 
+    # insert the actual habit
     cur.execute(f"""
         INSERT INTO habits_{user} (name, question, reminder, description)
         VALUES (?, ?, ?, ?)
     """, info[:4])
 
+    # insert the days where the habit is active
     cur.execute(f"""
         INSERT INTO habit_days_{user} (monday, tuesday, wednesday, thursday, friday, saturday, sunday)
         VALUES (?, ?, ?, ?, ?, ?, ?)
     """, info[4][3])
+
+    # insert the logs
+    cur.execute(f"""
+        SELECT id FROM habits_{user}
+        WHERE name = ?""",(info[0],))
+    habit_id = cur.fetchone()[0]
+
+    date = datetime.today()
+    cur.execute(f"""
+                INSERT OR IGNORE INTO habit_logs_{user}
+                (habit_id, date, quantity, is_completed)
+                VALUES (?, ?, ?, ?)
+            """, (habit_id, date, 0, 0))
     
     conn.commit()
     conn.close()
@@ -284,7 +298,7 @@ def get_info_hab(hab_name, attr, user=''):
     return None
 
 # for debug
-def get_habits_with_days(user=''):
+def print_habits_everuthing(user=''):
     conn = connect_to_db()
     cur = conn.cursor()
     cur.execute(f"""
@@ -295,9 +309,31 @@ def get_habits_with_days(user=''):
     """)
     results = cur.fetchall()
     conn.close()
-    return results
+    for row in results:
+        print(row)
+
+def print_logs(user=''):
+    '''prints out the logs/date of the habits 
+    (each different days that the habit has been used) db for debug'''
+    conn = connect_to_db()
+    cur = conn.cursor()
+
+    cur.execute(f"""
+                SELECT * FROM habit_logs_{user} ORDER BY date ASC
+                """)
+
+    result = cur.fetchall()
+    conn.close()
+    for row in result:
+        print(row)
+
+def print_days(user=''):
+    '''prints out the days of the habits db for debug'''
+    conn = connect_to_db()
+    cur = conn.cursor()
 
 def print_table(user=''):
+    '''prints out the habits db for debug'''
     conn = connect_to_db()
     cur = conn.cursor()
     cur.execute(f"SELECT * FROM habits_{user}")
@@ -442,6 +478,19 @@ def habits_has_date(date, user=''):
 
     return [row[0] for row in results]
 
+def create_new_day(date, user=''):
+    """called in main program each time the app is launched
+    check if it is a new day, if it is: adds a new date to the db
+    if not, does nothing"""
+    conn = connect_to_db()
+    cur = conn.cursor()
+
+    cur.execute(f"""
+
+        """)
+
+
+
 # -----------else-----------
 
 def insert_sample_data(user=''):
@@ -484,5 +533,5 @@ def insert_sample_data(user=''):
 if __name__ == "__main__":
     # create_db('')
     # insert_sample_data('')
-    print(get_habits_with_days(''))    
-
+    # print(get_habits_with_days(''))    
+    print_logs()

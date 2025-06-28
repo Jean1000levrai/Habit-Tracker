@@ -3,5 +3,6 @@
  "theme": "dark",
  "name": "",
  "streak": 0,
- "sort": "Last created"
+ "sort": "Last created",
+ "reminder_var": [0, "Daily", [], [false, false, false, false, false, false, false]]
 }

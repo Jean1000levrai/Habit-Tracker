@@ -84,6 +84,16 @@ class AddHabitWindow(Screen):
         except:
             print(self.edit_mode)
             print("not a valid input")
+        
+        # resets the reminder var
+        reminder_var = [0, "Daily", [], [False, False, False, False, False, False, False]]
+        with open(resource_path2("data/config.json"), "r") as f:
+            config = json.load(f)
+
+        config["reminder_var"] = reminder_var
+
+        with open(resource_path2("data/config.json"), "w") as f:
+            json.dump(config, f, indent=4)
 
     '''def on_btn_releasde(self, instance):
         # open the config file
