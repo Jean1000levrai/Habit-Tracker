@@ -15,23 +15,55 @@ class ProgressViewWindow(Screen):
     def __init__(self, **kw):
         super().__init__(**kw)
         self.app = App.get_running_app()
+        self.calendar()
 
-        # open the config file
+    def calendar(self):
+        # Load config
         with open(resource_path2("data/config.json")) as f:
             config = json.load(f)
         self.user = config["name"]
 
+        # Get all habits and dates
+        habits = db.get_all_habits(self.user)  # list : (id, name)
+        dates = db.get_all_dates(self.user)    # list : date 
 
-        nb_hab = db.nb_hab(self.user)
-        nb_date = db.nb_dates(self.user)
+        nb_hab = len(habits)
+        nb_date = len(dates)
 
-        self.table_layout = BoxLayout(
-            col = nb_date,
-            rows = nb_hab
-        )
-        # rows habits
-        for i in range(nb_hab):
-            
-            # columns dates
-            for j in range(nb_date):
-                pass
+        # set up the grid
+        grid = self.ids.table_grid
+        grid.clear_widgets()
+
+        grid.cols = nb_hab + 1  # habits as columns (+1 for date labels)
+        grid.rows = nb_date + 1  # dates as rows (+1 for top header)
+        grid.size_hint = (None, None)
+        grid.width = (nb_hab + 1) * 100
+        grid.height = (nb_date + 1) * 40
+
+        # --- Top-left cell empty ---
+        grid.add_widget(Button(text='', size_hint=(None, None), size=(100, 40),
+                            background_color=(0, 0, 0, 0), disabled=True))
+
+        # --- Top row: habit names ---
+        for _, habit_name in habits:
+            grid.add_widget(Button(text=habit_name, 
+                                    size_hint=(None, None), 
+                                    size=(100, 40),
+                                    background_color=(0.1, 0.1, 0.1, 1), color=(1, 1, 1, 1),
+                                    disabled=True))
+
+        # --- Date rows ---
+        for date in dates:
+            # First column: the date
+            grid.add_widget(Button(text=date, 
+                                size_hint=(None, None), size=(100, 40),
+                                background_color=(0.1, 0.1, 0.1, 1), color=(1, 1, 1, 1),
+                                disabled=True))
+            # Habit columns: just red buttons for now
+            for _ in habits:
+                grid.add_widget(Button(
+                    background_color=(1, 0, 0, 1),  # Red
+                    size_hint=(None, None),
+                    size=(100, 40),
+                    text=""
+                ))
