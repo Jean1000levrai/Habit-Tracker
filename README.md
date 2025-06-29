@@ -1,3 +1,5 @@
+### ⚠️ This app is under development and is not working at the moment
+___________________________________________
 # English
 # 📱 Habit Tracker
 
@@ -56,9 +58,9 @@ Requires Linux or WSL
 ## 📄 License
 
 This project is licensed under the MIT License — see the LICENSE file for details.
-#
-#
-#
+___________________________________________
+### ⚠️ L'application est en début de développement, elle ne fonctionne pas pour l'instant
+___________________________________________
 # Français
 # 📱 Habit Tracker
 
@@ -105,10 +107,9 @@ Nécessite un environnement Linux (ou WSL sous Windows) avec Buildozer installé
 
 Ce projet est sous licence MIT — voir le fichier LICENSE pour plus d’informations.
 
-#
-#
-#
+___________________________________________
 # 🖼️ Screenshots
+
 
 ### Main Interface
 
