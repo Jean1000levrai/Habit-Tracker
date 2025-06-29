@@ -76,6 +76,10 @@ class App(MDApp):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.theme_dark = True
+        # open the config file
+        with open(resource_path2("data/config.json")) as f:
+            config = json.load(f)
+        db.create_new_day(config['name'])
         
     def build(self):
     

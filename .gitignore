@@ -12,6 +12,5 @@ build/
 .venv*/
 .vscode/
 dist/
-checkList.txt
 setup_buildozer.sh
 test.py

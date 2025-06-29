@@ -1,0 +1,63 @@
+😝 finished
+😆 updates needed
+😥 in dev
+
+habit valid when done  5h
+    habit streak 😥
+
+new view to see progress
+    table habit/date 😥
+    green when done, red else
+    
+panel for habit scrollview 😥 5h
+    habit GREAT SUCESS !! 😥
+    habit clickable 😝
+        timeline
+        info 😆
+        edit habit 😆 (reminder doesnt work)
+        delete habit 😝
+
+    habit measurables 7h 😆
+        graph
+        info 😆
+        edit habit 😆
+        delete habit 😝
+
+    sort the habits (by name, by last created) 😆 (sort by time is coming after valid, cuz it is kinda linked)
+
+habit reminder 😆 7h+
+    ui 😥
+    backend 😥
+    api
+
+
+styling  1h
+    fonts
+    colour palette 😆
+
+settings 😆
+    themes 😝
+    languages
+    import/save habit file
+    about 😆
+    github link 😝
+
+    develop mode
+        use sql injection 
+
+
+
+calendar 😆  2h
+    add task
+    delete task
+
+put it online 😥
+    login 😝
+    sign up 😝
+    see your friend's progress
+
+
+
+
+to build it for linux
+pyinstaller src/main.py --onefile --noconfirm
