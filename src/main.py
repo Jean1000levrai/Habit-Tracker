@@ -25,6 +25,7 @@ from ui_scripts.addHabitUi import *
 from ui_scripts.calendar_script import *
 from ui_scripts.addHabMUi import *
 from ui_scripts.progress_view import *
+from ui_scripts.emoji_popup import *
 
 # ui utilities
 from kivy.uix.button import Button

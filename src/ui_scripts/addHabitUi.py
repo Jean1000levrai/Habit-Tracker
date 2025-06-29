@@ -93,7 +93,7 @@ class AddHabitWindow(Screen):
         config["reminder_var"] = reminder_var
 
         with open(resource_path2("data/config.json"), "w") as f:
-            json.dump(config, f, indent=4)
+            json.dump(config, f, indent=1)
 
     '''def on_btn_releasde(self, instance):
         # open the config file
