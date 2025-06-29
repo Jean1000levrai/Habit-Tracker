@@ -11,6 +11,7 @@ The goal of this app is to not forget to do your daily tasks. This app will push
  - Calendar view for better visualisation
  - Cross-platform: android, windows, linux
  - Saves data locally
+ - view your own progress!
  - Log in to your account and add friends to view their progress.
 
 
@@ -71,6 +72,7 @@ Le but de cette application est de ne pas oublier d’accomplir vos tâches quot
  - Calendrier permettant une meilleure visualisation
  - Compatible avec Android, Windows et Linux
  - Sauvegarde des données en local
+ - consulte tes progrès!
  - Connexion en ligne et ajout d’amis pour voir leur progression
 
 
@@ -103,7 +105,9 @@ Nécessite un environnement Linux (ou WSL sous Windows) avec Buildozer installé
 
 Ce projet est sous licence MIT — voir le fichier LICENSE pour plus d’informations.
 
-
+#
+#
+#
 # 🖼️ Screenshots
 
 ### Main Interface
