@@ -94,7 +94,6 @@ def add_habit(habit, user=''):
     """, info[4][3])
 
     # insert the logs
-    print()
     if info[4][3][datetime.today().weekday()] == 1:
         cur.execute(f"""
             SELECT id FROM habits_{user}
@@ -134,6 +133,35 @@ def add_habit_m(habit, user=''):
     conn.commit()
     conn.close()
 
+def create_new_day(date = datetime.today(), user=''):
+    """called in main program each time the app is launched
+    check if it is a new day, if it is: adds a new date to the db
+    if not, does nothing"""
+    conn = connect_to_db()
+    cur = conn.cursor()
+
+    cur.execute(f"""
+            SELECT h.name, h.id, d.monday, d.tuesday, d.wednesday, d.thursday, d.friday, d.saturday, d.sunday
+            FROM habits_{user} h LEFT JOIN habit_days_{user} d
+            ON h.id = d.habit_id
+        """)
+    habits = cur.fetchall()
+
+    print(habits)
+
+    for habit in habits:
+        # insert the logs
+        if habit[date.weekday() + 2] == 1:
+
+            date = date.strftime("%Y-%m-%d")
+            cur.execute(f"""
+                        INSERT OR IGNORE INTO habit_logs_{user}
+                        (habit_id, date, quantity, is_completed)
+                        VALUES (?, ?, ?, ?)
+                    """, (habit[1], date, 0, 0))
+    conn.commit()
+    conn.close()
+
 def delete_habit(name = '*', user=''):
     """delete a habit from the database"""
     conn = connect_to_db()
@@ -141,9 +169,17 @@ def delete_habit(name = '*', user=''):
     if name == '*':
         cur.execute(f"""DELETE FROM habits_{user}
                 WHERE id < 999999999999999""")
+        cur.execute(f"""DELETE FROM habit_logs_{user}
+                WHERE id < 999999999999999""")
+        
     else:
+        cur.execute(f"""SELECT id FROM habits_{user}
+                WHERE name = ?""", (name,))
+        id_hab = cur.fetchone()[0]
         cur.execute(f"""DELETE FROM habits_{user}
                 WHERE name = ?""", (name,))
+        cur.execute(f"""DELETE FROM habit_logs_{user}
+                WHERE habit_id = ?""", (id_hab,))
     
     conn.commit()
     conn.close()
@@ -247,6 +283,8 @@ def add_quantity(hab_name, date, quantity, user=''):
 
     conn.commit()
     conn.close()
+
+
 
 
 # -----------get-----------
@@ -477,17 +515,6 @@ def habits_has_date(date, user=''):
 
     return [row[0] for row in results]
 
-def create_new_day(date, user=''):
-    """called in main program each time the app is launched
-    check if it is a new day, if it is: adds a new date to the db
-    if not, does nothing"""
-    conn = connect_to_db()
-    cur = conn.cursor()
-
-    cur.execute(f"""
-
-        """)
-
 
 
 # -----------else-----------
@@ -531,9 +558,9 @@ def insert_sample_data(user=''):
 # -----------main-----------
 if __name__ == "__main__":
     create_db('')
+    create_new_day('')
     print_habits_everuthing('')
-    delete_habit()
-    # print_logs()
-    # drop_all_tables('')
+    print_logs('')
+
 
 # BUG doesnt seem to delete the logs check that next time pal xoxo
