@@ -111,6 +111,7 @@ def add_habit(habit, user=''):
     conn.commit()
     conn.close()
 
+# BUG finish it too bruuh
 def add_habit_m(habit, user=''):
     """called in the main app. 
     Add a habit into the database safely for the measurables"""
@@ -131,6 +132,20 @@ def add_habit_m(habit, user=''):
         INSERT INTO habit_days_{user} (monday, tuesday, wednesday, thursday, friday, saturday, sunday)
         VALUES (?, ?, ?, ?, ?, ?, ?)
     """, info[-1][3])
+
+    # insert the logs
+    if info[-1][3][datetime.today().weekday()] == 1:
+        cur.execute(f"""
+            SELECT id FROM habits_{user}
+            WHERE name = ?""",(info[0],))
+        habit_id = cur.fetchone()[0]
+
+        date = datetime.today().strftime("%Y-%m-%d")
+        cur.execute(f"""
+                    INSERT OR IGNORE INTO habit_logs_{user}
+                    (habit_id, date, quantity, is_completed)
+                    VALUES (?, ?, ?, ?)
+                """, (habit_id, date, 0, 0))
     
     conn.commit()
     conn.close()
@@ -429,15 +444,22 @@ def sort_by_time(name='*', user=''):
     conn = connect_to_db()
     cur = conn.cursor()
 
+    date = datetime.today().strftime("%Y-%m-%d") 
+
     # select everything if a *
     if name == "*":
-        cur.execute(f"""SELECT * FROM habits_{user} 
-                    ORDER BY name""")
+        cur.execute(f"""SELECT h.* FROM habits_{user} h
+                    LEFT JOIN habit_logs_{user} l
+                    on h.id = l.habit_id
+                    WHERE l.date = ?
+                    ORDER BY name"""(date,))
     # or just from one habit
     else:
-        cur.execute(f"""SELECT * FROM habits_{user}
-                    WHERE name = ? 
-                    ORDER BY name""", (name,))
+        cur.execute(f"""SELECT * FROM habits_{user} h
+                    LEFT JOIN habit_logs_{user} l
+                    on h.id = l.habit_id
+                    WHERE l.date = ? AND name = ? 
+                    ORDER BY name""", (date, name))
     
     # recovers the values
     list_habits = cur.fetchall()
