@@ -108,6 +108,9 @@ class MainWindow(Screen):
     """the main screen window"""
     def __init__(self, **kw):
         super().__init__(**kw)
+        with open(resource_path2("data/config.json")) as f:
+            config = json.load(f)
+        self.user = config["name"]
         self.app = App.get_running_app()
         self.hab_name = ''
         self.lst_btn = []
@@ -132,7 +135,6 @@ class MainWindow(Screen):
         # open the config file
         with open(resource_path2("data/config.json")) as f:
             config = json.load(f)
-        self.user = config["name"]
 
         # displays the name of the user at the top
         self.ids.title_app.text = self.user
@@ -196,22 +198,37 @@ class MainWindow(Screen):
         self.ids.labelled_habits.height += self.add.height + 20
 
     def delete_habit(self, instance):
-        # open the config file
-        with open(resource_path2("data/config.json")) as f:
-            config = json.load(f)
+        
 
         hab_name = instance.parent.btn.text
         print(hab_name)
-        db.delete_habit(hab_name, config["name"])
+        db.delete_habit(hab_name, self.user)
         
         self.manager.get_screen("main").empty_hab()
         self.manager.get_screen("main").load_all()
 
-    def validate(self, instance):
-        pass
+    def validate(self, name, user):
+        db.valid(hab_name=name, user= user)
+        self.empty_hab()
+        self.load_all()
 
     def on_btn_release(self, instance):
         print("checking in process ...")
+        # recovers the name of the clicked btn
+        self.hab_name = instance.parent.btn.text
+        print(instance.parent.btn.text)
+        self.manager.get_screen('validHab').ids.back.text = self.manager.get_screen('validHab').ids.back.text[:3] + self.hab_name
+
+        is_m = db.get_info_hab(self.hab_name, "is_measurable", self.user)
+        if is_m:
+            self.manager.transition.direction = "left"
+            self.manager.current = "validHabM"
+            print("not currently working...")
+        else:
+            self.manager.transition.direction = "left"
+            self.manager.current = "validHab"
+            # self.validate(self.hab_name)
+
 
     def details_btn_release(self, instance):
         # recovers the name of the clicked btn
