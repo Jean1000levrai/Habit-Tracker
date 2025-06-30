@@ -117,7 +117,8 @@ class MainWindow(Screen):
         self.lst_bg_btn = []
         self.lst_btn_dell = []
         self.lst_btn_details = []
-        self.load_all()
+        # self.load_all()
+        Clock.schedule_once(lambda dt: self.load_all(), 0.399)
 
     def empty_hab(self):
         layout = self.ids.labelled_habits
@@ -211,6 +212,8 @@ class MainWindow(Screen):
         db.valid(hab_name=name, user= user)
         self.empty_hab()
         self.load_all()
+        self.manager.transition.direction = "left"
+        self.manager.current = "main"
 
     def on_btn_release(self, instance):
         print("checking in process ...")
@@ -223,12 +226,12 @@ class MainWindow(Screen):
         if is_m:
             self.manager.transition.direction = "left"
             self.manager.current = "validHabM"
-            print("not currently working...")
+            self.manager.get_screen("validHabM").current_hab_name = self.hab_name
+            self.manager.get_screen("validHabM").current_threshold = db.get_info_hab(self.hab_name, "threshold", self.user)
         else:
             self.manager.transition.direction = "left"
             self.manager.current = "validHab"
-            # self.validate(self.hab_name)
-
+            self.manager.get_screen("validHab").current_hab_name = self.hab_name
 
     def details_btn_release(self, instance):
         # recovers the name of the clicked btn

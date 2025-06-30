@@ -579,10 +579,8 @@ def get_info_hab(hab_name, attr, user=''):
 
 # -----------main-----------
 if __name__ == "__main__":
-    create_db('')
-    create_new_day('')
+    # create_db('')
+    # create_new_day('')
     print_habits_everything('')
-    print_logs('')
+    # print_logs('')
 
-
-# BUG doesnt seem to delete the logs check that next time pal xoxo
