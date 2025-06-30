@@ -2,6 +2,7 @@
 import habit_mgr as hmgr
 import database as db
 from functions import *
+from datetime import *
 
 from login.login_script import *
 from login.login_ui_script import *
@@ -15,14 +16,26 @@ class HabitRow(BoxLayout):
         super().__init__(orientation='horizontal', size_hint_y=None, height=60, **kwargs)
         self.app = app
         self.habit_name = habit_name
+        with open(resource_path2("data/config.json")) as f:
+            config = json.load(f)
+        self.user = config["name"]
+
+        date = datetime.today().strftime("%Y-%m-%d")
+        hab_id = db.get_info_hab(habit_name, 'id', self.user)
 
         # Background
-        with self.canvas.before:
-            self.bg_color = Color(app.button_color)
-            self.bg_rect = RoundedRectangle(pos=self.pos, size=self.size)
-        self.bind(pos=self.update_rect, size=self.update_rect)
-        self.set_background_color(app.button_color )
+        if db.check_log(hab_id, date, self.user):
+            color = (0, 1, 0, 0.5)
+        else:
+            color = app.button_color
 
+        with self.canvas.before:
+            self.bg_color = Color(*color)
+            self.bg_rect = RoundedRectangle(pos=self.pos, size=self.size)
+
+        self.bind(pos=self.update_rect, size=self.update_rect)
+        self.set_background_color(color)
+        
         # Main text button
         self.btn = Button(
             text=habit_name,
@@ -194,14 +207,8 @@ class MainWindow(Screen):
         self.manager.get_screen("main").empty_hab()
         self.manager.get_screen("main").load_all()
 
-    def check(self, instance):
-        if self.lst_btn_dell[instance]:
-            instance.text = "  "
-            self.lst_btn_dell[instance] = False
-            
-        else:
-            instance.text = "  "
-            self.lst_btn_dell[instance] = True
+    def validate(self, instance):
+        pass
 
     def on_btn_release(self, instance):
         print("checking in process ...")

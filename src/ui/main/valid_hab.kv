@@ -1,0 +1,106 @@
+<ValidHab>:
+    name: "validHab"
+     # --------Main--------
+    FloatLayout:
+        canvas.before:
+            Color:
+                rgba: app.bg_color
+            Rectangle:
+                pos: self.pos
+                size: self.size
+    
+        # --------top button--------
+        FloatLayout:
+            size_hint: 1,0.05
+            pos_hint: {"x":0, "y":0.95}
+
+            Button:
+                text: "<- Back"
+
+                color: app.text_color
+                background_color: app.back_btn_color
+                background_normal: ''
+
+                pos_hint: {"center_x":0.5, "center_y":0.5}
+                border: (10,10,10,10)
+                canvas.before:
+                    Color:
+                        rgba: app.button_color  
+                    Line:
+                        width: 2
+                        rectangle: (self.x, self.y, self.width, self.height)
+                on_release: 
+                    app.root.current = "main"
+                    root.manager.transition.direction = "right"
+        # ----------panel---------------
+        FloatLayout:
+            size_hint: 0.9, 0.3
+            pos_hint: {"x": 0.05, "y": 0.6}
+            
+            # visual for the panel
+            canvas.before:
+                # outline
+                Color:
+                    rgba: app.outline_color
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                # panel
+                Color:
+                    rgba: app.panel_color
+                RoundedRectangle:
+                    pos: self.x + 2, self.y + 2
+                    size: self.width - 4, self.height - 4
+        
+            # validate btn
+            Button:
+                size_hint: 0.4, 0.2
+                text: "Completed!"
+                font_size: '18sp'
+
+                color: app.text_color
+                background_color: 0, 0, 0, 0
+                background_normal: ''
+
+                pos_hint: {"x": 0.55, "y": 0.15}
+
+                canvas.before:
+                    Color:
+                        rgba: app.sbutton_color
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+
+            # placeholder for the image
+            Image:
+                id: image
+                source: "path_to_image"
+                allow_stretch: False
+                size_hint: 0.4, 0.4
+
+                pos_hint: {"x": 0.05, "y": 0.5}
+
+                color: app.text_color
+                background_color: 0, 0, 0, 0
+                background_normal: ''
+
+            # choose image btn
+            Button:
+                size_hint: 0.4, 0.2
+                text: "Upload Image!"
+                font_size: '18sp'
+
+                color: app.text_color
+                background_color: 0, 0, 0, 0
+                background_normal: ''
+
+                pos_hint: {"x": 0.05, "y": 0.15}
+
+                canvas.before:
+                    Color:
+                        rgba: app.sbutton_color
+                    RoundedRectangle:
+                        pos: self.pos
+                        size: self.size
+
+        

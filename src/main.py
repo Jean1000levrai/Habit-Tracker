@@ -25,7 +25,7 @@ from ui_scripts.addHabitUi import *
 from ui_scripts.calendar_script import *
 from ui_scripts.addHabMUi import *
 from ui_scripts.progress_view import *
-from ui_scripts.emoji_popup import *
+from ui_scripts.valib_hab_ui import *
 
 # ui utilities
 from kivy.uix.button import Button
@@ -88,6 +88,7 @@ class App(MDApp):
         Builder.load_file(resource_path("ui/main/add_hab.kv"))
         Builder.load_file(resource_path("ui/main/reminderWindow.kv"))
         Builder.load_file(resource_path("ui/main/add_hab_m.kv"))
+        Builder.load_file(resource_path("ui/main/valid_hab.kv"))
         Builder.load_file(resource_path("ui/settings/settings.kv"))
         Builder.load_file(resource_path("ui/settings/aboutWindow.kv"))
         Builder.load_file(resource_path("ui/popup/habitpopup.kv"))
@@ -106,6 +107,7 @@ class App(MDApp):
             sm.add_widget(LoginPage(name="login"))
             sm.add_widget(MainWindow(name="main"))
         else:
+            sm.add_widget(ValidHab(name="validHab"))
             sm.add_widget(MainWindow(name="main"))
             sm.add_widget(LoginPage(name="login"))
         sm.add_widget(ReminderWindow(name="reminder"))

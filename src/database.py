@@ -75,7 +75,8 @@ def drop_all_tables(user=''):
 # -----------add/delete/update-----------
 
 def add_habit(habit, user=''):
-    """Add a habit into the database safely for the yes no"""
+    """called in the main app. 
+    Add a habit into the database safely for the yes no"""
     info = hab_info(habit) 
 
     conn = connect_to_db()
@@ -111,7 +112,8 @@ def add_habit(habit, user=''):
     conn.close()
 
 def add_habit_m(habit, user=''):
-    """Add a habit into the database safely for the measurables"""
+    """called in the main app. 
+    Add a habit into the database safely for the measurables"""
     info = hab_info_m(habit) 
 
     conn = connect_to_db()
@@ -133,13 +135,14 @@ def add_habit_m(habit, user=''):
     conn.commit()
     conn.close()
 
-def create_new_day(date = datetime.today(), user=''):
+def create_new_day(user=''):
     """called in main program each time the app is launched
     check if it is a new day, if it is: adds a new date to the db
     if not, does nothing"""
     conn = connect_to_db()
     cur = conn.cursor()
 
+    # get every info needed to add the hab to the logs of today
     cur.execute(f"""
             SELECT h.name, h.id, d.monday, d.tuesday, d.wednesday, d.thursday, d.friday, d.saturday, d.sunday
             FROM habits_{user} h LEFT JOIN habit_days_{user} d
@@ -147,13 +150,11 @@ def create_new_day(date = datetime.today(), user=''):
         """)
     habits = cur.fetchall()
 
-    print(habits)
-
+    # insert the logs
     for habit in habits:
-        # insert the logs
-        if habit[date.weekday() + 2] == 1:
+        if habit[datetime.today().weekday() + 2] == 1:
 
-            date = date.strftime("%Y-%m-%d")
+            date = datetime.today().strftime("%Y-%m-%d")
             cur.execute(f"""
                         INSERT OR IGNORE INTO habit_logs_{user}
                         (habit_id, date, quantity, is_completed)
@@ -166,18 +167,26 @@ def delete_habit(name = '*', user=''):
     """delete a habit from the database"""
     conn = connect_to_db()
     cur = conn.cursor()
+
+    # deletes every hab
     if name == '*':
+        # the hab
         cur.execute(f"""DELETE FROM habits_{user}
                 WHERE id < 999999999999999""")
+        # then the logs
         cur.execute(f"""DELETE FROM habit_logs_{user}
                 WHERE id < 999999999999999""")
-        
+
+    # deletes a single hab from its name 
     else:
+        # select the id to del the logs later
         cur.execute(f"""SELECT id FROM habits_{user}
                 WHERE name = ?""", (name,))
+        # deletes the hab
         id_hab = cur.fetchone()[0]
         cur.execute(f"""DELETE FROM habits_{user}
                 WHERE name = ?""", (name,))
+        # deletes the logs from the id
         cur.execute(f"""DELETE FROM habit_logs_{user}
                 WHERE habit_id = ?""", (id_hab,))
     
@@ -190,8 +199,8 @@ def update(hab, old_name, user=''):
     conn = connect_to_db()
     cur = conn.cursor()
 
+    # info = [name, question, reminder, description, frequency]
     info = hab_info(hab)
-    # info = [name, colour, question, reminder, description, frequency]
 
     # Fetch id by name
     cur.execute(f"SELECT id FROM habits_{user} WHERE name = ?", (old_name,))
@@ -216,8 +225,8 @@ def update_m(hab, old_name, user=''):
     conn = connect_to_db()
     cur = conn.cursor()
 
-    info = hab_info_m(hab)
     # info = [name, question, reminder, description, unit, threshold, quantity, frequency]
+    info = hab_info_m(hab)
 
     # Fetch id by name
     cur.execute(f"SELECT id FROM habits_{user} WHERE name = ?", (old_name,))
@@ -237,18 +246,16 @@ def update_m(hab, old_name, user=''):
     conn.commit()
     conn.close()
 
-def valid(hab_name, date, val=1, user=''):
+def valid(hab_name, date = datetime.today().strftime("%Y-%m-%d"), val=1, user=''):
+    """called in the main program. 
+    will valid or unvalid a specific habit from the logs"""
+
     conn = connect_to_db()
     cur = conn.cursor()
 
     # Get the habit_id from the habit name
     cur.execute(f"SELECT id FROM habits_{user} WHERE name = ?", (hab_name,))
-    result = cur.fetchone()
-    if result is None:
-        conn.close()
-        raise ValueError(f"Habit '{hab_name}' not found.")
-
-    habit_id = result[0]
+    habit_id = cur.fetchone()[0]
 
     # Update the log entry
     cur.execute(f"""
@@ -261,6 +268,9 @@ def valid(hab_name, date, val=1, user=''):
     conn.close()
 
 def add_quantity(hab_name, date, quantity, user=''):
+    """called in the main program.
+    addds quantity to a measurable habit from the logs and valids 
+    it automatically if the quantity is >= threshold"""
     conn = connect_to_db()
     cur = conn.cursor()
 
@@ -291,16 +301,19 @@ def add_quantity(hab_name, date, quantity, user=''):
 
 # for functions
 def hab_info(hab = hmgr.HabitYesNo()):
-    """function that takes a habityesno is param,
+    """called to add a hab with sql requests.
+    function that takes a habityesno is param,
     returns every attributes of it. used for sql"""
     return [hab.name,
             hab.question,
             hab.reminder,
             hab.description,
-            hab.frequency]
+            hab.frequency
+            ]
 
 def hab_info_m(hab = hmgr.HabitMeasurable()):
-    """function taht takes a HabitMeasurable is param,
+    """called to add a hab with sql requests.
+    function taht takes a HabitMeasurable is param,
     returns every attributes of it. used for sql"""
     return [hab.name,
             hab.question,
@@ -311,31 +324,10 @@ def hab_info_m(hab = hmgr.HabitMeasurable()):
             hab.frequency
             ]
 
-def get_info_hab(hab_name, attr, user=''):
-    """function that takes the name and an attribute
-    of a habit, returns the value of the attribute"""
-    # connect to the db
-    conn = connect_to_db()
-    cur = conn.cursor()
-    
-    # check if attr is valid, prevent sql injection
-    allowed_attr = ["question", "reminder", "description", "frequency",
-                     "id", "unit", "quantity", "threshold", "is_measurable"]
-    if attr not in allowed_attr:
-        raise ValueError("invalid attribute, please try something else")
-
-    # select the info
-    exe = f"SELECT {attr} FROM habits_{user} WHERE name = ?"
-    cur.execute(exe,(hab_name, ))
-    rep = cur.fetchone()
-
-    conn.close()
-    if rep:
-        return rep[0]
-    return None
-
 # for debug
-def print_habits_everuthing(user=''):
+def print_habits_everything(user=''):
+    """used for debuggind and see what s in the db.
+    it selects absolutely everything"""
     conn = connect_to_db()
     cur = conn.cursor()
     cur.execute(f"""
@@ -350,7 +342,8 @@ def print_habits_everuthing(user=''):
         print(row)
 
 def print_logs(user=''):
-    '''prints out the logs/date of the habits 
+    '''used for debugging
+    prints out the logs/date of the habits 
     (each different days that the habit has been used) db for debug'''
     conn = connect_to_db()
     cur = conn.cursor()
@@ -365,12 +358,14 @@ def print_logs(user=''):
         print(row)
 
 def print_days(user=''):
-    '''prints out the days of the habits db for debug'''
+    '''used for debuging
+    prints out the days of the habits db for debug'''
     conn = connect_to_db()
     cur = conn.cursor()
 
 def print_table(user=''):
-    '''prints out the habits db for debug'''
+    '''used for debugging
+    prints out the habits db for debug'''
     conn = connect_to_db()
     cur = conn.cursor()
     cur.execute(f"SELECT * FROM habits_{user}")
@@ -381,7 +376,8 @@ def print_table(user=''):
 # ui
 # select
 def show_habit_for_gui(name = '*', user=''):
-    """function that takes the name or a star of a habit
+    """used in the main program to show the habits in the gui
+    function that takes the name or a star of a habit
     in parameter,returns every attribute' values of the
     habit or of every habits if a star"""
     # connect to the db
@@ -404,6 +400,7 @@ def show_habit_for_gui(name = '*', user=''):
     return list_habits
 
 def sort_by_alpha(name='*', user=''):
+    """same purpose than 'show_habit_for_gui()' but diff order: alphabetical"""
     # connect to the db
     conn = connect_to_db()
     cur = conn.cursor()
@@ -425,7 +422,9 @@ def sort_by_alpha(name='*', user=''):
 
     return list_habits
 
+# BUG still undone and can be done
 def sort_by_time(name='*', user=''):
+    """same purpose than 'show_habit_for_gui()' but diff order: by time of today"""
     # connect to the db
     conn = connect_to_db()
     cur = conn.cursor()
@@ -449,6 +448,8 @@ def sort_by_time(name='*', user=''):
 
 # utils
 def nb_hab(user = ''):
+    """used to make the progress view
+    function that returns the number of habits created"""
     # connect to the db
     conn = connect_to_db()
     cur = conn.cursor()
@@ -462,6 +463,8 @@ def nb_hab(user = ''):
     return count
 
 def nb_dates(user = ''):
+    """used to make the progress view
+    function that returns the number of dates in the logs"""
     conn = connect_to_db()
     cur = conn.cursor()
 
@@ -474,6 +477,8 @@ def nb_dates(user = ''):
     return count
 
 def get_all_habits(user=''):
+    """used to make the progress view
+    selects all the habits created"""
     conn = connect_to_db()
     cur = conn.cursor()
     cur.execute(f"SELECT id, name FROM habits_{user}")
@@ -482,6 +487,8 @@ def get_all_habits(user=''):
     return habits
 
 def get_all_dates(user=''):
+    """used to make the progress view
+    selects all the dates in the logs"""
     conn = connect_to_db()
     cur = conn.cursor()
     cur.execute(f"SELECT DISTINCT date FROM habit_logs_{user} ORDER BY date ASC")
@@ -490,6 +497,8 @@ def get_all_dates(user=''):
     return dates
 
 def check_log(habit_id, date, user=''):
+    """used for the color of a square in the progress view
+    returns for every habits in the logs if it is completed"""
     conn = connect_to_db()
     cur = conn.cursor()
     cur.execute(f"""
@@ -501,6 +510,7 @@ def check_log(habit_id, date, user=''):
     return bool(row[0]) if row else False
 
 def habits_has_date(date, user=''):
+    """used to for graying out habits which arent in this date"""
     conn = connect_to_db()
     cur = conn.cursor()
 
@@ -515,51 +525,41 @@ def habits_has_date(date, user=''):
 
     return [row[0] for row in results]
 
+def get_info_hab(hab_name, attr, user=''):
+    """remained unused T-T, can be called for sql requests
+    function that takes the name and an attribute
+    of a habit, returns the value of the attribute"""
+    # connect to the db
+    conn = connect_to_db()
+    cur = conn.cursor()
+    
+    # check if attr is valid, prevent sql injection
+    allowed_attr = ["question", "reminder", "description", "frequency",
+                     "id", "unit", "quantity", "threshold", "is_measurable"]
+    if attr not in allowed_attr:
+        raise ValueError("invalid attribute, please try something else")
+
+    # select the info
+    exe = f"SELECT {attr} FROM habits_{user} WHERE name = ?"
+    cur.execute(exe,(hab_name, ))
+    rep = cur.fetchone()
+
+    conn.close()
+    if rep:
+        return rep[0]
+    return None
+
 
 
 # -----------else-----------
 
-def insert_sample_data(user=''):
-    conn = connect_to_db()
-    cur = conn.cursor()
 
-    habits = [
-        ("Drink Water", "Did you drink enough water today?", 0, "Stay hydrated", "liters", 2.0, 1, "daily"),
-        ("Exercise", "Did you exercise today?", 0, "Stay fit", "minutes", 30.0, 1, "daily"),
-        ("Read", "Did you read today?", 0, "Develop your mind", "pages", 10.0, 1, "daily"),
-    ]
-
-    # Insert habits
-    for habit in habits:
-        cur.execute(f"""
-            INSERT OR IGNORE INTO habits_{user} 
-            (name, question, reminder, description, unit, threshold, is_measurable, frequency)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        """, habit)
-
-    # Get habit IDs
-    cur.execute(f"SELECT id FROM habits_{user}")
-    habit_ids = [row[0] for row in cur.fetchall()]
-
-    # Generate logs for the past 5 days
-    today = datetime.today()
-    for i in range(5):
-        date_str = (today - timedelta(days=i)).strftime("%Y-%m-%d")
-        for habit_id in habit_ids:
-            cur.execute(f"""
-                INSERT OR IGNORE INTO habit_logs_{user}
-                (habit_id, date, quantity, is_completed)
-                VALUES (?, ?, ?, ?)
-            """, (habit_id, date_str, 1.0, 1))
-
-    conn.commit()
-    conn.close()
 
 # -----------main-----------
 if __name__ == "__main__":
     create_db('')
     create_new_day('')
-    print_habits_everuthing('')
+    print_habits_everything('')
     print_logs('')
 
 
