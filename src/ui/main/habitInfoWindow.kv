@@ -1,0 +1,148 @@
+<HabitInfoWindow>
+    name: "info"
+    # --------Main--------
+    FloatLayout:
+        canvas.before:
+            Color:
+                rgba: app.bg_color
+            Rectangle:
+                pos: self.pos
+                size: self.size
+    
+        # --------top button--------
+        FloatLayout:
+            size_hint: 1,0.05
+            pos_hint: {"x":0, "y":0.95}
+
+            Button:
+                id: name_of_the_hab
+                text: "<- name of the habit"    # FUTURE ME, PUT THE NAME OF THE HABIT
+                pos_hint: {"center_x":0.5, "center_y":0.5}
+                color: app.text_color
+                background_color: app.back_btn_color 
+                background_normal: ''
+                border: (10,10,10,10)
+                canvas.before:
+                    Color:
+                        rgba: app.outline_color   
+                    Line:
+                        width: 2
+                        rectangle: (self.x, self.y, self.width, self.height)
+                on_release: 
+                    app.root.current = "main"
+                    root.manager.transition.direction = "right"
+        # ------------Save btn--------------
+        AnchorLayout:
+            anchor_x: "center"
+            anchor_y: "bottom"
+
+            Button:
+                text: "Save"
+                size_hint: None, None
+                size: 150, 50
+
+                color: app.text_color
+                background_color: app.sbutton_color 
+                background_normal: ''
+
+                canvas.before:
+                    Color:
+                        rgba: app.outline_color   
+                    Line:
+                        width: 1
+                        rectangle: (self.x, self.y, self.width, self.height)
+                on_release:
+                    root.save_btn()
+        
+        StackLayout:
+            size_hint: 0.9, 0.9  # Adjust size to fit below the button
+            pos_hint: {"x": 0.05, "y": 0.05}  # Position it below the button
+
+            Button:
+                id: delete_habit
+                text:"x"
+                size_hint: None, None
+                pos_hint: {"x": 0.1}
+                background_color: (1, 0, 0, 0.6)
+                background_normal: ''
+                size: 60, 60
+                on_release:
+                    root.delete_habit()
+                    app.root.current = "main"
+                    root.manager.transition.direction = "right"
+        
+            Label:
+                text: "Question: "
+                size_hint_y: None
+                height: 50
+                color: app.text_color
+                text_size: self.width, self.height
+                valign: "bottom"
+                halign: "left"
+                color: app.text_color
+            
+            TextInput:
+                id: qu_for_hab
+                hint_text: "Question"
+                foreground_color: app.text_color
+                multiline: False
+                background_color:app.outline_color 
+                size_hint_y: None
+                height: 30
+
+            Label:
+                text: "Description: "
+                size_hint_y: None
+                height: 50
+                color: app.text_color
+                text_size: self.width, self.height
+                valign: "bottom"
+                halign: "left"
+                color: app.text_color
+
+            TextInput:
+                id: descr_for_hab
+                hint_text: "Description"
+                multiline: True
+                foreground_color: app.text_color
+                background_color:app.outline_color 
+                size_hint_y: None
+                height: 100
+
+            Label:
+                text: "Reminder: "
+                size_hint_y: None
+                height: 50
+                color: app.text_color
+                text_size: self.width, self.height
+                valign: "bottom"
+                halign: "left"
+            
+            TextInput:
+                id: rem_for_hab
+                hint_text: "true"
+                multiline: False
+                foreground_color: app.text_color
+                background_color:app.outline_color 
+                size_hint_y: None
+                height: 30
+            Label:
+                text: "frequency: "
+                size_hint_y: None
+                height: 50
+                color: app.text_color
+                text_size: self.width, self.height
+                valign: "bottom"
+                halign: "left"
+            
+            TextInput:
+                id: freq_for_hab
+                hint_text: ""
+                multiline: False
+                foreground_color: app.text_color
+                background_color:app.outline_color 
+                size_hint_y: None
+                height: 30
+
+
+

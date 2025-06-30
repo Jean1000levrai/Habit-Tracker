@@ -1,8 +1,10 @@
-## English
+### ⚠️ This app is under development and is not working at the moment
+___________________________________________
+# English
 # 📱 Habit Tracker
 
-    This project is made by Jean, currently a high school student in France.
-    The goal of this app is to not forget to do your daily tasks. This app will push notifications when you should do something. You first define what you need to do and how often (daily, weekly, or monthly).
+This project is made by Jean, currently a high school student in France.
+The goal of this app is to not forget to do your daily tasks. This app will push notifications when you should do something. You first define what you need to do and how often (daily, weekly, or monthly).
 
 ## ✅ Features
 
@@ -11,17 +13,22 @@
  - Calendar view for better visualisation
  - Cross-platform: android, windows, linux
  - Saves data locally
+ - view your own progress!
  - Log in to your account and add friends to view their progress.
-
-## 🖼️ Screenshots
-
 
 
 ## 🛠️ Installation
 
+### Releases
+
+go to the linked website and install from there
+
+### Experimental (from the source code)
+
 ### Prerequisites
 
- - Python 3.x
+ - Python 3.10.x
+ - openjdk 8 or 11
  - pip
  - Kivy
  - Buildozer (for android)
@@ -39,13 +46,22 @@ python src/main.py
 ```bash
 buildozer -v android debug
 ```
-    Requires Linux or WSL with Buildozer installed
+Requires Linux or WSL with Buildozer installed
+
+### Linux Build
+
+```bash
+pyinstaller src/main.py --onefile --noconfirm
+```
+Requires Linux or WSL
 
 ## 📄 License
 
 This project is licensed under the MIT License — see the LICENSE file for details.
-
-## Français
+___________________________________________
+### ⚠️ L'application est en début de développement, elle ne fonctionne pas pour l'instant
+___________________________________________
+# Français
 # 📱 Habit Tracker
 
 Ce projet a été réalisé par Jean, actuellement lycéen en France.  
@@ -58,11 +74,9 @@ Le but de cette application est de ne pas oublier d’accomplir vos tâches quot
  - Calendrier permettant une meilleure visualisation
  - Compatible avec Android, Windows et Linux
  - Sauvegarde des données en local
+ - consulte tes progrès!
  - Connexion en ligne et ajout d’amis pour voir leur progression
 
-## 🖼️ Captures d’écran
-
-_Ajoutez une capture d’écran ici si disponible._
 
 ## 🛠️ Installation
 
@@ -87,8 +101,24 @@ python src/main.py
 ```bash
 buildozer -v android debug
 ```
-    Nécessite un environnement Linux (ou WSL sous Windows) avec Buildozer installé.
+Nécessite un environnement Linux (ou WSL sous Windows) avec Buildozer installé.
 
 ## 📄 Licence
 
 Ce projet est sous licence MIT — voir le fichier LICENSE pour plus d’informations.
+
+___________________________________________
+# 🖼️ Screenshots
+
+
+### Main Interface
+
+![Main Interface](assets/screenshots/screenshot3.png)
+
+### Editing
+
+![Editing](assets/screenshots/screenshot4.png)
+
+### Light Mode
+
+![Light Mode](assets/screenshots/screenshot5.png)
