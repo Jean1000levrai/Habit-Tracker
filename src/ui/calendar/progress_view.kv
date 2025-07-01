@@ -62,4 +62,20 @@
                 size_hint: None, None
                 width: self.minimum_width
                 height: self.minimum_height
+        
+        FloatLayout:
+
+            Label:
+                text:''
+                font_name: "FontAwesome"
+                font_size: '32sp'
+                color: app.text_color
+                pos_hint: {"center_x":0.15, "center_y":0.3}
+
+            Label:
+                id: streak
+                text: "Streak: "
+                font_size: '32sp'
+                color: app.text_color
+                pos_hint: {"center_x":0.55, "center_y":0.295}
 

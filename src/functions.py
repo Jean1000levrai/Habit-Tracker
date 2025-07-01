@@ -1,6 +1,8 @@
 import os
 import sys
 
+
+
 def resource_path(relative_path):
     try:
         # running from a app like pyinstaller
@@ -17,4 +19,5 @@ def resource_path2(relative_path):
     except AttributeError:
         base_path = os.path.abspath(".")  # fallback for dev mode
     return os.path.join(base_path, relative_path)
+
 

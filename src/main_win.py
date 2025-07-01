@@ -118,7 +118,7 @@ class MainWindow(Screen):
         self.lst_btn_dell = []
         self.lst_btn_details = []
         # self.load_all()
-        Clock.schedule_once(lambda dt: self.load_all(), 0.399)
+        Clock.schedule_once(lambda dt: self.load_all(), 0.5)
 
     def empty_hab(self):
         layout = self.ids.labelled_habits

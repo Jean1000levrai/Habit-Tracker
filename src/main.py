@@ -13,6 +13,7 @@ import habit_mgr as hmgr
 import database as db
 from functions import *
 from main_win import *
+from streak import streak
 
 from login.login_script import *
 from login.login_ui_script import *
@@ -80,6 +81,7 @@ class App(MDApp):
         with open(resource_path2("data/config.json")) as f:
             config = json.load(f)
         db.create_new_day(config['name'])
+        streak()
         
     def build(self):
     

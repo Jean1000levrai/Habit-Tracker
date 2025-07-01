@@ -11,12 +11,43 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.popup import Popup
 from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import ListProperty
+from kivy.uix.button import Button
+from kivy.graphics import Color, RoundedRectangle
+
+
+
+class VibrantGridButton(Button):
+    def __init__(self, border_color=(0, 0, 0, 1), fill_color=(0, 1, 0, 1), **kwargs):
+        super().__init__(**kwargs)
+        self.background_normal = ''
+        self.background_color = (0, 0, 0, 0)  # Transparent, we use canvas
+        with self.canvas.before:
+            # Border
+            Color(*border_color)
+            self.border_rect = RoundedRectangle(pos=self.pos, size=self.size)
+            # Fill
+            Color(*fill_color)
+            self.fill_rect = RoundedRectangle(pos=(self.x+2, self.y+2), size=(self.width-4, self.height-4))
+        self.bind(pos=self.update_rect, size=self.update_rect)
+
+    def update_rect(self, *args):
+        self.border_rect.pos = self.pos
+        self.border_rect.size = self.size
+        self.fill_rect.pos = (self.x+2, self.y+2)
+        self.fill_rect.size = (self.width-4, self.height-4)
 
 class ProgressViewWindow(Screen):
     def __init__(self, **kw):
         super().__init__(**kw)
         self.app = App.get_running_app()
+        with open(resource_path2("data/config.json")) as f:
+            config = json.load(f)
+        streak = config["streak"]
         self.calendar()
+        if streak <= 1:
+            self.ids.streak.text = self.ids.streak.text + str(streak) + " Day"
+        else:
+            self.ids.streak.text = self.ids.streak.text + str(streak) + " Days"
 
     def calendar(self):
         # Load config
@@ -76,19 +107,19 @@ class ProgressViewWindow(Screen):
                     hab_id = db.get_info_hab(hab[1], 'id', self.user)
 
                     if db.check_log(hab_id, date, self.user):
-                        color = (0, 1, 0, 0.5)
+                        color = (0, 1, 0, 1)
                     else:
                         color = (1, 0, 0, 1)
-                    grid.add_widget(Button(
-                        background_color=color,  # Red or green
+                    grid.add_widget(VibrantGridButton(
+                        fill_color=color,   # Red or green   
                         size_hint=(None, None),
                         size=(x_hab, y_all),
                         text=""
                         ))
                 # gray if no date in logs
                 else:
-                    grid.add_widget(Button(
-                        background_color=(0.8, 0.8, 0.8, 1),  # light gray
+                    grid.add_widget(VibrantGridButton(
+                        fill_color=(0.3, 0.3, 0.3, 1),  # dark gray
                         size_hint=(None, None),
                         size=(x_hab, y_all),
                         text=""
