@@ -600,6 +600,18 @@ def get_info_hab(hab_name, attr, user=''):
 
 # -----------else-----------
 
+# develop mode
+def dev_insert(query):
+    conn = connect_to_db()
+    cur = conn.cursor()
+
+    cur.execute(str(query))
+    result = cur.fetchall()
+
+    conn.commit()
+    conn.close()
+
+    return result
 
 
 # -----------main-----------

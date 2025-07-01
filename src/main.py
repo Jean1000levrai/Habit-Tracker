@@ -27,6 +27,7 @@ from ui_scripts.calendar_script import *
 from ui_scripts.addHabMUi import *
 from ui_scripts.progress_view import *
 from ui_scripts.valib_hab_ui import *
+from ui_scripts.develop_mode import *
 
 # ui utilities
 from kivy.uix.button import Button
@@ -93,6 +94,7 @@ class App(MDApp):
         Builder.load_file(resource_path("ui/main/valid_hab.kv"))
         Builder.load_file(resource_path("ui/settings/settings.kv"))
         Builder.load_file(resource_path("ui/settings/aboutWindow.kv"))
+        Builder.load_file(resource_path("ui/settings/devmode.kv"))
         Builder.load_file(resource_path("ui/popup/habitpopup.kv"))
         Builder.load_file(resource_path("ui/popup/popupsForReminder.kv"))
         Builder.load_file(resource_path("ui/login_ui/login_page.kv"))
@@ -109,6 +111,7 @@ class App(MDApp):
             sm.add_widget(LoginPage(name="login"))
             sm.add_widget(MainWindow(name="main"))
         else:
+            sm.add_widget(DevModeScreen(name="devmode"))
             sm.add_widget(MainWindow(name="main"))
             sm.add_widget(LoginPage(name="login"))
         sm.add_widget(ValidHab(name="validHab"))

@@ -124,6 +124,24 @@
                                 rectangle: (self.x, self.y, self.width, self.height)
                         on_text: root.sort_hab()
 
+                    # dev btn
+                    Button:
+                        color: app.text_color
+                        background_color: app.button_color
+                        background_normal: ''
+                        text: "developper mode"
+                        size_hint: None, None
+                        size: 200, 44
+                        canvas.before:
+                            Color:
+                                rgba: app.button_color
+                            Line:
+                                width: 1
+                                rectangle: (self.x, self.y, self.width, self.height)
+                        on_release:
+                            app.root.current = "devmode"
+                            root.manager.transition.direction = "left"
+
                     # about button
                     Button:
                         color: app.text_color
