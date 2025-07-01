@@ -111,7 +111,6 @@ def add_habit(habit, user=''):
     conn.commit()
     conn.close()
 
-# BUG finish it too bruuh
 def add_habit_m(habit, user=''):
     """called in the main app. 
     Add a habit into the database safely for the measurables"""

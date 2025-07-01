@@ -1,4 +1,5 @@
 import json
+from datetime import *
 
 import database as db
 from functions import *
@@ -54,23 +55,33 @@ class ProgressViewWindow(Screen):
 
         # --- Date rows ---
         for date in dates:
+
             # First column: the date
             grid.add_widget(Button(text=date, 
                                 size_hint=(None, None), size=(100, 40),
                                 background_color=(0.1, 0.1, 0.1, 1), color=(1, 1, 1, 1),
                                 disabled=True))
-            # Habit columns: just red buttons for now
-            habs_date = db.habits_has_date(date)
-            print("habs_date",habs_date)
+
+            habs_date = db.habits_has_date(date)    # list of the habits with this date in logs
+            # --- Fills the table ---
+            # loops on all the existing habits 
             for hab in habits:
-                print("hab",hab)
+                # if the hab has a date in log: red or green
                 if hab[1] in habs_date:
+
+                    hab_id = db.get_info_hab(hab[1], 'id', self.user)
+
+                    if db.check_log(hab_id, date, self.user):
+                        color = (0, 1, 0, 0.5)
+                    else:
+                        color = (1, 0, 0, 1)
                     grid.add_widget(Button(
-                        background_color=(1, 0, 0, 1),  # Red
+                        background_color=color,  # Red or green
                         size_hint=(None, None),
                         size=(100, 40),
                         text=""
                         ))
+                # gray if no date in logs
                 else:
                     grid.add_widget(Button(
                         background_color=(0.8, 0.8, 0.8, 1),  # light gray

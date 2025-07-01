@@ -55,12 +55,11 @@ class ValidHabM(Screen):
         self.user = config["name"]
         self.current_hab_name = ''
         self.current_threshold = ''
+        self.current_unit = ''
              
         print(self.current_hab_name)
         print("---------------------------")
         print(self.current_threshold)
-
-        self.ids.threshold.text = self.ids.threshold.text[:1] + str(self.current_hab_name)
 
         self.completed_btn = Button(
             text="Completed!",

@@ -226,8 +226,12 @@ class MainWindow(Screen):
         if is_m:
             self.manager.transition.direction = "left"
             self.manager.current = "validHabM"
+            thres = db.get_info_hab(self.hab_name, "threshold", self.user)
+            unit = db.get_info_hab(self.hab_name, "unit", self.user)
+            self.manager.get_screen("validHabM").ids.threshold.text = "/ " + str(int(thres)) + ' ' + str(unit)
             self.manager.get_screen("validHabM").current_hab_name = self.hab_name
-            self.manager.get_screen("validHabM").current_threshold = db.get_info_hab(self.hab_name, "threshold", self.user)
+            self.manager.get_screen("validHabM").current_threshold = thres
+            self.manager.get_screen("validHabM").current_unit = unit
         else:
             self.manager.transition.direction = "left"
             self.manager.current = "validHab"
