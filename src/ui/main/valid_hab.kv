@@ -54,25 +54,6 @@
                     pos: self.x + 2, self.y + 2
                     size: self.width - 4, self.height - 4
         
-            # validate btn
-            # Button:
-            #     size_hint: 0.4, 0.2
-            #     text: "Completed!"
-            #     font_size: '18sp'
-
-            #     color: app.text_color
-            #     background_color: 0, 0, 0, 0
-            #     background_normal: ''
-
-            #     pos_hint: {"x": 0.55, "y": 0.15}
-
-            #     canvas.before:
-            #         Color:
-            #             rgba: app.sbutton_color
-            #         RoundedRectangle:
-            #             pos: self.pos
-            #             size: self.size
-
             # placeholder for the image
             Image:
                 id: image
@@ -85,6 +66,12 @@
                 color: app.text_color
                 background_color: 0, 0, 0, 0
                 background_normal: ''
+            
+            # -------SORRY----------
+            Label:
+                text: "SORRY DOESN'T\nWORK YET"
+                color: (0,0,0,1)
+                pos_hint: {"x": -0.25, "y": 0.3}
 
             # choose image btn
             Button:
@@ -198,6 +185,12 @@
                 color: app.text_color
                 background_color: 0, 0, 0, 0
                 background_normal: ''
+            
+            # -------SORRY----------
+            Label:
+                text: "SORRY DOESN'T\nWORK YET"
+                color: (0,0,0,1)
+                pos_hint: {"x": -0.25, "y": 0.3}
 
             # choose image btn
             Button:

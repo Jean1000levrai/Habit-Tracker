@@ -28,8 +28,8 @@ panel for habit scrollview 😝
     
     valid 😝
 
-    sort the habits (by name, by last created) 😆 
-    (sort by time is coming after valid, cuz it is kinda linked) 😨
+    sort the habits (by name, by last created) 😝
+    (sort by time is coming after valid, cuz it is kinda linked) 😝
 
 habit reminder 😆 7h+
     ui 😥

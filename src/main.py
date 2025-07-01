@@ -111,9 +111,9 @@ class App(MDApp):
             sm.add_widget(LoginPage(name="login"))
             sm.add_widget(MainWindow(name="main"))
         else:
-            sm.add_widget(DevModeScreen(name="devmode"))
             sm.add_widget(MainWindow(name="main"))
             sm.add_widget(LoginPage(name="login"))
+        sm.add_widget(DevModeScreen(name="devmode"))
         sm.add_widget(ValidHab(name="validHab"))
         sm.add_widget(ValidHabM(name="validHabM"))
         sm.add_widget(ReminderWindow(name="reminder"))  

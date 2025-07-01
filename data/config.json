@@ -3,7 +3,7 @@
  "theme": "dark",
  "name": "",
  "streak": 2,
- "sort": "Time",
+ "sort": "Last created",
  "reminder_var": [
   0,
   "Daily",

@@ -458,7 +458,7 @@ def sort_by_time(name='*', user=''):
                     LEFT JOIN habit_logs_{user} l
                     on h.id = l.habit_id
                     WHERE l.date = ?
-                    ORDER BY name"""(date,))
+                    ORDER BY name""", (date,))
     # or just from one habit
     else:
         cur.execute(f"""SELECT * FROM habits_{user} h
