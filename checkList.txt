@@ -1,60 +1,63 @@
 😝 finished
 😆 updates needed
 😥 in dev
+😨 to be done
 
-habit valid when done  5h
-    habit streak 😥
 
-new view to see progress
-    table habit/date 😥
-    green when done, red else
+new view to see progress 😆
+    table habit/date 😝
+    green when done, red else 😝
+    see friend progress 😨
+    habit streak 😨
     
-panel for habit scrollview 😥 5h
-    habit GREAT SUCESS !! 😥
+panel for habit scrollview 😝
+    habit GREAT SUCESS !! 😨
     habit clickable 😝
-        timeline
+        timeline 😨
         info 😆
         edit habit 😆 (reminder doesnt work)
         delete habit 😝
 
-    habit measurables 7h 😆
-        graph
+    habit measurables 😆
+        graph 😨
         info 😆
         edit habit 😆
         delete habit 😝
+    
+    valid 😝
 
-    sort the habits (by name, by last created) 😆 (sort by time is coming after valid, cuz it is kinda linked)
+    sort the habits (by name, by last created) 😆 
+    (sort by time is coming after valid, cuz it is kinda linked) 😨
 
 habit reminder 😆 7h+
     ui 😥
-    backend 😥
-    api
+    push it 😥
 
 
-styling  1h
-    fonts
-    colour palette 😆
+styling 😝
+    fonts 😝
+    colour palette 😝
 
 settings 😆
     themes 😝
     languages
-    import/save habit file
+    import/save habit file 😨
     about 😆
     github link 😝
 
-    develop mode
-        use sql injection 
+    develop mode 😨
+        use sql injection 😨
 
 
 
-calendar 😆  2h
-    add task
-    delete task
+calendar 😥
+    add task 😥
+    delete task 😥
 
 put it online 😥
     login 😝
     sign up 😝
-    see your friend's progress
+    see your friend's progress 😨
 
 
 
