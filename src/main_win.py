@@ -208,10 +208,11 @@ class MainWindow(Screen):
         self.manager.get_screen("main").empty_hab()
         self.manager.get_screen("main").load_all()
 
-    def validate(self, name, user):
-        db.valid(hab_name=name, user= user)
-        self.empty_hab()
-        self.load_all()
+    def validate(self, name, user, yes = True):
+        if yes:
+            db.valid(hab_name=name, user= user)
+            self.empty_hab()
+            self.load_all()
         self.manager.transition.direction = "left"
         self.manager.current = "main"
 
@@ -228,7 +229,10 @@ class MainWindow(Screen):
             self.manager.current = "validHabM"
             thres = db.get_info_hab(self.hab_name, "threshold", self.user)
             unit = db.get_info_hab(self.hab_name, "unit", self.user)
+            hab_id = db.get_info_hab(self.hab_name, "id", self.user)
+            quantity = db.get_quantity(hab_id, user=self.user)
             self.manager.get_screen("validHabM").ids.threshold.text = "/ " + str(int(thres)) + ' ' + str(unit)
+            self.manager.get_screen("validHabM").ids.quant_input.text = str(quantity)
             self.manager.get_screen("validHabM").current_hab_name = self.hab_name
             self.manager.get_screen("validHabM").current_threshold = thres
             self.manager.get_screen("validHabM").current_unit = unit

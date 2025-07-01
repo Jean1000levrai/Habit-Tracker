@@ -1,5 +1,6 @@
 from functions import *
 import json
+import database as db
 
 from kivy.uix.button import Button
 from kivy.uix.screenmanager import Screen
@@ -72,10 +73,14 @@ class ValidHabM(Screen):
         )
 
         def v(instance):
-            print(self.current_hab_name)
-            print("---------------------------")
-            print(self.current_threshold)
-            self.manager.get_screen('main').validate(self.current_hab_name, self.user)
+            try:
+                if self.current_threshold <= int(self.ids.quant_input.text):
+                    self.manager.get_screen('main').validate(self.current_hab_name, self.user)
+            except:None
+            self.manager.get_screen('main').validate(self.current_hab_name, self.user, yes=False)
+            hab_id = db.get_info_hab(self.current_hab_name, 'id', user=self.user)
+            db.update_quantity(hab_id, quantity=float(self.ids.quant_input.text))
+            self.ids.quant_input.text = ''
 
         self.completed_btn.bind(
             on_release=v
@@ -90,3 +95,6 @@ class ValidHabM(Screen):
     def update_rect(self, *args):
         self.bg_rect.pos = self.completed_btn.pos
         self.bg_rect.size = self.completed_btn.size
+
+    def clear(self):
+        self.ids.quant_input.text = ''

@@ -309,6 +309,19 @@ def add_quantity(hab_name, date, quantity, user=''):
     conn.close()
 
 
+def update_quantity(habit_id, quantity, date=datetime.today().strftime("%Y-%m-%d"), user=''):
+    """called in ValidHabM to valid the hab.
+    this function updates the quantity of the hab in the logs"""
+    conn = connect_to_db()
+    cur = conn.cursor()
+    cur.execute(f"""
+        UPDATE habit_logs_{user}
+        SET quantity = ?
+        WHERE habit_id=? AND date=?
+    """, (quantity, habit_id, date))
+    conn.commit()
+    conn.close()
+
 
 
 # -----------get-----------
@@ -529,6 +542,19 @@ def check_log(habit_id, date, user=''):
     row = cur.fetchone()
     conn.close()
     return bool(row[0]) if row else False
+
+def get_quantity(habit_id, date=datetime.today().strftime("%Y-%m-%d"), user=''):
+    """used for the color of a square in the progress view
+    returns for every habits in the logs if it is completed"""
+    conn = connect_to_db()
+    cur = conn.cursor()
+    cur.execute(f"""
+        SELECT quantity FROM habit_logs_{user}
+        WHERE habit_id=? AND date=?
+    """, (habit_id, date))
+    row = cur.fetchone()[0]
+    conn.close()
+    return row
 
 def habits_has_date(date, user=''):
     """used to for graying out habits which arent in this date"""
