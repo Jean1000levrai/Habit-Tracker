@@ -126,10 +126,11 @@
 
                     # dev btn
                     Button:
+                        id: dev
                         color: app.text_color
                         background_color: app.button_color
                         background_normal: ''
-                        text: "developper mode"
+                        text: "developer mode"
                         size_hint: None, None
                         size: 200, 44
                         canvas.before:
@@ -141,6 +142,7 @@
                         on_release:
                             app.root.current = "devmode"
                             root.manager.transition.direction = "left"
+                            root.dev()
 
                     # about button
                     Button:

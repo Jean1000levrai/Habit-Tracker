@@ -104,6 +104,8 @@ class HabitRow(BoxLayout):
         """Update background color dynamically."""
         self.bg_color.rgba = rgba
 
+
+
 class MainWindow(Screen):
     """the main screen window"""
     def __init__(self, **kw):
@@ -157,7 +159,7 @@ class MainWindow(Screen):
 
             habit_name = row[1]
 
-            habit_row = HabitRow(habit_name, self.app, self.on_btn_release, self.delete_habit, self.details_btn_release)
+            habit_row = HabitRow(habit_name, self.app, self.on_btn_release, self.sure_del_popup, self.details_btn_release)
 
             # Store references (optional)
             self.lst_btn.append(habit_row.btn)
@@ -198,10 +200,8 @@ class MainWindow(Screen):
         self.ids.labelled_habits.add_widget(self.add)
         self.ids.labelled_habits.height += self.add.height + 20
 
-    def delete_habit(self, instance):
+    def delete_habit(self, hab_name):
         
-
-        hab_name = instance.parent.btn.text
         print(hab_name)
         db.delete_habit(hab_name, self.user)
         
@@ -291,7 +291,6 @@ class MainWindow(Screen):
             self.manager.get_screen("habMeasurable").ids.descr.text = ''
             self.manager.get_screen("habMeasurable").edit_mode = False
         
-
     def add_the_info(self, edit = False):
         if not edit:
             self.manager.get_screen("habYesNo").edit_mode = True
@@ -315,10 +314,69 @@ class MainWindow(Screen):
             self.manager.get_screen("habYesNo").ids.descr.text = ''
             self.manager.get_screen("habYesNo").edit_mode = False
 
-        
+    def sure_del_popup(self, instance):
+        hab_name = instance.parent.btn.text
+        # -----create the whole layout-------
+        layout = BoxLayout(orientation='vertical', padding=10, spacing=10)
+        warning_label = Label(
+            text="WARNING! ALL DATA RELATED TO THIS HABIT WILL BE DELETED WITH NO WAY TO RECOVER IT! ARE SURE YOU WANT TO CONTINUE",
+            color=(1, 0, 0, 1),
+            halign='center',
+            valign='middle'
+        )
+        warning_label.bind(size=lambda instance, value: setattr(instance, 'text_size', (value[0], None)))
 
-class SureDelPopup(Popup):
-    pass
+        # delete btn
+        del_btn = Button(text="I UNDERSTAND",
+                        size_hint=(1, 0.3), 
+                        background_color=(1,0,0,0.8),
+                        background_normal='')
+
+        # cancel btn
+        cancel_btn = Button(
+            text="CANCEL",
+            size_hint_x=None,
+            size_hint_y=None,
+            height=50,
+            width=100,
+            background_color=(0, 0, 0, 0),
+            background_normal='',
+            color=self.app.text_color,
+            halign="left",
+            valign="middle",
+            padding=(10, 10),
+            pos_hint={"center_x": 0.5})
+        # the bg
+        with self.add.canvas.before:
+            self.add_bg_color = Color(*self.app.sbutton_color)
+            self.add_bg_rect = RoundedRectangle(
+            pos=self.add.pos,
+            size=self.add.size,
+            radius=[10, 10, 10, 10]
+            )
+        self.add.bind(pos=lambda instance, value: setattr(self.add_bg_rect, 'pos', value))
+        self.add.bind(size=lambda instance, value: setattr(self.add_bg_rect, 'size', value))  
+        self.app.bind(text_color=lambda _, value: setattr(self.add, 'color', value))
+
+        # adds it to the layout
+        layout.add_widget(warning_label)
+        layout.add_widget(del_btn)
+        layout.add_widget(cancel_btn)
+
+        # creates the popup
+        popup = Popup(title='',
+                    content=layout,
+                    size_hint=(0.6, 0.4))
+
+        # binds the btns
+        def d(hab_name):
+            """will just call delete the hab and dismiss"""
+            self.delete_habit(hab_name)
+            popup.dismiss()
+        cancel_btn.bind(on_press=popup.dismiss)
+        del_btn.bind(on_release=lambda _ : d(hab_name))
+        popup.open()
+
 
 class WelcomePopup(Popup):
     def __init__(self, obj, **kwargs):

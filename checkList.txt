@@ -25,8 +25,11 @@ panel for habit scrollview 😝
         info 😆
         edit habit 😆
         delete habit 😝
+    sure del hab 😥
     
     valid 😝
+        Upload a pic 😨
+        make it verify by AI 😨
 
     sort the habits (by name, by last created) 😝
     (sort by time is coming after valid, cuz it is kinda linked) 😝
