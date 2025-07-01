@@ -47,8 +47,8 @@ settings 😆
     about 😆
     github link 😝
 
-    develop mode 😥
-        use sql injection 😥
+    develop mode 😝
+        use sql injection 😝
 
 
 

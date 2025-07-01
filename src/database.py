@@ -384,12 +384,6 @@ def print_logs(user=''):
     for row in result:
         print(row)
 
-def print_days(user=''):
-    '''used for debuging
-    prints out the days of the habits db for debug'''
-    conn = connect_to_db()
-    cur = conn.cursor()
-
 def print_table(user=''):
     '''used for debugging
     prints out the habits db for debug'''

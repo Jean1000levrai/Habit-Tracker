@@ -39,8 +39,7 @@ def streak(*args):
     config["streak"] = streak
     with open(resource_path2("data/config.json"), "w") as f:
             json.dump(config, f, indent=1)
-    print('______________________________________________')
-    print(streak)
+
     return streak
 
 

@@ -18,5 +18,15 @@ class DevModeScreen(Screen):
 
     def save(self):
         query = self.ids.sql_input.text
-        db.dev_insert(query)
+        output = db.dev_insert(query)
+        output2 = ''
+        n = len(str(output))
+        print(n)
+        for i in range(n):
+            if i%42==0:
+                output2 = output2 + "\n"
+            output2 = output2 + str(output)[i]
+
         self.ids.sql_input.text = ''
+        print(output2)
+        self.ids.output.text = str(output2)
