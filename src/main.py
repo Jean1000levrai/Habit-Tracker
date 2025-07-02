@@ -14,6 +14,7 @@ import database as db
 from functions import *
 from main_win import *
 from streak import streak
+from const import user_const
 
 from login.login_script import *
 from login.login_ui_script import *
@@ -151,21 +152,18 @@ class App(MDApp):
             # creates the db
             db.create_db()
 
-            # greet them with popup
-            popup = WelcomePopup(self)
-            popup.open()
-
             # sets it so that next time it wont show the popup
             config["first_timer"] = False
             with open(resource_path2("data/config.json"), 'w') as f:
                 json.dump(config, f, indent=1)
  
     def popup(self, *args):
-        """method that opens the popup"""
+        """method that opens the popup to add a habit"""
         popup = AddHabitPopup(self)
         popup.open()
 
     def dark_theme(self):
+        """method that changes the theme to dark"""
         self.theme_cls.theme_style = "Dark"
 
         self.bg_color = (0.051, 0.067, 0.090, 1)
@@ -185,6 +183,7 @@ class App(MDApp):
         self.root.get_screen('main').load_all()
 
     def light_theme(self):
+        """method that changes the theme to light"""
         self.theme_cls.theme_style = "Light"
 
         self.bg_color = (0.95, 0.96, 0.98, 1)

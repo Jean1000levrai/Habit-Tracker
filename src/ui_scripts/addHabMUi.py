@@ -1,11 +1,13 @@
 import habit_mgr as hmgr
 import database as db
+from functions import *
+from const import user_const
+
 import ui_scripts.color_picker as col
 from ui_scripts.reminder import reminder_var
 
 import webbrowser as web
 import json
-from functions import *
 
 from kivy.uix.button import Button
 from kivy.app import App
@@ -30,7 +32,7 @@ class AddHabitMeasScreen(Screen):
         # open the config file
         with open(resource_path2("data/config.json")) as f:
             config = json.load(f)
-        self.user = config["name"]
+        self.user = user_const()
 
     def get_info(self):
         """method that gets the informations from 
@@ -74,7 +76,7 @@ class AddHabitMeasScreen(Screen):
         # open the config file
         with open(resource_path2("data/config.json")) as f:
             config = json.load(f)
-        self.user = config["name"]
+        self.user = user_const()
 
         try:
             print(self.edit_mode)

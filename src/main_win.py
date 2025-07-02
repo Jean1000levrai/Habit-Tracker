@@ -3,6 +3,7 @@ import habit_mgr as hmgr
 import database as db
 from functions import *
 from datetime import *
+from const import user_const
 
 from login.login_script import *
 from login.login_ui_script import *
@@ -110,9 +111,7 @@ class MainWindow(Screen):
     """the main screen window"""
     def __init__(self, **kw):
         super().__init__(**kw)
-        with open(resource_path2("data/config.json")) as f:
-            config = json.load(f)
-        self.user = config["name"]
+        self.user = user_const()
         self.app = App.get_running_app()
         self.hab_name = ''
         self.lst_btn = []
@@ -123,9 +122,7 @@ class MainWindow(Screen):
         # Clock.schedule_once(lambda dt: self.load_all(), 0.5)
 
     def empty_hab(self):
-        with open(resource_path2("data/config.json")) as f:
-            config = json.load(f)
-        self.user = config["name"]
+        self.user = user_const()
         layout = self.ids.labelled_habits
         try:
             layout.remove_widget(self.add)
@@ -143,7 +140,7 @@ class MainWindow(Screen):
         # open the config file
         with open(resource_path2("data/config.json")) as f:
             config = json.load(f)
-        self.user = config["name"]
+        self.user = user_const()
 
         # displays the name of the user at the top
         self.ids.title_app.text = self.user

@@ -20,10 +20,12 @@ class SettingsWindow(Screen):
         self.theme_dark = True
 
     def link_github(self):
+        """function that redirects the user to my github repo"""
         link = 'https://github.com/Jean1000levrai/Habit-Tracker'
         web.open(link)
     
     def signout(self):
+        """function that sighs out the user from their account"""
         # open the config file
         with open(fct.resource_path2("data/config.json")) as f:
             config = json.load(f)
@@ -51,6 +53,7 @@ class SettingsWindow(Screen):
         self.manager.get_screen("main").load_all()
 
     def dev(self):
+        """function that displays a warning popup for the dev mode"""
         layout = BoxLayout(orientation='vertical', padding=10, spacing=10)
         warning_label = Label(
             text="WARNING!\nTHIS OPTION IS ONLY\nMADE FOR DEVELOPERS!\nDON'T USE IF YOU DON'T KNOW WHAT YOU ARE DOING",
@@ -75,4 +78,5 @@ class SettingsWindow(Screen):
 
 
 class AboutWindow(Screen):
-    pass
+    """The about screen, where the credits are"""
+    

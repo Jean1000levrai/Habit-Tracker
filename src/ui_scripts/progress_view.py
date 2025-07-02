@@ -3,6 +3,7 @@ from datetime import *
 
 import database as db
 from functions import *
+from const import user_const
 
 from kivy.uix.button import Button
 from kivy.app import App
@@ -53,7 +54,7 @@ class ProgressViewWindow(Screen):
         # Load config
         with open(resource_path2("data/config.json")) as f:
             config = json.load(f)
-        self.user = config["name"]
+        self.user = user_const()
 
         # Get all habits and dates
         habits = db.get_all_habits(self.user)  # list : (id, name)

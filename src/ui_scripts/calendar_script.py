@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 from functions import *
 import json
 import database as db
+from const import user_const
 
 from kivy.uix.button import Button
 from kivy.app import App
@@ -44,7 +45,7 @@ class CalendarScreen(Screen):
         # open the config file
         with open(resource_path2("data/config.json")) as f:
             config = json.load(f)
-        self.user = config["name"]
+        self.user = user_const()
 
         # initialize the calendar a first time
         self.sets_every_day()
@@ -184,6 +185,6 @@ class CalendarScreen(Screen):
         # open the config file
         with open(resource_path2("data/config.json")) as f:
             config = json.load(f)
-        self.user = config["name"]
+        self.user = user_const()
 
         

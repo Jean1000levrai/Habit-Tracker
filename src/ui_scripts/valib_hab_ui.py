@@ -1,6 +1,7 @@
 from functions import *
 import json
 import database as db
+from const import user_const
 
 from kivy.uix.button import Button
 from kivy.uix.screenmanager import Screen
@@ -11,12 +12,16 @@ from kivy.app import App
 
 
 class ValidHab(Screen):
+
+    def on_enter(self):
+        self.user = user_const()
+
     def __init__(self, **kw):
         super().__init__(**kw)
         self.app = App.get_running_app()
         with open(resource_path2("data/config.json")) as f:
             config = json.load(f)
-        self.user = config["name"]
+        self.user = user_const()
         self.current_hab_name = ''
 
         
@@ -53,7 +58,7 @@ class ValidHabM(Screen):
         self.app = App.get_running_app()
         with open(resource_path2("data/config.json")) as f:
             config = json.load(f)
-        self.user = config["name"]
+        self.user = user_const()
         self.current_hab_name = ''
         self.current_threshold = ''
         self.current_unit = ''

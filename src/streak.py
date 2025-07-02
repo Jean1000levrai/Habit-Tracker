@@ -1,6 +1,7 @@
 import database as db
 import json
 from functions import resource_path2
+from const import user_const
 
 
 def streak(*args):
@@ -10,7 +11,7 @@ def streak(*args):
     """
     with open(resource_path2("data/config.json"), "r") as f:
             config = json.load(f)
-    user = config["name"]   # the user
+    user = user_const()
     accept=0.5              # the acceptance,e.g. 0.5 -> if half of habs done, the streak continues
     all_dates = db.get_all_dates()[::-1]    # every dates in the logs, sort from the newest
     lst_hab = db.get_all_habits()   # a list of every habits in db (id, name)
