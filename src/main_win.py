@@ -131,6 +131,7 @@ class MainWindow(Screen):
                     layout.remove_widget(btn)
         except: None
         layout.clear_widgets()
+        self.manager.get_screen("progress_view").reload()
         self.lst_btn.clear()
         self.lst_bg_btn.clear()
         self.lst_btn_dell.clear()

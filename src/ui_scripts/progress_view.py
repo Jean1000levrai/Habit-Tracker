@@ -50,6 +50,11 @@ class ProgressViewWindow(Screen):
         else:
             self.ids.streak.text = self.ids.streak.text + str(streak) + " Days"
 
+    def reload(self):
+        grid = self.ids.table_grid
+        grid.clear_widgets()
+        self.calendar()
+
     def calendar(self):
         # Load config
         with open(resource_path2("data/config.json")) as f:
@@ -98,7 +103,7 @@ class ProgressViewWindow(Screen):
                                 background_color=(0.1, 0.1, 0.1, 1), color=(1, 1, 1, 1),
                                 disabled=True))
 
-            habs_date = db.habits_has_date(date)    # list of the habits with this date in logs
+            habs_date = db.habits_has_date(date, self.user)    # list of the habits with this date in logs
             # --- Fills the table ---
             # loops on all the existing habits 
             for hab in habits:

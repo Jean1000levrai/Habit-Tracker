@@ -16,3 +16,4 @@ dist/
 .python-version
 setup_buildozer.sh
 test.py
+build_mac.sh

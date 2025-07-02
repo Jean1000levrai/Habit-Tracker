@@ -1,3 +1,4 @@
+altgraph==0.17.4
 appdirs==1.4.4
 build==1.2.2.post1
 buildozer==1.5.0
@@ -20,13 +21,17 @@ packaging==25.0
 pexpect==4.9.0
 pillow==10.4.0
 platformdirs==4.3.8
+plyer==2.1.0
 ptyprocess==0.7.0
 Pygments==2.19.1
+pyinstaller==6.14.1
+pyinstaller-hooks-contrib==2025.5
 pyjnius==1.5.0
 pyproject_hooks==1.2.0
 requests==2.32.3
 sh==1.14.3
 six==1.17.0
 toml==0.10.2
+tomli==2.2.1
 urllib3==2.4.0
 virtualenv==20.31.2

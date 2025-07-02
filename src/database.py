@@ -443,7 +443,6 @@ def sort_by_alpha(name='*', user=''):
 
     return list_habits
 
-# BUG still undone and can be done
 def sort_by_time(name='*', user=''):
     """same purpose than 'show_habit_for_gui()' but diff order: by time of today"""
     # connect to the db

@@ -1,17 +1,17 @@
-### ⚠️ This app is under development and is not working at the moment
 ___________________________________________
 # English
+___________________________________________
 # 📱 Habit Tracker
 
-This project is made by Jean, currently a high school student in France.
+This project is made by Jean, currently a high school student in France (not anymore).
 The goal of this app is to not forget to do your daily tasks. This app will push notifications when you should do something. You first define what you need to do and how often (daily, weekly, or monthly).
 
 ## ✅ Features
 
  - Add, modify and delete a habit
  - Main interface displays the habits
- - Calendar view for better visualisation
- - Cross-platform: android, windows, linux
+ - Progress view for better visualisation
+ - Cross-platform: mac, windows, linux, android
  - Saves data locally
  - view your own progress!
  - Log in to your account and add friends to view their progress.
@@ -48,23 +48,23 @@ buildozer -v android debug
 ```
 Requires Linux or WSL with Buildozer installed
 
-### Linux Build
+### Linux/Windows/Mac Build
 
 ```bash
 pyinstaller src/main.py --onefile --noconfirm
 ```
-Requires Linux or WSL
+Requires the targeted OS (e.g. requires Linux for a Linux build)
 
 ## 📄 License
 
 This project is licensed under the MIT License — see the LICENSE file for details.
 ___________________________________________
-### ⚠️ L'application est en début de développement, elle ne fonctionne pas pour l'instant
-___________________________________________
 # Français
+___________________________________________
+
 # 📱 Habit Tracker
 
-Ce projet a été réalisé par Jean, actuellement lycéen en France.  
+Ce projet a été réalisé par Jean, actuellement lycéen en France (plus maintenant).  
 Le but de cette application est de ne pas oublier d’accomplir vos tâches quotidiennes. Elle envoie des notifications au moment où vous devez faire quelque chose. Vous commencez par définir quoi faire et à quelle fréquence (quotidienne, hebdomadaire ou mensuelle).
 
 ## ✅ Fonctionnalités
@@ -72,7 +72,7 @@ Le but de cette application est de ne pas oublier d’accomplir vos tâches quot
  - Ajouter, modifier et supprimer une habitude
  - Interface principale affichant les habitudes
  - Calendrier permettant une meilleure visualisation
- - Compatible avec Android, Windows et Linux
+ - Compatible avec Android, Windows, Linux et Mac
  - Sauvegarde des données en local
  - consulte tes progrès!
  - Connexion en ligne et ajout d’amis pour voir leur progression
@@ -111,14 +111,14 @@ ___________________________________________
 # 🖼️ Screenshots
 
 
-### Main Interface
+### Main Interface / Interface Principale
 
-![Main Interface](assets/screenshots/screenshot3.png)
+![Main Interface](assets/screenshots/mainview.png)
 
-### Editing
+### Progress View / Calendrier
 
-![Editing](assets/screenshots/screenshot4.png)
+![Editing](assets/screenshots/progview.png)
 
-### Light Mode
+### Light Mode / Mode Clair
 
-![Light Mode](assets/screenshots/screenshot5.png)
+![Light Mode](assets/screenshots/lighttheme.png)
