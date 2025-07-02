@@ -33,7 +33,6 @@ class SettingsWindow(Screen):
             json.dump(config, f, indent=1)
         # loads the default config when signed out
         self.manager.get_screen("main").empty_hab()
-        self.manager.get_screen("main").load_all()
     
     def sort_hab(self):
         text = self.ids.sort_hab.text[9:]

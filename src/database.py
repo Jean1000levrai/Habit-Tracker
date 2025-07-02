@@ -612,6 +612,6 @@ def dev_insert(query):
 if __name__ == "__main__":
     # create_db('')
     # create_new_day('')
-    print_habits_everything('')
+    print_habits_everything('jean')
     # print_logs('')
 

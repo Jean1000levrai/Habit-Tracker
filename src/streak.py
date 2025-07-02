@@ -21,6 +21,9 @@ def streak(*args):
     while True:
         a = 0
         nb_hab = len(db.habits_has_date(all_dates[i], user))
+        if nb_hab <= 0:
+            break
+
         for hab in lst_hab:
             if db.check_log(hab[0], all_dates[i], user):
   
@@ -31,8 +34,7 @@ def streak(*args):
         # break the loop if the logs has been looped in its enterety
         # or if a < accept
         if a < accept or i >= len(all_dates)-1:
-             break
-        
+            break
         streak = streak + 1
         i = i + 1
 

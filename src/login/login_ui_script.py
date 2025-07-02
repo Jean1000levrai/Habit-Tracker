@@ -39,6 +39,9 @@ class LoginPage(Screen):
         else:
             self.ids.pwd_show.text = ''
             self.ids.password.password = False
+    
+    def dismiss_func(self):
+        self.manager.get_screen("main").load_all()
 
 
 class SignupPage(Screen):

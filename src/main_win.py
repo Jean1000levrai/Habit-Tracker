@@ -120,15 +120,20 @@ class MainWindow(Screen):
         self.lst_btn_dell = []
         self.lst_btn_details = []
         # self.load_all()
-        Clock.schedule_once(lambda dt: self.load_all(), 0.5)
+        # Clock.schedule_once(lambda dt: self.load_all(), 0.5)
 
     def empty_hab(self):
+        with open(resource_path2("data/config.json")) as f:
+            config = json.load(f)
+        self.user = config["name"]
         layout = self.ids.labelled_habits
-
-        layout.remove_widget(self.add)
-        for btn in self.lst_bg_btn:
-            if btn.parent:
-                layout.remove_widget(btn)
+        try:
+            layout.remove_widget(self.add)
+            for btn in self.lst_bg_btn:
+                if btn.parent:
+                    layout.remove_widget(btn)
+        except: None
+        layout.clear_widgets()
         self.lst_btn.clear()
         self.lst_bg_btn.clear()
         self.lst_btn_dell.clear()
@@ -138,6 +143,7 @@ class MainWindow(Screen):
         # open the config file
         with open(resource_path2("data/config.json")) as f:
             config = json.load(f)
+        self.user = config["name"]
 
         # displays the name of the user at the top
         self.ids.title_app.text = self.user

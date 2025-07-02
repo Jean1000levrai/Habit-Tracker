@@ -145,6 +145,7 @@ class App(MDApp):
         else:
             self.light_theme()
 
+
         # checks if it is they first time here
         if config["first_timer"] == True:
             # creates the db
@@ -180,6 +181,9 @@ class App(MDApp):
         settings_screen = self.root.get_screen('second')
         settings_screen.ids.settings_theme.text = theme_text
 
+        self.root.get_screen('main').empty_hab()
+        self.root.get_screen('main').load_all()
+
     def light_theme(self):
         self.theme_cls.theme_style = "Light"
 
@@ -195,6 +199,9 @@ class App(MDApp):
         theme_text = "Theme: Light"
         settings_screen = self.root.get_screen('second')
         settings_screen.ids.settings_theme.text = theme_text
+
+        self.root.get_screen('main').empty_hab()
+        self.root.get_screen('main').load_all()
 
     def theme(self):
         """
