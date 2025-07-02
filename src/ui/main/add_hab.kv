@@ -69,31 +69,7 @@
 
                     app.root.current = "reminder"
                     root.manager.transition.direction = "left"
-
-            # on off
-            Button:
-                id: reminder_off
-                color: app.text_color
-                background_color: app.button_color
-                background_normal: ''
-                padding: 5, 0
-
-                canvas.before:
-                    Color:
-                        rgba: app.outline_color  
-                    Line:
-                        width: 1
-                        rectangle: (self.x, self.y, self.width, self.height)
-
-                text: "Reminder : off"
-                size_hint_y: None
-                height: 30
-                halign: "left"
-                valign: "middle"
-                text_size: self.size
-
-                on_release:
-                    root.reminder_on_off()            
+         
 
         # ------------Save btn--------------
         AnchorLayout:

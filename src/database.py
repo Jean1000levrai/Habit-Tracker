@@ -8,7 +8,7 @@ from calendar_db import *
 
 # -----------creation/drop-----------
 def connect_to_db():
-    return sql.connect(resource_path2("data/db_habit.db"))
+    return sql.connect(get_writable_db_path("db_habit.db"))
 
 def create_db(user=''):
     conn = connect_to_db()
