@@ -1,8 +1,8 @@
 {
  "first_timer": false,
- "theme": "light",
- "name": "papa",
- "streak": 1,
+ "theme": "dark",
+ "name": "",
+ "streak": 0,
  "sort": "Time",
  "reminder_var": [
   0,

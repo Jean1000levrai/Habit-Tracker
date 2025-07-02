@@ -308,7 +308,6 @@ def add_quantity(hab_name, date, quantity, user=''):
     conn.commit()
     conn.close()
 
-
 def update_quantity(habit_id, quantity, date=datetime.today().strftime("%Y-%m-%d"), user=''):
     """called in ValidHabM to valid the hab.
     this function updates the quantity of the hab in the logs"""
@@ -609,8 +608,8 @@ def dev_insert(query):
 
 # -----------main-----------
 if __name__ == "__main__":
-    # create_db('')
+    create_db('')
     # create_new_day('')
-    print_habits_everything('jean')
+    print_habits_everything('')
     # print_logs('')
 
