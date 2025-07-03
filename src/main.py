@@ -47,7 +47,7 @@ from kivymd.app import MDApp
 
 LabelBase.register(
     name="FontAwesome",
-    fn_regular="assets/fonts/fa-solid.otf"
+    fn_regular=resource_path2("assets/fonts/fa-solid.otf")
 )
 
 # notification.notify(

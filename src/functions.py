@@ -16,11 +16,12 @@ def resource_path(relative_path):
     return os.path.join(base_path, relative_path)
 
 def resource_path2(relative_path):
-    try:
-        base_path = sys._MEIPASS  # user install
-    except AttributeError:
-        base_path = os.path.abspath(".")  # dev mode in ide
+    if hasattr(sys, '_MEIPASS'):
+        base_path = sys._MEIPASS
+    else:
+        base_path = os.path.abspath(os.path.dirname(__file__))
     return os.path.join(base_path, relative_path)
+
 
 
 def get_user_data_dir():
