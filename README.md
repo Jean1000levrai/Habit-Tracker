@@ -24,11 +24,7 @@ The goal of this app is to not forget to do your daily tasks. This app will push
 go to the linked website and install from there
 https://website-for-habittracker.vercel.app/
 
- - Download the appropriate version from the website
- - Unzip the file
- - Navigate to *your_path*/dist
- - execute the executable from here
- - feel to create a shortcut :)
+ - Download the appropriate version from the Website 
 
 ### Experimental (from the source code)
 
@@ -90,11 +86,7 @@ Le but de cette application est de ne pas oublier d’accomplir vos tâches quot
 Installez l'application depuis ce site web
 https://website-for-habittracker.vercel.app/
 
- - Téléchargez la version approprié
- - Décompressez le fichier zip
- - Naviguer jusqu'à *votre_chemin*/dist
- - Exécutez le fichier depuis ici
- - Vous pouvez aussi créer un raccourci si vous le souhaitez :)
+ - Téléchargez la version approprié depuis le site web
 
 
 ### Prérequis
