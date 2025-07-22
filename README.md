@@ -6,6 +6,7 @@ ___________________________________________
 This project is made by Jean, currently a high school student in France (not anymore).
 The goal of this app is to not forget to do your daily tasks. This app will push notifications when you should do something. You first define what you need to do and how often (daily, weekly, or monthly).
 Mac build by Tanish https://github.com/tm1988
+In this project, I learnt about how to make "good" UI/UX, SQL databases
 
 ## ✅ Features
 
