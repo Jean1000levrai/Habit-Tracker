@@ -2,7 +2,7 @@ ___________________________________________
 # English
 ___________________________________________
 # 📱 Habit Tracker
-[![Licence](https://hackatime-badge.hackclub.com/U0811ME6L0J/HabitTracker)](./LICENSE) 
+[badge](https://hackatime-badge.hackclub.com/U0811ME6L0J/HabitTracker)
 
 This project is made by Jean, currently a high school student in France (not anymore).
 The goal of this app is to not forget to do your daily tasks. This app will push notifications when you should do something. You first define what you need to do and how often (daily, weekly, or monthly).
